@@ -46,26 +46,45 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white relative overflow-hidden font-inter text-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] relative overflow-hidden font-inter text-zinc-200 selection:bg-amber-500/30 selection:text-white">
       <ParticleBackground />
 
-      {/* Container */}
-      <div className="relative z-10 w-full max-w-md p-8 sm:p-10">
+      {/* Cyber Grid Background Accent */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(245, 158, 11,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(245, 158, 11,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none z-0"></div>
 
-        {/* Glass Card */}
-        <div className="glass-panel backdrop-blur-xl bg-white/40 border-white/60 p-8 rounded-3xl shadow-[0_0_30px_rgba(255,255,255,0.8)] border hover:shadow-[0_0_40px_rgba(255,255,255,1)] transition-all duration-500">
+      {/* Ethereal Glow Orbs matching storefront theme */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-amber-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-amber-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+
+      {/* Container */}
+      <div className="relative z-10 w-full max-w-md p-6 sm:p-8">
+
+        {/* Futuristic Cyber-Security Card */}
+        <div className="glass-panel-futuristic p-8 rounded-3xl border border-amber-500/15 hover:border-amber-500/30 shadow-[0_0_50px_rgba(245, 158, 11,0.08)] hover:shadow-[0_0_60px_rgba(245, 158, 11,0.18)] transition-all duration-500 relative z-10 overflow-hidden">
+          
+          {/* Glowing Top Scanner Laser Line */}
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent shadow-[0_0_8px_rgba(245, 158, 11,1)] z-10 pointer-events-none"></div>
+
+          {/* HUD Corner Accents for Premium Cyberpunk Look */}
+          <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-amber-500/40 rounded-tl-lg pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-amber-500/40 rounded-tr-lg pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-amber-500/40 rounded-bl-lg pointer-events-none"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-amber-500/40 rounded-br-lg pointer-events-none"></div>
 
           {/* Header */}
-          <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold font-space-grotesk tracking-wide mb-2">
-              ELEN<span className="text-gray-400">X</span>
+          <div className="text-center mb-8 relative">
+            <h1 className="text-3xl font-extrabold font-space-grotesk tracking-wider mb-2 text-white bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-amber-400">
+              ELEN<span className="text-amber-400">X</span>
             </h1>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-widest text-glow">Join the Elite</p>
+            <p className="text-xs font-bold text-amber-400/80 uppercase tracking-[0.25em] font-mono">
+              INITIALIZE IDENTITY
+            </p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm text-center">
+            <div className="mb-6 p-4 bg-red-950/40 border border-red-500/30 rounded-xl text-red-400 text-xs font-semibold text-center backdrop-blur-md shadow-[0_0_15px_rgba(239,68,68,0.1)]">
               {error}
             </div>
           )}
@@ -73,85 +92,103 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
 
             {/* Username Input */}
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-1 flex items-center pointer-events-none">
-                <User className="h-5 w-5 text-gray-400 group-focus-within:text-gray-800 transition-colors duration-300" />
+            <div className="space-y-1.5 group">
+              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-amber-400 transition-colors uppercase tracking-wider font-mono">
+                Operator Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <User className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-amber-400 transition-colors duration-300" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="e.g. Agent007"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  disabled={loading}
+                  className="w-full pl-10 pr-4 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-amber-500/60 focus:bg-[#0f172a]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(245, 158, 11,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-medium disabled:opacity-50"
+                />
               </div>
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                disabled={loading}
-                className="w-full pl-10 pr-4 py-3 bg-transparent border-b border-gray-300 focus:border-white focus:ring-0 focus:outline-none placeholder-gray-400 transition-all duration-300 group-focus-within:border-white group-focus-within:shadow-[0_1px_10px_rgba(255,255,255,0.8)] disabled:opacity-50"
-              />
             </div>
 
             {/* Email Input */}
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-1 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-gray-800 transition-colors duration-300" />
+            <div className="space-y-1.5 group">
+              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-amber-400 transition-colors uppercase tracking-wider font-mono">
+                System Ident (Email)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <Mail className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-amber-400 transition-colors duration-300" />
+                </div>
+                <input
+                  type="email"
+                  placeholder="name@domain.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={loading}
+                  className="w-full pl-10 pr-4 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-amber-500/60 focus:bg-[#0f172a]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(245, 158, 11,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-medium disabled:opacity-50"
+                />
               </div>
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={loading}
-                className="w-full pl-10 pr-4 py-3 bg-transparent border-b border-gray-300 focus:border-white focus:ring-0 focus:outline-none placeholder-gray-400 transition-all duration-300 group-focus-within:border-white group-focus-within:shadow-[0_1px_10px_rgba(255,255,255,0.8)] disabled:opacity-50"
-              />
             </div>
 
             {/* Password Input */}
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-1 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-gray-800 transition-colors duration-300" />
+            <div className="space-y-1.5 group">
+              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-amber-400 transition-colors uppercase tracking-wider font-mono">
+                Access Code (Password)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <Lock className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-amber-400 transition-colors duration-300" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="min 6 characters"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  disabled={loading}
+                  className="w-full pl-10 pr-10 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-amber-500/60 focus:bg-[#0f172a]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(245, 158, 11,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-mono font-medium disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-600 hover:text-amber-400 focus:outline-none transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+                </button>
               </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password (min 6 characters)"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                disabled={loading}
-                className="w-full pl-10 pr-10 py-3 bg-transparent border-b border-gray-300 focus:border-white focus:ring-0 focus:outline-none placeholder-gray-400 transition-all duration-300 group-focus-within:border-white group-focus-within:shadow-[0_1px_10px_rgba(255,255,255,0.8)] disabled:opacity-50"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
-              >
-                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-              </button>
             </div>
 
-            {/* Register Button */}
+            {/* Register Button with Premium Glow & Shimmer */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center py-4 px-4 bg-gradient-to-r from-gray-100 to-white text-gray-800 font-bold rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:shadow-[0_0_30px_rgba(255,255,255,0.9)] transform hover:-translate-y-0.5 transition-all duration-300 border border-white/80 group mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full relative overflow-hidden flex items-center justify-center py-3.5 px-4 bg-amber-500 text-zinc-950 hover:bg-amber-400 font-extrabold rounded-xl shadow-lg shadow-black/20 hover:shadow-[0_0_25px_rgba(245, 158, 11,0.45)] transform hover:-translate-y-0.5 transition-all duration-300 group mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
+              {/* Sliding shine hover overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out pointer-events-none" />
+
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  <span>Creating Account...</span>
+                  <span className="font-mono tracking-wider uppercase text-xs">Registering Ident...</span>
                 </>
               ) : (
                 <>
-                  <span>Initialize & Join</span>
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <span className="font-mono tracking-wider uppercase text-xs">Initialize & Join</span>
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </>
               )}
             </button>
 
             {/* Login Link */}
-            <div className="text-center text-sm text-gray-500 mt-6">
-              Already initialized?{' '}
-              <Link to="/login" className="font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 underline decoration-transparent hover:decoration-gray-400 underline-offset-4">
-                Access System
+            <div className="text-center text-xs text-zinc-600 mt-6 font-mono font-medium">
+              ALREADY INITIALIZED?{' '}
+              <Link to="/login" className="font-bold text-zinc-400 hover:text-amber-400 transition-colors uppercase ml-1">
+                ACCESS SYSTEM
               </Link>
             </div>
 

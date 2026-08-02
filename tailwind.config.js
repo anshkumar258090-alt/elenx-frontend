@@ -4,21 +4,15 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class', // Enable class-based dark mode
   theme: {
     extend: {
       colors: {
-        'elenx-bg': '#f8fbfc', // Softer Off-White for Light Mode
         'elenx-silver': '#f1f5f9', // Cool Grey
         'elenx-dark': '#334155', // Slate Grey Text
-        'elenx-charcoal': '#0B0C15', // Deep Midnight/Charcoal for Dark Mode
-        'elenx-white-glow': '#ffffff',
+        'elenx-charcoal': '#0B0C15', // Deep Midnight/Charcoal
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(255, 255, 255, 0.9)',
-        'glow-hover': '0 0 30px rgba(255, 255, 255, 1)',
-        'glow-cyan': '0 0 20px rgba(6, 182, 212, 0.6)',
-        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
       },
       fontFamily: {
         plaster: ['"Plaster"', 'cursive'],
