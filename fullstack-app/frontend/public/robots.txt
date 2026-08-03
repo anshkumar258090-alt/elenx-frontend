@@ -1,0 +1,9 @@
+# robots.txt for https://elenx.in
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /user-dashboard
+Disallow: /auth-success
+Disallow: /api/
+
+Sitemap: https://elenx.in/sitemap.xml
