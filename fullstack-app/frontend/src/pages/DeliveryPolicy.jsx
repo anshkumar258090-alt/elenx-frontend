@@ -79,7 +79,7 @@ Our support team is available to resolve delivery issues promptly.`
       content: `For delivery-related inquiries:
 
 • **Email**: contact@elenx.in
-• **Phone**: +91-9876-543210
+• **Phone**: +91 8808290279
 • **Website**: https://elenx.in/contact
 • **Support Hours**: Monday - Saturday, 9:00 AM - 7:00 PM IST`
     },

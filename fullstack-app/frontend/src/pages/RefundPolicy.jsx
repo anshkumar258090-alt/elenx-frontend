@@ -84,7 +84,7 @@ const RefundPolicy = () => {
       content: `For refund and cancellation inquiries:
 
 • **Email**: contact@elenx.in
-• **Phone**: +91-9876-543210
+• **Phone**: +91 8808290279
 • **Website**: https://elenx.in/contact`
     },
   ];

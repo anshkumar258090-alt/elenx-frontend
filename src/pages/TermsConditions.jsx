@@ -124,7 +124,7 @@ We reserve the right to suspend or terminate accounts that violate these terms.`
       content: `For questions about these Terms and Conditions, please contact us:
 
 • **Email**: contact@elenx.in
-• **Phone**: +91-9876-543210
+• **Phone**: +91 8808290279
 • **Website**: https://elenx.in/contact`
     },
   ];

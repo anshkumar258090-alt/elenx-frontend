@@ -74,7 +74,7 @@ Local storage data can be managed through your browser's developer tools or sett
       content: `If you have questions about our use of cookies, please contact us:
 
 • **Email**: contact@elenx.in
-• **Phone**: +91-9876-543210
+• **Phone**: +91 8808290279
 • **Website**: https://elenx.in/contact`
     },
   ];

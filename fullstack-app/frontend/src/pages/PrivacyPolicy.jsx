@@ -90,7 +90,7 @@ To exercise any of these rights, contact us at contact@elenx.in.`
       content: `If you have any questions or concerns about this Privacy Policy or our data practices, please contact us:
 
 • **Email**: contact@elenx.in
-• **Phone**: +91-9876-543210
+• **Phone**: +91 8808290279
 • **Website**: https://elenx.in/contact`
     },
   ];
