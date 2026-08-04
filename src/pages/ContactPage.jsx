@@ -14,6 +14,7 @@ const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', subject: '', message: '',
   });
+  const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
 
@@ -24,11 +25,25 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    // Simulate form submission
-    await new Promise(r => setTimeout(r, 1500));
-    setSending(false);
-    setSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    setError('');
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send message');
+      }
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('Contact form error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const contactInfo = [
@@ -269,6 +284,11 @@ const ContactPage = () => {
                         className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-zinc-700 resize-none"
                       />
                     </div>
+                    {error && (
+                      <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-red-400 text-xs font-semibold text-center">
+                        {error}
+                      </div>
+                    )}
                     <button
                       type="submit"
                       disabled={sending}

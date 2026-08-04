@@ -18,7 +18,11 @@ import {
   CreditCard,
   UploadCloud,
   Zap,
-  Menu
+  Menu,
+  MessageSquare,
+  Mail,
+  Eye,
+  Clock
 } from 'lucide-react';
 import AdminUploads from '../components/AdminUploads';
 import ParticleBackground from '../components/ParticleBackground';
@@ -45,6 +49,12 @@ const AdminDashboard = () => {
   const [togglingType, setTogglingType] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Contact Messages State
+  const [contactMessages, setContactMessages] = useState([]);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [expandedMessage, setExpandedMessage] = useState(null);
 
   // Settings State
   const [settingsUpiId, setSettingsUpiId] = useState('');
@@ -254,10 +264,70 @@ const AdminDashboard = () => {
     }
   };
 
+  // Fetch Contact Messages
+  const fetchContactMessages = async () => {
+    setLoadingMessages(true);
+    try {
+      const token = localStorage.getItem('admin_token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/contacts`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setContactMessages(data);
+        setUnreadCount(data.filter(m => !m.isRead).length);
+      }
+    } catch (error) {
+      console.error('Failed to fetch contact messages', error);
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
+  const handleMarkAsRead = async (id) => {
+    try {
+      const token = localStorage.getItem('admin_token');
+      await fetch(`${import.meta.env.VITE_API_URL}/api/admin/contacts/${id}/read`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      fetchContactMessages();
+    } catch (error) {
+      console.error('Failed to mark as read', error);
+    }
+  };
+
+  const handleDeleteMessage = async (id) => {
+    if (!window.confirm('Delete this message permanently?')) return;
+    try {
+      const token = localStorage.getItem('admin_token');
+      await fetch(`${import.meta.env.VITE_API_URL}/api/admin/contacts/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      fetchContactMessages();
+    } catch (error) {
+      console.error('Failed to delete message', error);
+    }
+  };
+
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    if (seconds < 60) return 'Just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days}d ago`;
+    return new Date(date).toLocaleDateString();
+  };
+
   // Fetch data on mount
   useEffect(() => {
     console.log("[AdminDashboard] Dashboard mounted");
     fetchUsers();
+    fetchContactMessages();
   }, []);
 
   // Refresh data when switching to relevant tabs
@@ -268,10 +338,13 @@ const AdminDashboard = () => {
     if (activeTab === 'settings') {
       fetchPaymentSettings();
     }
+    if (activeTab === 'messages') {
+      fetchContactMessages();
+    }
   }, [activeTab]);
 
   // Sidebar Navigation Item Component
-  const NavItem = ({ id, icon: Icon, label }) => (
+  const NavItem = ({ id, icon: Icon, label, badge }) => (
     <button
       onClick={() => { setActiveTab(id); setIsSidebarOpen(false); }}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group
@@ -282,7 +355,10 @@ const AdminDashboard = () => {
     >
       <Icon size={20} className={`transition-colors ${activeTab === id ? 'text-amber-400' : 'text-gray-500 group-hover:text-white'}`} />
       <span className="font-medium">{label}</span>
-      {activeTab === id && (
+      {badge > 0 && (
+        <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center px-1.5 text-[10px] font-bold rounded-full bg-amber-500 text-zinc-950">{badge}</span>
+      )}
+      {activeTab === id && !badge && (
         <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_currentColor]" />
       )}
     </button>
@@ -346,6 +422,7 @@ const AdminDashboard = () => {
           <NavItem id="overview" icon={LayoutDashboard} label="Overview" />
           <NavItem id="builds" icon={Rocket} label="Build Manager" />
           <NavItem id="users" icon={Users} label="User Manager" />
+          <NavItem id="messages" icon={MessageSquare} label="Messages" badge={unreadCount} />
 
           <div className="my-6 border-t border-white/5"></div>
 
@@ -381,6 +458,7 @@ const AdminDashboard = () => {
               {activeTab === 'overview' && 'System Overview'}
               {activeTab === 'builds' && 'Build Distribution'}
               {activeTab === 'users' && 'User Management'}
+              {activeTab === 'messages' && 'Contact Messages'}
               {activeTab === 'settings' && 'System Settings'}
             </h2>
           </div>
@@ -630,6 +708,120 @@ const AdminDashboard = () => {
                 </form>
 
               </div>
+            </div>
+          )}
+
+          {/* --- TAB: MESSAGES --- */}
+          {activeTab === 'messages' && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400">Messages received from the contact form on your website.</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-bold text-zinc-500 bg-[#1e293b] border border-white/5 px-3 py-1.5 rounded-full uppercase">
+                    {unreadCount} Unread
+                  </span>
+                  <button
+                    onClick={fetchContactMessages}
+                    className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
+                  >
+                    Refresh
+                  </button>
+                </div>
+              </div>
+
+              {loadingMessages ? (
+                <div className="py-20 text-center text-gray-500">Loading messages...</div>
+              ) : contactMessages.length === 0 ? (
+                <div className="py-20 text-center glass-panel rounded-2xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8">
+                  <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-4">
+                    <Mail size={32} />
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">No Messages Yet</h4>
+                  <p className="text-zinc-500 text-sm">When someone submits the contact form, their messages will appear here.</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {contactMessages.map((msg) => (
+                    <div
+                      key={msg._id}
+                      className={`glass-panel rounded-2xl border transition-all duration-300 overflow-hidden ${
+                        !msg.isRead
+                          ? 'border-amber-500/30 bg-amber-500/[0.03] shadow-[0_0_15px_rgba(245,158,11,0.05)]'
+                          : 'border-white/10 bg-white/[0.02]'
+                      }`}
+                    >
+                      {/* Message Header */}
+                      <div
+                        className="p-5 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                        onClick={() => setExpandedMessage(expandedMessage === msg._id ? null : msg._id)}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-4 flex-1 min-w-0">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold ${
+                              !msg.isRead
+                                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                : 'bg-white/5 text-zinc-500 border border-white/10'
+                            }`}>
+                              {msg.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-bold text-white text-sm">{msg.name}</span>
+                                {!msg.isRead && (
+                                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0" />
+                                )}
+                              </div>
+                              <p className="text-xs text-zinc-500 truncate">{msg.email}{msg.phone ? ` • ${msg.phone}` : ''}</p>
+                              <p className={`text-sm mt-1 truncate ${!msg.isRead ? 'text-zinc-300 font-semibold' : 'text-zinc-500'}`}>
+                                {msg.subject}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                            <span className="text-[10px] text-zinc-600 font-medium flex items-center gap-1">
+                              <Clock size={10} />
+                              {timeAgo(msg.createdAt)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Expanded Message Body */}
+                      {expandedMessage === msg._id && (
+                        <div className="px-5 pb-5 border-t border-white/5">
+                          <div className="pt-4 pb-4">
+                            <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                          </div>
+                          <div className="flex items-center gap-2 pt-3 border-t border-white/5">
+                            {!msg.isRead && (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); handleMarkAsRead(msg._id); }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg text-xs font-bold hover:bg-amber-500/20 transition-all"
+                              >
+                                <Eye size={12} /> Mark Read
+                              </button>
+                            )}
+                            <a
+                              href={`mailto:${msg.email}?subject=Re: ${msg.subject}`}
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 text-zinc-400 rounded-lg text-xs font-bold hover:bg-white/10 hover:text-white transition-all"
+                            >
+                              <Mail size={12} /> Reply
+                            </a>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); handleDeleteMessage(msg._id); }}
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-xs font-bold hover:bg-red-500/20 transition-all ml-auto"
+                            >
+                              <Trash2 size={12} /> Delete
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

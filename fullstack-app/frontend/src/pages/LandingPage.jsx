@@ -4,6 +4,286 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 
+const PRODUCTS = [
+  {
+    id: 1,
+    name: 'EXTERNAL BASIC',
+    slug: 'external-basic',
+    description: 'Essential external tactical advantage with location and stream protection.',
+    isPremium: false,
+    compatibility: 'Windows 10 / 11',
+    version: 'v1.1.2',
+    features: ['Aimbot Head', 'Aimbot Drag', 'Sniper Scope', 'Sniper Switch', 'Location', 'Streamer Mode', 'No Blacklist', 'Fully Safe', 'All Server'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 1, inr: 95 },
+      { id: '1week', label: '1 Week', usd: 3, inr: 250 },
+      { id: '1month', label: '1 Month', usd: 6, inr: 499 },
+      { id: '1year', label: '1 Year', usd: 20, inr: 1900 },
+      { id: 'lifetime', label: 'Lifetime', usd: 30, inr: 2800 },
+    ],
+    icon: '🎯',
+    gradient: 'from-amber-500/20 to-orange-500/10',
+    accentColor: 'amber',
+  },
+  {
+    id: 2,
+    name: 'EXTERNAL PREMIUM',
+    slug: 'external-premium',
+    description: 'Advanced external suite with full ESP vision, speed, and hardware resets.',
+    isPremium: true,
+    compatibility: 'Windows 10 / 11',
+    version: 'v2.4.1',
+    features: ['Aimbot Head', 'Aimbot Drag', 'Aimbot AI', 'Sniper Scope', 'Sniper Switch', 'Location', 'Wall Hack', 'Speed Hack', 'Camera Hack', 'Vision Hack', 'Guest Reset', 'Streamer Mode', 'No Blacklist', 'Fully Safe', 'All Server'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 1, inr: 95 },
+      { id: '1week', label: '1 Week', usd: 3, inr: 300 },
+      { id: '1month', label: '1 Month', usd: 8, inr: 749 },
+      { id: '1year', label: '1 Year', usd: 25, inr: 2300 },
+      { id: 'lifetime', label: 'Lifetime', usd: 30, inr: 3000 },
+    ],
+    icon: '⚡',
+    gradient: 'from-orange-500/20 to-red-500/10',
+    accentColor: 'orange',
+  },
+  {
+    id: 3,
+    name: 'INTERNAL BASIC',
+    slug: 'internal-basic',
+    description: 'Core internal hooks for pure performance, direct bones mapping, and boxes.',
+    isPremium: false,
+    compatibility: 'Windows 10 / 11',
+    version: 'v1.2.0',
+    features: ['Aimbot Head', 'Aimbot Body', 'Aimbot Speed', 'Visible Check', 'ESP Bone', 'ESP Box', 'ESP Line', 'ESP Name', 'Guest Reset', 'Bypass Hook', 'No Blacklist', 'Fully Safe', 'All Server'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 2, inr: 180 },
+      { id: '1week', label: '1 Week', usd: 5, inr: 400 },
+      { id: '1month', label: '1 Month', usd: 10, inr: 899 },
+      { id: '1year', label: '1 Year', usd: 30, inr: 2800 },
+      { id: 'lifetime', label: 'Lifetime', usd: 45, inr: 4000 },
+    ],
+    icon: '🔧',
+    gradient: 'from-emerald-500/20 to-teal-500/10',
+    accentColor: 'emerald',
+  },
+  {
+    id: 4,
+    name: 'INTERNAL PRO',
+    slug: 'internal-pro',
+    description: 'Full domination suite with silent aim, custom overlays, and high performance.',
+    isPremium: true,
+    compatibility: 'Windows 10 / 11',
+    version: 'v3.1.0',
+    features: ['Aimbot Head', 'Aimbot Body', 'Silent Aim', 'FOV Custom', 'Visible Check', 'Wall ESP', 'Bones ESP', 'Bounding Box', 'Crosshair Visual', 'Custom Theme', 'OBS Stream Proof', 'No Blacklist', 'Anti-Ban Active', 'All Server'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 3, inr: 250 },
+      { id: '1week', label: '1 Week', usd: 7, inr: 600 },
+      { id: '1month', label: '1 Month', usd: 12, inr: 1099 },
+      { id: '1year', label: '1 Year', usd: 40, inr: 3600 },
+      { id: 'lifetime', label: 'Lifetime', usd: 55, inr: 5000 },
+    ],
+    icon: '💎',
+    gradient: 'from-violet-500/20 to-purple-500/10',
+    accentColor: 'violet',
+  },
+  {
+    id: 5,
+    name: 'BIOS STREAMER',
+    slug: 'bios-streamer',
+    description: 'Hardware level BIOS streamer utility with deep kernel HWID spoofing controls.',
+    isPremium: true,
+    compatibility: 'Windows 10 / 11 (All BIOS)',
+    version: 'v1.0.5',
+    features: ['BIOS Flasher', 'HWID Spoof', 'Mac Changer', 'Registry Cleaner', 'Kernel Hide', 'Safe Load', 'Instant Process', 'Anti-Leak Protect'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 5, inr: 400 },
+      { id: '1week', label: '1 Week', usd: 10, inr: 850 },
+      { id: '1month', label: '1 Month', usd: 20, inr: 1799 },
+      { id: '1year', label: '1 Year', usd: 60, inr: 5200 },
+      { id: 'lifetime', label: 'Lifetime', usd: 85, inr: 7500 },
+    ],
+    icon: '🖥️',
+    gradient: 'from-cyan-500/20 to-blue-500/10',
+    accentColor: 'cyan',
+  },
+  {
+    id: 6,
+    name: 'STREAMER BASIC',
+    slug: 'streamer-basic',
+    description: 'Lag-free stream protection protocols with dynamic video controller hooking.',
+    isPremium: false,
+    compatibility: 'Windows 10 / 11',
+    version: 'v1.3.1',
+    features: ['Stream Protect', 'No Frame Drop', 'OBS Hook', 'Discord Hook', 'Dynamic Control', 'Lag Free', 'Hotkeys Active'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 2, inr: 180 },
+      { id: '1week', label: '1 Week', usd: 5, inr: 400 },
+      { id: '1month', label: '1 Month', usd: 10, inr: 899 },
+      { id: '1year', label: '1 Year', usd: 30, inr: 2800 },
+      { id: 'lifetime', label: 'Lifetime', usd: 45, inr: 4000 },
+    ],
+    icon: '📡',
+    gradient: 'from-pink-500/20 to-rose-500/10',
+    accentColor: 'pink',
+  },
+  {
+    id: 7,
+    name: 'STREAMER PRO',
+    slug: 'streamer-pro',
+    description: 'Ultra-premium stream bypassing for heavy software overlays and recording suites.',
+    isPremium: true,
+    compatibility: 'Windows 10 / 11',
+    version: 'v2.0.2',
+    features: ['Direct OBS Bypass', 'Discord Stream Hide', 'Kernel Overlay Masking', 'HW Acceleration', 'Lag-Free Protect', 'Custom Overlay Stream', 'Bypass Twitch Hook'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 3, inr: 250 },
+      { id: '1week', label: '1 Week', usd: 7, inr: 600 },
+      { id: '1month', label: '1 Month', usd: 12, inr: 1099 },
+      { id: '1year', label: '1 Year', usd: 40, inr: 3600 },
+      { id: 'lifetime', label: 'Lifetime', usd: 55, inr: 5000 },
+    ],
+    icon: '🎬',
+    gradient: 'from-fuchsia-500/20 to-pink-500/10',
+    accentColor: 'fuchsia',
+  },
+  {
+    id: 8,
+    name: 'BYPASS SUPREME',
+    slug: 'bypass-supreme',
+    description: 'Universal bypass emulator logic with anti-ban protection overlays.',
+    isPremium: true,
+    compatibility: 'Windows 10 / 11 (All Anti-Cheats)',
+    version: 'v1.0.1',
+    features: ['Universal Bypass', 'Emulator Signature Hide', 'Anti-Ban Shields', 'Memory Encryption', 'Virtual Machine Detect', 'Log Cleaner', 'Silent Injection', 'Safe Active'],
+    pricing: [
+      { id: '1day', label: '1 Day', usd: 2, inr: 170 },
+      { id: '1week', label: '1 Week', usd: 4, inr: 350 },
+      { id: '1month', label: '1 Month', usd: 7, inr: 650 },
+      { id: '1year', label: '1 Year', usd: 22, inr: 1999 },
+      { id: 'lifetime', label: 'Lifetime', usd: 32, inr: 2900 },
+    ],
+    icon: '🛡️',
+    gradient: 'from-red-500/20 to-orange-500/10',
+    accentColor: 'red',
+  },
+];
+
+/* ===== Product Card Component ===== */
+const ProductCard = ({ product, idx, currency, navigate }) => {
+  const [selectedPlan, setSelectedPlan] = useState(2); // default 1 Month
+  const plan = product.pricing[selectedPlan];
+  const price = currency === 'INR' ? plan.inr : plan.usd;
+  const symbol = currency === 'INR' ? '₹' : '$';
+
+  const accentMap = {
+    amber: { border: 'border-amber-500/30', text: 'text-amber-400', bg: 'bg-amber-500/10', glow: 'shadow-amber-500/20', badge: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+    orange: { border: 'border-orange-500/30', text: 'text-orange-400', bg: 'bg-orange-500/10', glow: 'shadow-orange-500/20', badge: 'bg-orange-500/20 text-orange-300 border-orange-500/30' },
+    emerald: { border: 'border-emerald-500/30', text: 'text-emerald-400', bg: 'bg-emerald-500/10', glow: 'shadow-emerald-500/20', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+    violet: { border: 'border-violet-500/30', text: 'text-violet-400', bg: 'bg-violet-500/10', glow: 'shadow-violet-500/20', badge: 'bg-violet-500/20 text-violet-300 border-violet-500/30' },
+    cyan: { border: 'border-cyan-500/30', text: 'text-cyan-400', bg: 'bg-cyan-500/10', glow: 'shadow-cyan-500/20', badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
+    pink: { border: 'border-pink-500/30', text: 'text-pink-400', bg: 'bg-pink-500/10', glow: 'shadow-pink-500/20', badge: 'bg-pink-500/20 text-pink-300 border-pink-500/30' },
+    fuchsia: { border: 'border-fuchsia-500/30', text: 'text-fuchsia-400', bg: 'bg-fuchsia-500/10', glow: 'shadow-fuchsia-500/20', badge: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30' },
+    red: { border: 'border-red-500/30', text: 'text-red-400', bg: 'bg-red-500/10', glow: 'shadow-red-500/20', badge: 'bg-red-500/20 text-red-300 border-red-500/30' },
+  };
+  const accent = accentMap[product.accentColor] || accentMap.amber;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 60, scale: 0.92 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.7, delay: idx * 0.08, type: 'spring', stiffness: 90, damping: 18 }}
+      viewport={{ once: true, amount: 0.15 }}
+      className="h-full"
+    >
+      <div className={`relative glass-card rounded-2xl p-6 h-full flex flex-col group cursor-default hover:-translate-y-2 transition-all duration-500 overflow-hidden ${product.isPremium ? `hover:${accent.border} hover:shadow-lg hover:${accent.glow}` : ''}`}>
+        {/* Premium badge */}
+        {product.isPremium && (
+          <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${accent.badge}`}>
+            ★ Premium
+          </div>
+        )}
+
+        {/* Gradient orb background */}
+        <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${product.gradient} rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+
+        {/* Header */}
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className={`w-12 h-12 rounded-xl ${accent.bg} border border-white/[0.06] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300`}>
+              {product.icon}
+            </div>
+            <div>
+              <h3 className={`text-lg font-bold text-white font-space-grotesk group-hover:${accent.text} transition-colors duration-300`}>
+                {product.name}
+              </h3>
+              <span className="text-[10px] text-zinc-600 uppercase tracking-wider font-medium">{product.compatibility} • {product.version}</span>
+            </div>
+          </div>
+          <p className="text-sm text-zinc-500 leading-relaxed mb-5">{product.description}</p>
+        </div>
+
+        {/* Features */}
+        <div className="relative z-10 flex-grow">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 mb-5">
+            {product.features.slice(0, 8).map((feat, i) => (
+              <div key={i} className="flex items-center text-[11px]">
+                <svg className={`w-3 h-3 mr-1.5 flex-shrink-0 ${accent.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-zinc-400 group-hover:text-zinc-300 transition-colors truncate">{feat}</span>
+              </div>
+            ))}
+            {product.features.length > 8 && (
+              <span className={`text-[11px] ${accent.text} font-medium`}>+{product.features.length - 8} more</span>
+            )}
+          </div>
+        </div>
+
+        {/* Pricing */}
+        <div className="relative z-10 mt-auto">
+          <div className="pt-4 border-t border-white/[0.04]">
+            {/* Duration selector */}
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {product.pricing.map((p, i) => (
+                <button
+                  key={p.id}
+                  onClick={() => setSelectedPlan(i)}
+                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border ${
+                    selectedPlan === i
+                      ? `${accent.bg} ${accent.text} ${accent.border}`
+                      : 'bg-white/[0.02] text-zinc-600 border-white/[0.04] hover:border-white/[0.08] hover:text-zinc-400'
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Price display */}
+            <div className="flex items-end justify-between mb-4">
+              <div>
+                <span className="text-3xl font-black text-white font-space-grotesk">{symbol}{price}</span>
+                <span className="text-xs text-zinc-600 ml-1.5">/ {plan.label}</span>
+              </div>
+            </div>
+
+            {/* Buy button */}
+            <button
+              onClick={() => navigate('/login')}
+              className={`w-full py-3 rounded-xl text-sm font-bold tracking-wider transition-all duration-300 border ${
+                product.isPremium
+                  ? `bg-gradient-to-r from-amber-600 to-orange-600 text-white border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.25)] hover:shadow-[0_0_25px_rgba(245,158,11,0.45)] hover:scale-[1.02]`
+                  : `bg-white/[0.04] text-white border-white/[0.08] hover:bg-white/[0.08] hover:border-amber-500/20 hover:shadow-[0_0_15px_rgba(245,158,11,0.1)]`
+              }`}
+            >
+              {product.isPremium ? '⚡ GET PREMIUM' : 'GET STARTED'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const SERVICES = [
   {
     icon: '💻',
@@ -91,6 +371,8 @@ const LandingPage = () => {
     localStorage.removeItem('role');
     setUserToken(null);
   };
+
+  const [currency, setCurrency] = useState('INR');
 
   return (
     <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
@@ -350,6 +632,82 @@ const LandingPage = () => {
                   </ul>
                 </div>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== PRODUCTS SECTION ===== */}
+      <section id="products" className="relative z-10 py-28 overflow-hidden border-t border-white/[0.03]">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-amber-600/[0.04] rounded-full blur-[140px]" />
+          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-violet-600/[0.03] rounded-full blur-[120px]" />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+              whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.5 }}
+              className="inline-flex items-center gap-2 bg-white/[0.03] border border-white/[0.06] rounded-full px-5 py-2 mb-6"
+            >
+              <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Our Products</span>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 50, scale: 0.85, filter: 'blur(8px)' }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.5 }}
+              className="text-4xl md:text-6xl font-bold text-white font-space-grotesk tracking-tight"
+            >
+              Premium <span className="text-gradient-cyan">Solutions</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30, filter: 'blur(5px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.5 }}
+              className="mt-6 text-lg text-zinc-500 max-w-2xl mx-auto"
+            >
+              Choose from our professional-grade software solutions with flexible pricing.
+            </motion.p>
+
+            {/* Currency Toggle */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              viewport={{ once: true }}
+              className="mt-8 inline-flex items-center bg-white/[0.03] border border-white/[0.06] rounded-full p-1 gap-1"
+            >
+              <button
+                onClick={() => setCurrency('INR')}
+                className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-300 ${
+                  currency === 'INR'
+                    ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(245,158,11,0.3)]'
+                    : 'text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                ₹ INR
+              </button>
+              <button
+                onClick={() => setCurrency('USD')}
+                className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-300 ${
+                  currency === 'USD'
+                    ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(245,158,11,0.3)]'
+                    : 'text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                $ USD
+              </button>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {PRODUCTS.map((product, idx) => (
+              <ProductCard key={product.id} product={product} idx={idx} currency={currency} navigate={navigate} />
             ))}
           </div>
         </div>

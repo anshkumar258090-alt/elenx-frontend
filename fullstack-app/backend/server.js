@@ -69,6 +69,24 @@ const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
 const settingsRoutes = require('./routes/settings');
 const payuRoutes = require('./routes/payu');
+const Contact = require('./models/Contact');
+
+// Public Contact Form Submission (no auth required)
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, phone, subject, message } = req.body;
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ message: 'Name, email, subject and message are required.' });
+    }
+    const contact = new Contact({ name, email, phone: phone || '', subject, message });
+    await contact.save();
+    console.log(`[Contact] New message from ${name} <${email}> - Subject: ${subject}`);
+    res.status(201).json({ message: 'Message sent successfully! We will get back to you shortly.' });
+  } catch (err) {
+    console.error('Contact Form Error:', err);
+    res.status(500).json({ message: 'Failed to send message. Please try again.' });
+  }
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);

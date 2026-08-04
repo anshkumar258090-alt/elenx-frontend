@@ -1,6 +1,7 @@
 const express = require('express');
 const { adminAuth } = require('../middleware/auth');
 const User = require('../models/User');
+const Contact = require('../models/Contact');
 
 const router = express.Router();
 
@@ -216,6 +217,55 @@ router.put('/user-access/:id', adminAuth, async (req, res) => {
     res.json(savedUser);
   } catch (err) {
     console.error(`[AdminAPI] Error updating access rights for User ID ${req.params.id}:`, err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ===== CONTACT MESSAGE MANAGEMENT =====
+
+// Get All Contact Messages (sorted newest first)
+router.get('/contacts', adminAuth, async (req, res) => {
+  try {
+    const contacts = await Contact.find({}).sort({ createdAt: -1 });
+    res.json(contacts);
+  } catch (err) {
+    console.error('Fetch Contacts Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get Unread Contact Count
+router.get('/contacts/unread-count', adminAuth, async (req, res) => {
+  try {
+    const count = await Contact.countDocuments({ isRead: false });
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Mark Contact Message as Read
+router.put('/contacts/:id/read', adminAuth, async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { isRead: true },
+      { new: true }
+    );
+    if (!contact) return res.status(404).json({ message: 'Message not found' });
+    res.json({ message: 'Marked as read', contact });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Delete Contact Message
+router.delete('/contacts/:id', adminAuth, async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndDelete(req.params.id);
+    if (!contact) return res.status(404).json({ message: 'Message not found' });
+    res.json({ message: 'Message deleted successfully' });
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
