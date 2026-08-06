@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import LightRays from '../components/LightRays';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40, filter: 'blur(6px)' },
@@ -103,6 +104,21 @@ const ContactPage = () => {
     <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-orange-600/5 rounded-full blur-[150px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+
+      {/* LightRays — fixed full-page background */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0, width: '100vw', height: '100vh' }}>
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#e6b131"
+          raysSpeed={1.2}
+          lightSpread={0.6}
+          rayLength={1.5}
+          followMouse={false}
+          mouseInfluence={0.1}
+          noiseAmount={0.05}
+          distortion={0.03}
+        />
+      </div>
       
       <Navbar />
 
