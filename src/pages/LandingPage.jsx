@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import MagicRings from '../components/MagicRings';
+import LightRays from '../components/LightRays';
 import { Link, useNavigate } from 'react-router-dom';
 
 const PRODUCTS = [
@@ -379,6 +381,33 @@ const LandingPage = () => {
       {/* Ambient orbs */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-orange-600/5 rounded-full blur-[150px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+
+      {/* MagicRings — fixed full-page background */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0, width: '100vw', height: '100vh' }}>
+        <MagicRings
+          color="#e6b131"
+          colorTwo="#e9a427"
+          ringCount={6}
+          speed={1}
+          attenuation={10}
+          lineThickness={2}
+          baseRadius={0.35}
+          radiusStep={0.1}
+          scaleRate={0.1}
+          opacity={0.7}
+          blur={0}
+          noiseAmount={0.1}
+          rotation={0}
+          ringGap={1.5}
+          fadeIn={0.7}
+          fadeOut={0.5}
+          followMouse={false}
+          mouseInfluence={0.2}
+          hoverScale={1.2}
+          parallax={0.05}
+          clickBurst={false}
+        />
+      </div>
       
       <Navbar userToken={userToken} onLogout={handleLogout} />
 
@@ -572,6 +601,19 @@ const LandingPage = () => {
           <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-amber-600/[0.04] rounded-full blur-[120px]" />
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-orange-600/[0.04] rounded-full blur-[120px]" />
         </div>
+        {/* LightRays background for Services */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
+          <LightRays
+            raysOrigin="top-left"
+            raysColor="#e6b131"
+            raysSpeed={1}
+            lightSpread={0.7}
+            rayLength={1.2}
+            followMouse={false}
+            noiseAmount={0.05}
+            distortion={0.03}
+          />
+        </div>
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-20">
@@ -642,6 +684,19 @@ const LandingPage = () => {
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-amber-600/[0.04] rounded-full blur-[140px]" />
           <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-violet-600/[0.03] rounded-full blur-[120px]" />
+        </div>
+        {/* LightRays background for Products */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
+          <LightRays
+            raysOrigin="top-right"
+            raysColor="#e9a427"
+            raysSpeed={0.8}
+            lightSpread={0.5}
+            rayLength={1.3}
+            followMouse={false}
+            noiseAmount={0.04}
+            distortion={0.02}
+          />
         </div>
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
