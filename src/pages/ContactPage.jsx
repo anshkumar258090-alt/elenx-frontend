@@ -49,7 +49,7 @@ const ContactPage = () => {
   const contactInfo = [
     {
       icon: (
-        <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       ),
@@ -59,7 +59,7 @@ const ContactPage = () => {
     },
     {
       icon: (
-        <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
         </svg>
       ),
@@ -69,7 +69,7 @@ const ContactPage = () => {
     },
     {
       icon: (
-        <svg className="w-6 h-6 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-[#AEB6C2]" fill="currentColor" viewBox="0 0 24 24">
           <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
       ),
       label: 'Discord Community',
@@ -78,7 +78,7 @@ const ContactPage = () => {
     },
     {
       icon: (
-        <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
@@ -89,7 +89,7 @@ const ContactPage = () => {
     },
     {
       icon: (
-        <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
@@ -100,9 +100,9 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-orange-600/5 rounded-full blur-[150px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-[#D9DEE5]/30 selection:text-white bg-[#050608]">
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#858E9A]/[0.03] rounded-full blur-[150px] pointer-events-none translate-x-1/2 translate-y-1/2" />
       
       <Navbar />
 
@@ -115,7 +115,7 @@ const ContactPage = () => {
           <motion.h1 {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.1 }}
             className="text-5xl md:text-7xl font-black font-space-grotesk tracking-tight text-white mb-6"
           >
-            Get in <span className="text-gradient-hero">Touch</span>
+            Get in <span className="text-gradient-metal">Touch</span>
           </motion.h1>
           <motion.p {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.2 }}
             className="text-lg text-zinc-500 max-w-2xl mx-auto"
@@ -140,16 +140,16 @@ const ContactPage = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="glass-card rounded-2xl p-6 group hover:border-amber-500/20 transition-all"
+                  className="glass-card rounded-2xl p-6 group hover:border-[#AEB6C2]/15 transition-all"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500/15 transition-colors">
+                    <div className="w-12 h-12 rounded-xl bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 flex items-center justify-center flex-shrink-0 group-hover:bg-[#F5F7FA]/15 transition-colors">
                       {info.icon}
                     </div>
                     <div>
                       <span className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1">{info.label}</span>
                       {info.href ? (
-                        <a href={info.href} className="text-white font-medium hover:text-amber-400 transition-colors">
+                        <a href={info.href} className="text-white font-medium hover:text-[#AEB6C2] transition-colors">
                           {info.value}
                         </a>
                       ) : (
@@ -172,7 +172,7 @@ const ContactPage = () => {
                 <div className="w-full h-48 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-grid-pattern opacity-30" />
                   <div className="relative text-center">
-                    <svg className="w-10 h-10 text-amber-400/50 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-10 h-10 text-[#AEB6C2]/50 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -200,8 +200,8 @@ const ContactPage = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-16"
                   >
-                    <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-20 h-20 bg-[#AEB6C2]/8 border border-[#AEB6C2]/15 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <svg className="w-10 h-10 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
@@ -227,7 +227,7 @@ const ContactPage = () => {
                           onChange={handleChange}
                           required
                           placeholder="John Doe"
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-zinc-700"
+                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-[#AEB6C2]/30 transition-colors placeholder:text-zinc-700"
                         />
                       </div>
                       <div>
@@ -240,7 +240,7 @@ const ContactPage = () => {
                           onChange={handleChange}
                           required
                           placeholder="john@example.com"
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-zinc-700"
+                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-[#AEB6C2]/30 transition-colors placeholder:text-zinc-700"
                         />
                       </div>
                     </div>
@@ -254,7 +254,7 @@ const ContactPage = () => {
                           value={formData.phone}
                           onChange={handleChange}
                           placeholder="+91-XXXX-XXXXXX"
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-zinc-700"
+                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-[#AEB6C2]/30 transition-colors placeholder:text-zinc-700"
                         />
                       </div>
                       <div>
@@ -267,7 +267,7 @@ const ContactPage = () => {
                           onChange={handleChange}
                           required
                           placeholder="Project Inquiry"
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-zinc-700"
+                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-[#AEB6C2]/30 transition-colors placeholder:text-zinc-700"
                         />
                       </div>
                     </div>
@@ -281,7 +281,7 @@ const ContactPage = () => {
                         required
                         rows={5}
                         placeholder="Tell us about your project or inquiry..."
-                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-zinc-700 resize-none"
+                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-[#AEB6C2]/30 transition-colors placeholder:text-zinc-700 resize-none"
                       />
                     </div>
                     {error && (
@@ -292,7 +292,7 @@ const ContactPage = () => {
                     <button
                       type="submit"
                       disabled={sending}
-                      className="w-full py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all text-sm tracking-wider uppercase disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] hover:bg-[#F5F7FA] text-white font-bold rounded-xl shadow-[0_0_20px_rgba(174,182,194,0.15)] hover:shadow-[0_0_30px_rgba(174,182,194,0.25)] transition-all text-sm tracking-wider uppercase disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       {sending ? (
                         <>

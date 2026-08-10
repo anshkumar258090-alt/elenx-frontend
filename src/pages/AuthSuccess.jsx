@@ -48,7 +48,7 @@ const AuthSuccess = () => {
   }, [location, navigate, loginAdmin, loginClient]);
 
  return (
- <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f172a] px-4 text-center">
+ <div className="min-h-screen flex flex-col items-center justify-center bg-[#050608] px-4 text-center">
  {errorMSG ? (
  <div className="glass-panel p-8 rounded-3xl border border-red-500/30 flex flex-col items-center shadow-lg animate-in fade-in zoom-in duration-300">
  <div className="rounded-full h-16 w-16 bg-red-900/40 border border-red-200 mb-6 flex items-center justify-center text-red-500 text-3xl font-bold shadow-sm">
@@ -61,8 +61,8 @@ const AuthSuccess = () => {
  ) : (
  <div className="glass-panel p-10 rounded-3xl border border-white/10 flex flex-col items-center shadow-xl animate-in fade-in duration-500">
  <div className="relative mb-8 mt-4">
- <div className="absolute inset-0 rounded-full blur-md bg-amber-500/20 animate-pulse"></div>
- <div className="relative animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-amber-400 shadow-[0_0_15px_rgba(37,99,235,0.2)]"></div>
+ <div className="absolute inset-0 rounded-full blur-md bg-[#D9DEE5]/20 animate-pulse"></div>
+ <div className="relative animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#AEB6C2] shadow-[0_0_15px_rgba(37,99,235,0.2)]"></div>
  </div>
  <h2 className="text-2xl font-black tracking-wide text-white mb-3">Authenticating</h2>
  <p className="text-zinc-400 font-medium">Please wait while we securely set up your session...</p>

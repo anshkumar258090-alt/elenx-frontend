@@ -80,8 +80,8 @@ Local storage data can be managed through your browser's developer tools or sett
   ];
 
   return (
-    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-[#D9DEE5]/30 selection:text-white bg-[#050608]">
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
       <Navbar />
 
       <section className="relative z-10 pt-32 pb-20 px-4">
@@ -96,7 +96,7 @@ Local storage data can be managed through your browser's developer tools or sett
               <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Legal</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black font-space-grotesk tracking-tight text-white mb-4">
-              Cookie <span className="text-gradient-hero">Policy</span>
+              Cookie <span className="text-gradient-metal">Policy</span>
             </h1>
             <p className="text-zinc-500">Last Updated: August 2026</p>
           </motion.div>

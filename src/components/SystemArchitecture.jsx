@@ -72,7 +72,7 @@ const SystemArchitecture = () => {
  <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
  {/* Subtle Gradient Glow */}
- <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl bg-gradient-radial from-amber-500/10 via-transparent to-transparent opacity-50 pointer-events-none blur-3xl"></div>
+ <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl bg-gradient-radial from-[#AEB6C2]/8 via-transparent to-transparent opacity-50 pointer-events-none blur-3xl"></div>
 
  <motion.div
  className="max-w-6xl mx-auto px-6 relative z-10"
@@ -84,7 +84,7 @@ const SystemArchitecture = () => {
  {/* Header */}
  <motion.div variants={itemVariants} className="text-center mb-16">
  <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-zinc-900 ">
- <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-amber-600 dark:from-amber-400 drop-shadow-sm">
+ <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#AEB6C2] to-[#AEB6C2] dark:from-[#AEB6C2] drop-shadow-sm">
  System Architecture
  </span>
  </h2>
@@ -112,21 +112,21 @@ const SystemArchitecture = () => {
  whileHover="hover"
  >
  {/* Inner Glow Effect */}
- <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+ <div className="absolute inset-0 bg-gradient-to-b from-[#AEB6C2]/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
  <motion.div
  className="mb-6 inline-flex p-3 rounded-lg 
  bg-[#1e293b] /50 
  border border-zinc-100 dark:border-white/5 
- text-amber-600 
+ text-[#AEB6C2] 
  shadow-sm 
- group-hover:text-white group-hover:bg-amber-500/20 transition-colors duration-300"
+ group-hover:text-white group-hover:bg-[#F5F7FA]/20 transition-colors duration-300"
  variants={iconVariants}
  >
  <feature.icon size={32} strokeWidth={1.5} />
  </motion.div>
 
- <h3 className="text-xl font-bold text-zinc-900 mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-200 transition-colors duration-300">
+ <h3 className="text-xl font-bold text-zinc-900 mb-3 group-hover:text-[#AEB6C2] dark:group-hover:text-[#F5F7FA] transition-colors duration-300">
  {feature.title}
  </h3>
 

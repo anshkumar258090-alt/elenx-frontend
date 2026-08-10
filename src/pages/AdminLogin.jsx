@@ -77,11 +77,11 @@ const AdminLogin = () => {
   };
 
  return (
- <div className="min-h-screen flex items-center justify-center bg-[#0f172a] relative overflow-hidden font-inter text-zinc-200">
+ <div className="min-h-screen flex items-center justify-center bg-[#050608] relative overflow-hidden font-inter text-zinc-200">
  <ParticleBackground />
 
   {/* Animated Glow Orbs */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
 
  {/* Container */}
  <div className="relative z-10 w-full max-w-md p-8 sm:p-10">
@@ -149,7 +149,7 @@ const AdminLogin = () => {
  <button
  type="submit"
  disabled={isLoading}
- className={`w-full flex items-center justify-center py-3.5 px-4 bg-amber-500 text-zinc-950 hover:bg-amber-400 gold-glow font-bold rounded-xl shadow-lg shadow-black/20 transform hover:-translate-y-0.5 transition-all duration-300 group ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+ className={`w-full flex items-center justify-center py-3.5 px-4 bg-[#D9DEE5] text-zinc-950 hover:bg-[#AEB6C2] gold-glow font-bold rounded-xl shadow-lg shadow-black/20 transform hover:-translate-y-0.5 transition-all duration-300 group ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
  >
  <span>{isLoading ? "Authenticating..." : "Authenticate"}</span>
  </button>

@@ -36,7 +36,7 @@ const Dashboard = () => {
  <p><strong>Email:</strong> {user.email}</p>
  <p><strong>License Status:</strong> {user.license_status}</p>
  <p>{user.license_status === 'PENDING' ? 'Waiting for admin approval' : user.license_status === 'ACTIVE' ? 'License active' : 'License blocked'}</p>
- <button onClick={handleDownload} className="mt-4 bg-amber-500 text-white p-2 mr-4">Download EXE</button>
+ <button onClick={handleDownload} className="mt-4 bg-[#D9DEE5] text-white p-2 mr-4">Download EXE</button>
  <button onClick={handleLogout} className="mt-4 bg-red-500 text-white p-2">Logout</button>
  </div>
  </div>

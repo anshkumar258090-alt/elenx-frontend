@@ -65,38 +65,38 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] relative overflow-hidden font-inter text-zinc-200 selection:bg-amber-500/30 selection:text-white">
+    <div className="min-h-screen flex items-center justify-center bg-[#050608] relative overflow-hidden font-inter text-zinc-200 selection:bg-[#D9DEE5]/30 selection:text-white">
       <ParticleBackground />
 
       {/* Cyber Grid Background Accent */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(245, 158, 11,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(245, 158, 11,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(174, 182, 194,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(174, 182, 194,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none z-0"></div>
 
       {/* Ethereal Glow Orbs matching storefront theme */}
-      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-amber-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-amber-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D9DEE5]/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
 
       {/* Container */}
       <div className="relative z-10 w-full max-w-md p-6 sm:p-8">
 
         {/* Futuristic Cyber-Security Card */}
-        <div className="glass-panel-futuristic p-8 rounded-3xl border border-amber-500/15 hover:border-amber-500/30 shadow-[0_0_50px_rgba(245, 158, 11,0.08)] hover:shadow-[0_0_60px_rgba(245, 158, 11,0.18)] transition-all duration-500 relative z-10 overflow-hidden">
+        <div className="glass-panel-futuristic p-8 rounded-3xl border border-[#AEB6C2]/12 hover:border-[#AEB6C2]/20 shadow-[0_0_50px_rgba(174, 182, 194,0.08)] hover:shadow-[0_0_60px_rgba(174, 182, 194,0.18)] transition-all duration-500 relative z-10 overflow-hidden">
           
           {/* Glowing Top Scanner Laser Line */}
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent shadow-[0_0_8px_rgba(245, 158, 11,1)] z-10 pointer-events-none"></div>
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#AEB6C2] to-transparent shadow-[0_0_8px_rgba(174, 182, 194,1)] z-10 pointer-events-none"></div>
 
           {/* HUD Corner Accents for Premium Cyberpunk Look */}
-          <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-amber-500/40 rounded-tl-lg pointer-events-none"></div>
-          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-amber-500/40 rounded-tr-lg pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-amber-500/40 rounded-bl-lg pointer-events-none"></div>
-          <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-amber-500/40 rounded-br-lg pointer-events-none"></div>
+          <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-[#AEB6C2]/40 rounded-tl-lg pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#AEB6C2]/40 rounded-tr-lg pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-[#AEB6C2]/40 rounded-bl-lg pointer-events-none"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#AEB6C2]/40 rounded-br-lg pointer-events-none"></div>
 
           {/* Header */}
           <div className="text-center mb-8 relative">
-            <h1 className="text-3xl font-extrabold font-space-grotesk tracking-wider mb-2 text-white bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-amber-400">
-              ELEN<span className="text-amber-400">X</span>
+            <h1 className="text-3xl font-extrabold font-space-grotesk tracking-wider mb-2 text-white bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-[#D9DEE5]">
+              ELEN<span className="text-[#AEB6C2]">X</span>
             </h1>
-            <p className="text-xs font-bold text-amber-400/80 uppercase tracking-[0.25em] font-mono">
+            <p className="text-xs font-bold text-[#AEB6C2]/80 uppercase tracking-[0.25em] font-mono">
               CLIENT SECURE GATEWAY
             </p>
           </div>
@@ -112,12 +112,12 @@ const Login = () => {
 
             {/* Email Input */}
             <div className="space-y-1.5 group">
-              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-amber-400 transition-colors uppercase tracking-wider font-mono">
+              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-[#AEB6C2] transition-colors uppercase tracking-wider font-mono">
                 System Ident (Email)
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <Mail className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-amber-400 transition-colors duration-300" />
+                  <Mail className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-[#AEB6C2] transition-colors duration-300" />
                 </div>
                 <input
                   type="email"
@@ -125,19 +125,19 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-amber-500/60 focus:bg-[#0f172a]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(245, 158, 11,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-medium"
+                  className="w-full pl-10 pr-4 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-[#AEB6C2]/60 focus:bg-[#050608]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(174, 182, 194,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-medium"
                 />
               </div>
             </div>
 
             {/* Password Input */}
             <div className="space-y-1.5 group">
-              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-amber-400 transition-colors uppercase tracking-wider font-mono">
+              <label className="text-[10px] font-bold text-zinc-500 group-focus-within:text-[#AEB6C2] transition-colors uppercase tracking-wider font-mono">
                 Access Code (Password)
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <Lock className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-amber-400 transition-colors duration-300" />
+                  <Lock className="h-4.5 w-4.5 text-zinc-600 group-focus-within:text-[#AEB6C2] transition-colors duration-300" />
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
@@ -145,12 +145,12 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-10 pr-10 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-amber-500/60 focus:bg-[#0f172a]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(245, 158, 11,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-mono font-medium"
+                  className="w-full pl-10 pr-10 py-3 bg-black/40 border border-zinc-800/80 rounded-xl focus:border-[#AEB6C2]/60 focus:bg-[#050608]/80 focus:outline-none focus:shadow-[0_0_15px_rgba(174, 182, 194,0.15)] placeholder-zinc-700 text-zinc-200 text-sm transition-all duration-300 font-mono font-medium"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-600 hover:text-amber-400 focus:outline-none transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-600 hover:text-[#AEB6C2] focus:outline-none transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
                 </button>
@@ -167,12 +167,12 @@ const Login = () => {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="sr-only"
                   />
-                  <div className={`block w-8 h-4.5 rounded-full border transition-colors duration-300 ${rememberMe ? 'bg-amber-500/20 border-amber-500/40' : 'bg-black/60 border-zinc-800'}`}></div>
-                  <div className={`absolute left-0.5 top-0.5 bg-zinc-600 w-3.5 h-3.5 rounded-full transition-transform duration-300 ${rememberMe ? 'transform translate-x-3.5 bg-amber-400 shadow-[0_0_8px_rgba(245, 158, 11,0.6)]' : ''}`}></div>
+                  <div className={`block w-8 h-4.5 rounded-full border transition-colors duration-300 ${rememberMe ? 'bg-[#D9DEE5]/20 border-[#AEB6C2]/40' : 'bg-black/60 border-zinc-800'}`}></div>
+                  <div className={`absolute left-0.5 top-0.5 bg-zinc-600 w-3.5 h-3.5 rounded-full transition-transform duration-300 ${rememberMe ? 'transform translate-x-3.5 bg-[#AEB6C2] shadow-[0_0_8px_rgba(174, 182, 194,0.6)]' : ''}`}></div>
                 </div>
                 <span className="ml-2 text-zinc-500 group-hover:text-zinc-300 transition-colors font-medium">Keep Sync Active</span>
               </label>
-              <a href="#" className="text-zinc-500 hover:text-amber-400 hover:drop-shadow-[0_0_3px_rgba(245, 158, 11,0.4)] transition-all font-medium">
+              <a href="#" className="text-zinc-500 hover:text-[#AEB6C2] hover:drop-shadow-[0_0_3px_rgba(174, 182, 194,0.4)] transition-all font-medium">
                 Reset Keys
               </a>
             </div>
@@ -181,7 +181,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full relative overflow-hidden flex items-center justify-center py-3.5 px-4 bg-amber-500 text-zinc-950 hover:bg-amber-400 font-extrabold rounded-xl shadow-lg shadow-black/20 hover:shadow-[0_0_25px_rgba(245, 158, 11,0.45)] transform hover:-translate-y-0.5 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full relative overflow-hidden flex items-center justify-center py-3.5 px-4 bg-[#D9DEE5] text-zinc-950 hover:bg-[#AEB6C2] font-extrabold rounded-xl shadow-lg shadow-black/20 hover:shadow-[0_0_25px_rgba(174, 182, 194,0.45)] transform hover:-translate-y-0.5 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {/* Sliding shine hover overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out pointer-events-none" />
@@ -213,7 +213,7 @@ const Login = () => {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center py-2 px-4 bg-black/40 hover:bg-[#1e293b]/60 border border-zinc-800/80 hover:border-amber-500/20 text-zinc-400 hover:text-white font-mono uppercase text-[10px] tracking-wider rounded-xl shadow-md hover:shadow-[0_0_15px_rgba(245, 158, 11,0.08)] transform hover:-translate-y-0.5 transition-all duration-300 group"
+              className="w-full flex items-center justify-center py-2 px-4 bg-black/40 hover:bg-[#1e293b]/60 border border-zinc-800/80 hover:border-[#AEB6C2]/15 text-zinc-400 hover:text-white font-mono uppercase text-[10px] tracking-wider rounded-xl shadow-md hover:shadow-[0_0_15px_rgba(174, 182, 194,0.08)] transform hover:-translate-y-0.5 transition-all duration-300 group"
             >
               <svg className="w-3.5 h-3.5 mr-2 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -227,7 +227,7 @@ const Login = () => {
             {/* Register Link */}
             <div className="text-center text-xs text-zinc-600 mt-6 font-mono font-medium">
               NO CURRENT IDENT?{' '}
-              <Link to="/register" className="font-bold text-zinc-400 hover:text-amber-400 transition-colors uppercase ml-1">
+              <Link to="/register" className="font-bold text-zinc-400 hover:text-[#AEB6C2] transition-colors uppercase ml-1">
                 CREATE ACCESS
               </Link>
             </div>

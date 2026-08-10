@@ -81,8 +81,8 @@ const ClientManager = () => {
 
  const getAccessBadge = (type) => {
  switch (type) {
- case 'internal': return <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold rounded uppercase flex items-center gap-1"><Shield size={12} /> Internal</span>;
- case 'external': return <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold rounded uppercase flex items-center gap-1"><FileCode size={12} /> External</span>;
+ case 'internal': return <span className="px-2 py-1 bg-[#D9DEE5]/20 text-[#AEB6C2] text-xs font-bold rounded uppercase flex items-center gap-1"><Shield size={12} /> Internal</span>;
+ case 'external': return <span className="px-2 py-1 bg-[#D9DEE5]/20 text-[#AEB6C2] text-xs font-bold rounded uppercase flex items-center gap-1"><FileCode size={12} /> External</span>;
  case 'bypass': return <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-bold rounded uppercase flex items-center gap-1"><Zap size={12} /> Bypass</span>;
  default: return <span className="px-2 py-1 bg-zinc-500/20 text-zinc-500 text-xs font-bold rounded uppercase">Unknown</span>;
  }
@@ -97,7 +97,7 @@ const ClientManager = () => {
  className="glass-panel p-8 rounded-[2rem] border border-white/5 shadow-2xl bg-[#1e293b]/60 backdrop-blur-md"
  >
  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
- <UserPlus className="text-amber-500" /> Create New User
+ <UserPlus className="text-[#AEB6C2]" /> Create New User
  </h3>
  <form onSubmit={handleCreateClient} className="space-y-4">
  <div>
@@ -109,7 +109,7 @@ const ClientManager = () => {
  type="button"
  onClick={() => setNewClient({ ...newClient, accessType: type })}
  className={`py-3 px-4 rounded-xl border transition-all text-sm font-bold uppercase ${newClient.accessType === type
- ? 'bg-amber-600 border-amber-500 text-white shadow-lg shadow-amber-500/30'
+ ? 'bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] border-[#AEB6C2] text-white shadow-lg shadow-[#AEB6C2]/30'
  : 'bg-white/5 border-white/10 text-zinc-500 hover:bg-white/10'
  }`}
  >
@@ -125,7 +125,7 @@ const ClientManager = () => {
  placeholder="Username"
  value={newClient.username}
  onChange={(e) => setNewClient({ ...newClient, username: e.target.value })}
- className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 text-white placeholder-gray-500 transition-all"
+ className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] text-white placeholder-gray-500 transition-all"
  required
  />
  <input
@@ -133,11 +133,11 @@ const ClientManager = () => {
  placeholder="Password"
  value={newClient.password}
  onChange={(e) => setNewClient({ ...newClient, password: e.target.value })}
- className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 text-white placeholder-gray-500 transition-all"
+ className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] text-white placeholder-gray-500 transition-all"
  required
  />
  </div>
- <button type="submit" className="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-amber-500/30 transition-all">
+ <button type="submit" className="w-full py-3 bg-gradient-to-r from-[#AEB6C2] to-[#D9DEE5] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#AEB6C2]/30 transition-all">
  Generate User
  </button>
  </form>
@@ -151,7 +151,7 @@ const ClientManager = () => {
  className="glass-panel p-8 rounded-[2rem] border border-white/5 shadow-2xl bg-[#1e293b]/60 backdrop-blur-md"
  >
  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
- <Users className="text-amber-500" /> Manage User Pass
+ <Users className="text-[#AEB6C2]" /> Manage User Pass
  </h3>
  <div className="overflow-x-auto">
  <table className="w-full text-left">
@@ -183,7 +183,7 @@ const ClientManager = () => {
  <div className="flex items-center justify-end gap-2">
  <button
  onClick={() => setEditingUser({ ...client, password: '' })} // Clear password for edit
- className="p-2 bg-amber-500/10 text-amber-400 rounded-lg hover:bg-amber-500/20 transition-all"
+ className="p-2 bg-[#D9DEE5]/10 text-[#AEB6C2] rounded-lg hover:bg-[#F5F7FA]/20 transition-all"
  title="Edit User"
  >
  <Edit size={16} />
@@ -222,7 +222,7 @@ const ClientManager = () => {
  initial={{ scale: 0.9, opacity: 0 }}
  animate={{ scale: 1, opacity: 1 }}
  exit={{ scale: 0.9, opacity: 0 }}
- className="bg-[#0f172a] border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-2xl relative"
+ className="bg-[#050608] border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-2xl relative"
  >
  <button
  onClick={() => setEditingUser(null)}
@@ -231,7 +231,7 @@ const ClientManager = () => {
  <X size={20} />
  </button>
  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
- <Edit className="text-amber-500" /> Edit User
+ <Edit className="text-[#AEB6C2]" /> Edit User
  </h3>
  <form onSubmit={handleUpdateUser} className="space-y-4">
  <div>
@@ -239,7 +239,7 @@ const ClientManager = () => {
  <select
  value={editingUser.accessType || 'internal'}
  onChange={(e) => setEditingUser({ ...editingUser, accessType: e.target.value })}
- className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 text-white"
+ className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] text-white"
  >
  <option value="internal">Internal Client</option>
  <option value="external">External Client</option>
@@ -252,7 +252,7 @@ const ClientManager = () => {
  type="text"
  value={editingUser.username}
  onChange={(e) => setEditingUser({ ...editingUser, username: e.target.value })}
- className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 text-white"
+ className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] text-white"
  />
  </div>
  <div>
@@ -262,7 +262,7 @@ const ClientManager = () => {
  value={editingUser.password}
  onChange={(e) => setEditingUser({ ...editingUser, password: e.target.value })}
  placeholder="Enter new password"
- className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 text-white"
+ className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] text-white"
  />
  </div>
  <div className="pt-4 flex gap-3">
@@ -275,7 +275,7 @@ const ClientManager = () => {
  </button>
  <button
  type="submit"
- className="flex-1 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-500 transition-all flex items-center justify-center gap-2"
+ className="flex-1 py-3 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] text-[#050608] font-bold rounded-xl hover:bg-[#F5F7FA] transition-all flex items-center justify-center gap-2"
  >
  <Save size={18} /> Save Changes
  </button>

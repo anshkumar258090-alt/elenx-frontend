@@ -86,8 +86,8 @@ Our support team is available to resolve delivery issues promptly.`
   ];
 
   return (
-    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-[#D9DEE5]/30 selection:text-white bg-[#050608]">
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
       <Navbar />
 
       <section className="relative z-10 pt-32 pb-20 px-4">
@@ -102,7 +102,7 @@ Our support team is available to resolve delivery issues promptly.`
               <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Legal</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black font-space-grotesk tracking-tight text-white mb-4">
-              Shipping & <span className="text-gradient-hero">Delivery</span>
+              Shipping & <span className="text-gradient-metal">Delivery</span>
             </h1>
             <p className="text-zinc-500">Last Updated: August 2026</p>
           </motion.div>
@@ -113,8 +113,8 @@ Our support team is available to resolve delivery issues promptly.`
             transition={{ duration: 0.6, delay: 0.2 }}
             className="glass-card rounded-3xl p-8 md:p-12 space-y-10"
           >
-            <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-              <p className="text-amber-300 text-sm font-medium">
+            <div className="p-4 bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 rounded-xl">
+              <p className="text-[#D9DEE5] text-sm font-medium">
                 📦 Elenx is a digital-first IT services company. All products and services are delivered electronically. 
                 No physical shipping is involved.
               </p>

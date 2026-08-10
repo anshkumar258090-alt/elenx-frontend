@@ -69,7 +69,7 @@ const ParticleBackground = () => {
  }
 
  draw() {
- ctx.fillStyle = 'rgba(245, 158, 11, 0.15)'; // zinc-400
+ ctx.fillStyle = 'rgba(174, 182, 194, 0.15)'; // zinc-400
  ctx.beginPath();
  ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
  ctx.fill();

@@ -349,17 +349,17 @@ const AdminDashboard = () => {
       onClick={() => { setActiveTab(id); setIsSidebarOpen(false); }}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group
                 ${activeTab === id
-          ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30 shadow-[0_0_15px_rgba(245, 158, 11,0.2)]'
+          ? 'bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/20 text-[#AEB6C2] border border-[#AEB6C2]/20 shadow-[0_0_15px_rgba(174, 182, 194,0.2)]'
           : 'text-gray-400 hover:bg-white/5 hover:text-white'
         }`}
     >
-      <Icon size={20} className={`transition-colors ${activeTab === id ? 'text-amber-400' : 'text-gray-500 group-hover:text-white'}`} />
+      <Icon size={20} className={`transition-colors ${activeTab === id ? 'text-[#AEB6C2]' : 'text-gray-500 group-hover:text-white'}`} />
       <span className="font-medium">{label}</span>
       {badge > 0 && (
-        <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center px-1.5 text-[10px] font-bold rounded-full bg-amber-500 text-zinc-950">{badge}</span>
+        <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center px-1.5 text-[10px] font-bold rounded-full bg-[#D9DEE5] text-zinc-950">{badge}</span>
       )}
       {activeTab === id && !badge && (
-        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_currentColor]" />
+        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#AEB6C2] shadow-[0_0_8px_currentColor]" />
       )}
     </button>
   );
@@ -382,7 +382,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex h-screen bg-[#0a0a0c] text-white font-inter overflow-hidden relative">
       {/* Ambient Dashboard Orbs */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-600/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
       
       {/* Background */}
       <div className="absolute inset-0 z-0">
@@ -393,7 +393,7 @@ const AdminDashboard = () => {
       {isSidebarOpen && (
         <div 
           onClick={() => setIsSidebarOpen(false)} 
-          className="fixed inset-0 z-40 bg-[#0f172a]/80 backdrop-blur-sm lg:hidden transition-all duration-300"
+          className="fixed inset-0 z-40 bg-[#050608]/80 backdrop-blur-sm lg:hidden transition-all duration-300"
         />
       )}
 
@@ -406,12 +406,12 @@ const AdminDashboard = () => {
         {/* Logo Area */}
         <div className="p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-600 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#AEB6C2] to-[#AEB6C2] flex items-center justify-center shadow-lg shadow-[#AEB6C2]/20">
               <Shield className="text-white" size={20} />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-wide">Elenx</h1>
-              <p className="text-xs text-amber-400 font-medium tracking-wider">ADMIN OS v2.0</p>
+              <p className="text-xs text-[#AEB6C2] font-medium tracking-wider">ADMIN OS v2.0</p>
             </div>
           </div>
         </div>
@@ -466,9 +466,9 @@ const AdminDashboard = () => {
           <div className="flex items-center gap-4">
             <div className="relative">
               <Bell className="text-gray-400 hover:text-white transition-colors cursor-pointer" size={20} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full"></span>
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#D9DEE5] rounded-full"></span>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-amber-500 border-2 border-white/10 shadow-lg"></div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#D9DEE5] to-[#D9DEE5] border-2 border-white/10 shadow-lg"></div>
           </div>
         </header>
 
@@ -484,21 +484,21 @@ const AdminDashboard = () => {
                   title="Web Users"
                   value={stats.webUsers}
                   icon={Users}
-                  color="text-amber-400"
+                  color="text-[#AEB6C2]"
                   subtext="Registered admins & resellers"
                 />
                 <StatsCard
                   title="System Status"
                   value={stats.systemStatus}
                   icon={Activity}
-                  color="text-amber-400"
+                  color="text-[#AEB6C2]"
                   subtext="All systems operational"
                 />
                 <StatsCard
                   title="Active Clients"
                   value={stats.totalClients}
                   icon={Users}
-                  color="text-amber-400"
+                  color="text-[#AEB6C2]"
                   subtext="Registered clients"
                 />
               </div>
@@ -535,7 +535,7 @@ const AdminDashboard = () => {
                   <input
                     type="text"
                     placeholder="Search users..."
-                    className="w-full bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-amber-500/50 transition-colors text-sm"
+                    className="w-full bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-[#AEB6C2]/30 transition-colors text-sm"
                   />
                 </div>
                 <button onClick={fetchUsers} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors border border-white/5">
@@ -572,8 +572,8 @@ const AdminDashboard = () => {
                             <td className="p-4 font-medium text-white">{user.username}</td>
                             <td className="p-4">
                               <span className={`px-2 py-1 rounded-md text-xs font-bold uppercase
-                                                                ${user.role === 'admin' ? 'bg-amber-500/20 text-amber-200 border border-amber-500/30' :
-                                  user.role === 'user' ? 'bg-amber-500/20 text-amber-200 border border-amber-500/30' :
+                                                                ${user.role === 'admin' ? 'bg-[#D9DEE5]/20 text-[#F5F7FA] border border-[#AEB6C2]/20' :
+                                  user.role === 'user' ? 'bg-[#D9DEE5]/20 text-[#F5F7FA] border border-[#AEB6C2]/20' :
                                     'bg-gray-700/50 text-gray-400 border border-gray-600/30'}`}>
                                 {user.role}
                               </span>
@@ -581,7 +581,7 @@ const AdminDashboard = () => {
                             <td className="p-4 text-sm text-gray-400 capitalize">{user.accessType || '-'}</td>
                             <td className="p-4">
                               <div className="flex items-center gap-2">
-                                <div className={`w-2 h-2 rounded-full ${user.license_status === 'ACTIVE' ? 'bg-amber-500 shadow-[0_0_8px_rgba(245, 158, 11,0.5)]' : 'bg-red-500'}`} />
+                                <div className={`w-2 h-2 rounded-full ${user.license_status === 'ACTIVE' ? 'bg-[#D9DEE5] shadow-[0_0_8px_rgba(174, 182, 194,0.5)]' : 'bg-red-500'}`} />
                                 <span className="text-sm">{user.license_status || 'Pending'}</span>
                               </div>
                             </td>
@@ -589,7 +589,7 @@ const AdminDashboard = () => {
                               <div className="flex justify-end gap-2">
                                 <button
                                   onClick={() => handleManageUser(user._id)}
-                                  className="p-2 text-gray-500 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                  className="p-2 text-gray-500 hover:text-[#AEB6C2] hover:bg-[#F5F7FA]/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                                   title="Manage User"
                                 >
                                   <Settings2 size={16} />
@@ -619,8 +619,8 @@ const AdminDashboard = () => {
 
               <div className="glass-panel border border-white/10 rounded-3xl bg-[#0f0f13]/80 p-8">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="p-3 bg-amber-500/10 rounded-xl">
-                    <CreditCard className="text-amber-400" size={24} />
+                  <div className="p-3 bg-[#D9DEE5]/10 rounded-xl">
+                    <CreditCard className="text-[#AEB6C2]" size={24} />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold">Global Payment Configuration</h3>
@@ -640,7 +640,7 @@ const AdminDashboard = () => {
                           value={settingsUpiId}
                           onChange={(e) => setSettingsUpiId(e.target.value)}
                           placeholder="e.g. yourname@ybl"
-                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors placeholder:text-gray-600 font-mono"
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#AEB6C2]/30 transition-colors placeholder:text-gray-600 font-mono"
                           required
                         />
                       </div>
@@ -655,11 +655,11 @@ const AdminDashboard = () => {
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                           />
                           <div className="p-6 flex flex-col items-center justify-center text-center">
-                            <UploadCloud className="text-gray-500 group-hover:text-amber-400 transition-colors mb-2" size={24} />
+                            <UploadCloud className="text-gray-500 group-hover:text-[#AEB6C2] transition-colors mb-2" size={24} />
                             <p className="text-sm text-gray-300 font-medium">Click to browse or drag & drop</p>
                             <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 10MB</p>
                             {settingsQrImage && (
-                              <p className="mt-3 text-sm text-amber-400 font-bold bg-amber-500/10 px-3 py-1 rounded-lg">Selected: {settingsQrImage.name}</p>
+                              <p className="mt-3 text-sm text-[#AEB6C2] font-bold bg-[#D9DEE5]/10 px-3 py-1 rounded-lg">Selected: {settingsQrImage.name}</p>
                             )}
                           </div>
                         </div>
@@ -676,7 +676,7 @@ const AdminDashboard = () => {
                         </div>
                       ) : currentQrUrl ? (
                         <div className="relative group z-10">
-                          <div className="absolute inset-0 bg-amber-500/20 blur-xl rounded-full" />
+                          <div className="absolute inset-0 bg-[#D9DEE5]/20 blur-xl rounded-full" />
                           <img
                             src={`${import.meta.env.VITE_API_URL}${currentQrUrl}`}
                             alt="Current QR Code"
@@ -690,8 +690,8 @@ const AdminDashboard = () => {
                       )}
 
                       {/* Decorative bg elements */}
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl -z-0 translate-x-1/2 -translate-y-1/2" />
-                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl -z-0 -translate-x-1/2 translate-y-1/2" />
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#D9DEE5]/10 rounded-full blur-3xl -z-0 translate-x-1/2 -translate-y-1/2" />
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#D9DEE5]/10 rounded-full blur-3xl -z-0 -translate-x-1/2 translate-y-1/2" />
                     </div>
 
                   </div>
@@ -700,7 +700,7 @@ const AdminDashboard = () => {
                     <button
                       type="submit"
                       disabled={savingPaymentSettings}
-                      className="px-8 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-8 py-3 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] hover:bg-[#F5F7FA] text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {savingPaymentSettings ? 'Saving Configuration...' : 'Save Payment Configuration'}
                     </button>
@@ -748,7 +748,7 @@ const AdminDashboard = () => {
                       key={msg._id}
                       className={`glass-panel rounded-2xl border transition-all duration-300 overflow-hidden ${
                         !msg.isRead
-                          ? 'border-amber-500/30 bg-amber-500/[0.03] shadow-[0_0_15px_rgba(245,158,11,0.05)]'
+                          ? 'border-[#AEB6C2]/20 bg-[#D9DEE5]/[0.03] shadow-[0_0_15px_rgba(174,182,194,0.05)]'
                           : 'border-white/10 bg-white/[0.02]'
                       }`}
                     >
@@ -761,7 +761,7 @@ const AdminDashboard = () => {
                           <div className="flex items-start gap-4 flex-1 min-w-0">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold ${
                               !msg.isRead
-                                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                ? 'bg-[#D9DEE5]/20 text-[#AEB6C2] border border-[#AEB6C2]/20'
                                 : 'bg-white/5 text-zinc-500 border border-white/10'
                             }`}>
                               {msg.name.charAt(0).toUpperCase()}
@@ -770,7 +770,7 @@ const AdminDashboard = () => {
                               <div className="flex items-center gap-2 mb-1">
                                 <span className="font-bold text-white text-sm">{msg.name}</span>
                                 {!msg.isRead && (
-                                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0" />
+                                  <span className="w-2 h-2 rounded-full bg-[#AEB6C2] animate-pulse flex-shrink-0" />
                                 )}
                               </div>
                               <p className="text-xs text-zinc-500 truncate">{msg.email}{msg.phone ? ` • ${msg.phone}` : ''}</p>
@@ -798,7 +798,7 @@ const AdminDashboard = () => {
                             {!msg.isRead && (
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleMarkAsRead(msg._id); }}
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg text-xs font-bold hover:bg-amber-500/20 transition-all"
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 text-[#AEB6C2] rounded-lg text-xs font-bold hover:bg-[#F5F7FA]/20 transition-all"
                               >
                                 <Eye size={12} /> Mark Read
                               </button>
@@ -853,7 +853,7 @@ const AdminDashboard = () => {
                   {/* Section 1: 🌐 Website Login Data */}
                   <div className="space-y-4">
                     <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      <Shield size={16} className="text-amber-400" />
+                      <Shield size={16} className="text-[#AEB6C2]" />
                       Section 1: 🌐 Website Login Data
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -867,7 +867,7 @@ const AdminDashboard = () => {
                       </div>
                       <div className="p-4 rounded-xl bg-[#1e293b]/50 border border-zinc-700/50 md:col-span-2">
                         <p className="text-xs text-zinc-500 mb-1">Password</p>
-                        <p className="font-mono text-xs text-amber-400/80 break-all">{userDetails?.webUser?.password || 'N/A'}</p>
+                        <p className="font-mono text-xs text-[#AEB6C2]/80 break-all">{userDetails?.webUser?.password || 'N/A'}</p>
                       </div>
                     </div>
                   </div>
@@ -877,7 +877,7 @@ const AdminDashboard = () => {
                   {/* Section 2: 🎮 Panel / Product Credentials */}
                   <div className="space-y-4">
                     <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      <Server size={16} className="text-amber-400" />
+                      <Server size={16} className="text-[#AEB6C2]" />
                       Section 2: 🎮 Panel / Product Credentials
                     </h4>
                     <div className="border border-zinc-700/50 rounded-xl bg-[#1e293b]/30 overflow-hidden">
@@ -895,9 +895,9 @@ const AdminDashboard = () => {
                             <tr key={client._id} className="hover:bg-white/5 transition-colors">
                               <td className="p-3">
                                 <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase border
-                                  ${client.accessType === 'internal' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                                    client.accessType === 'external' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                                      'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                                  ${client.accessType === 'internal' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border-[#AEB6C2]/15' :
+                                    client.accessType === 'external' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border-[#AEB6C2]/15' :
+                                      'bg-[#D9DEE5]/10 text-[#AEB6C2] border-[#AEB6C2]/15'}`}>
                                   {client.accessType}
                                 </span>
                               </td>
@@ -905,7 +905,7 @@ const AdminDashboard = () => {
                               <td className="p-3 font-mono text-xs text-zinc-400">{client.password}</td>
                               <td className="p-3">
                                 <div className="flex items-center gap-2">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${client.license_status === 'ACTIVE' || client.status === 'active' ? 'bg-amber-500 shadow-[0_0_8px_rgba(245, 158, 11,0.5)]' : 'bg-red-500'}`} />
+                                  <div className={`w-1.5 h-1.5 rounded-full ${client.license_status === 'ACTIVE' || client.status === 'active' ? 'bg-[#D9DEE5] shadow-[0_0_8px_rgba(174, 182, 194,0.5)]' : 'bg-red-500'}`} />
                                   <span className="text-[10px] font-bold text-zinc-400">{client.license_status || client.status || 'Pending'}</span>
                                 </div>
                               </td>
@@ -925,7 +925,7 @@ const AdminDashboard = () => {
                   {/* Section 3: Access Control Toggles */}
                   <div className="space-y-4">
                     <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      <Settings2 size={16} className="text-amber-400" />
+                      <Settings2 size={16} className="text-[#AEB6C2]" />
                       Section 3: 🎛️ Access Control (Enable/Disable)
                     </h4>
                     <div className="grid grid-cols-2 gap-4">
@@ -940,7 +940,7 @@ const AdminDashboard = () => {
                               onClick={() => handleToggleAccess(type)}
                               className={`w-12 h-6 rounded-full transition-all relative flex items-center ${
                                 isChecked 
-                                  ? 'bg-amber-600 shadow-[0_0_10px_rgba(245, 158, 11,0.4)]' 
+                                  ? 'bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] shadow-[0_0_10px_rgba(174, 182, 194,0.4)]' 
                                   : 'bg-zinc-700'
                               } ${togglingType !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                             >
@@ -971,10 +971,10 @@ const AdminDashboard = () => {
                             <img src={`${import.meta.env.VITE_API_URL}${proof.imageUrl}`} alt="Payment Proof" className="w-full h-48 object-cover group-hover:opacity-80 transition-opacity" />
                             <div className="absolute top-2 right-2">
                               <span className={`px-2 py-1 text-[10px] font-black uppercase rounded shadow-lg border backdrop-blur-md
-                                ${proof.productType === 'internal' ? 'bg-amber-500/80 text-white border-amber-400/50' :
-                                  proof.productType === 'external' ? 'bg-amber-500/80 text-white border-amber-400/50' :
-                                    proof.productType === 'streamer' ? 'bg-amber-500/80 text-white border-amber-400/50' :
-                                      'bg-amber-500/80 text-white border-amber-400/50'}`}>
+                                ${proof.productType === 'internal' ? 'bg-[#D9DEE5]/80 text-white border-[#AEB6C2]/30' :
+                                  proof.productType === 'external' ? 'bg-[#D9DEE5]/80 text-white border-[#AEB6C2]/30' :
+                                    proof.productType === 'streamer' ? 'bg-[#D9DEE5]/80 text-white border-[#AEB6C2]/30' :
+                                      'bg-[#D9DEE5]/80 text-white border-[#AEB6C2]/30'}`}>
                                 {proof.productType}
                               </span>
                             </div>
@@ -1027,7 +1027,7 @@ const AdminDashboard = () => {
         {toast.show && (
           <div className={`p-4 rounded-2xl border backdrop-blur-md shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 pointer-events-auto
             ${toast.type === 'success' 
-              ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 shadow-[0_0_20px_rgba(245, 158, 11,0.15)]' 
+              ? 'bg-[#D9DEE5]/10 border-[#AEB6C2]/20 text-[#AEB6C2] shadow-[0_0_20px_rgba(174, 182, 194,0.15)]' 
               : 'bg-red-500/10 border-red-500/30 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]'}`}
           >
             <div className={`rounded-full p-1 bg-black/20`}>

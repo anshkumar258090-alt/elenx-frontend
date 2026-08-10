@@ -95,7 +95,7 @@ const AdminUploads = () => {
  <h3 className="text-xl font-bold text-white flex items-center gap-2">
  <Icon className={color} /> {title}
  </h3>
- <div className={`px-2 py-1 rounded-full text-xs font-bold uppercase flex items-center gap-1 border ${isActive ? 'bg-amber-500/20 text-green-300 border-amber-500/50' : 'bg-red-500/20 text-red-300 border-red-500/50'}`}>
+ <div className={`px-2 py-1 rounded-full text-xs font-bold uppercase flex items-center gap-1 border ${isActive ? 'bg-[#D9DEE5]/20 text-green-300 border-[#AEB6C2]/30' : 'bg-red-500/20 text-red-300 border-red-500/50'}`}>
  {isActive ? <><CheckCircle size={12} /> Active</> : <><AlertCircle size={12} /> Empty</>}
  </div>
  </div>
@@ -123,7 +123,7 @@ const AdminUploads = () => {
  className={`flex-1 py-3 px-4 rounded-lg font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2
  ${uploading[type]
  ? 'bg-zinc-700 cursor-not-allowed'
- : 'bg-gradient-to-r from-amber-600 to-amber-600 hover:from-amber-500 hover:to-amber-500'}`}
+ : 'bg-gradient-to-r from-[#AEB6C2] to-[#AEB6C2] hover:from-[#D9DEE5] hover:to-[#D9DEE5]'}`}
  >
  {uploading[type] ? <Loader2 className="animate-spin" size={20} /> : "Upload Build"}
  </button>
@@ -149,13 +149,13 @@ const AdminUploads = () => {
  title="INTERNAL EXE"
  type="internal"
  icon={Shield}
- color="text-amber-400"
+ color="text-[#AEB6C2]"
  />
  <UploadCard
  title="EXTERNAL EXE"
  type="external"
  icon={FileCode}
- color="text-amber-400"
+ color="text-[#AEB6C2]"
  />
  <UploadCard
  title="BYPASS EMULATOR"

@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#06060a] font-inter selection:bg-amber-500/30 selection:text-white px-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#050608] font-inter selection:bg-[#D9DEE5]/30 selection:text-white px-4 relative overflow-hidden">
       {/* Background effects */}
-      <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
       
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -17,7 +17,7 @@ const NotFound = () => {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.1, type: 'spring' }}
-          className="text-[120px] md:text-[180px] font-black font-space-grotesk leading-none tracking-tighter text-gradient-hero mb-4"
+          className="text-[120px] md:text-[180px] font-black font-space-grotesk leading-none tracking-tighter text-gradient-metal mb-4"
         >
           404
         </motion.div>
@@ -33,7 +33,7 @@ const NotFound = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/"
-            className="px-8 py-3.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all text-sm tracking-wider flex items-center gap-2"
+            className="px-8 py-3.5 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] hover:bg-[#F5F7FA] text-white font-bold rounded-full shadow-[0_0_20px_rgba(174,182,194,0.15)] hover:shadow-[0_0_30px_rgba(174,182,194,0.25)] transition-all text-sm tracking-wider flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -42,7 +42,7 @@ const NotFound = () => {
           </Link>
           <Link
             to="/contact"
-            className="px-8 py-3.5 bg-white/[0.04] border border-white/[0.08] hover:border-amber-500/30 text-zinc-400 hover:text-white font-medium rounded-full transition-all text-sm tracking-wider"
+            className="px-8 py-3.5 bg-white/[0.04] border border-white/[0.08] hover:border-[#AEB6C2]/20 text-zinc-400 hover:text-white font-medium rounded-full transition-all text-sm tracking-wider"
           >
             Contact Support
           </Link>

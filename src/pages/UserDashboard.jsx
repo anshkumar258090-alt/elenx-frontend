@@ -130,10 +130,10 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
   const getProductIcon = () => {
     const name = product.name.toLowerCase();
     if (name.includes('internal')) return <Cpu className="text-purple-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
-    if (name.includes('external')) return <Shield className="text-amber-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
+    if (name.includes('external')) return <Shield className="text-[#AEB6C2] w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
     if (name.includes('streamer') || name.includes('stremer')) return <Zap className="text-yellow-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
     if (name.includes('bypass')) return <Key className="text-red-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
-    return <FileCode className="text-amber-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
+    return <FileCode className="text-[#AEB6C2] w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
   };
 
   const isDownloading = downloadState && downloadState.active;
@@ -151,8 +151,8 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
           </div>
           
           <div className="flex flex-col items-end gap-1.5">
-            <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 ${isExpired ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_10px_rgba(245, 158, 11,0.1)]'}`}>
-              <div className={`w-1.5 h-1.5 rounded-full ${isExpired ? 'bg-red-400' : 'bg-amber-400 animate-pulse'}`} />
+            <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 ${isExpired ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/15 shadow-[0_0_10px_rgba(174, 182, 194,0.1)]'}`}>
+              <div className={`w-1.5 h-1.5 rounded-full ${isExpired ? 'bg-red-400' : 'bg-[#AEB6C2] animate-pulse'}`} />
               {isExpired ? 'Expired' : 'Active'}
             </span>
             <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
@@ -162,7 +162,7 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
         </div>
 
         {/* Product Title */}
-        <h3 className="text-2xl font-black font-space-grotesk tracking-tight text-white mb-1 group-hover:text-amber-400 transition-colors">
+        <h3 className="text-2xl font-black font-space-grotesk tracking-tight text-white mb-1 group-hover:text-[#AEB6C2] transition-colors">
           {product.name}
         </h3>
         <p className="text-zinc-500 text-xs font-semibold tracking-wide uppercase mb-4">
@@ -195,16 +195,16 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
         {isDownloading ? (
           <div className="space-y-1.5">
             <div className="flex justify-between items-center text-xs px-1">
-              <span className="text-amber-400 font-black animate-pulse flex items-center gap-1">
+              <span className="text-[#AEB6C2] font-black animate-pulse flex items-center gap-1">
                 <RefreshCw size={12} className="animate-spin" /> DOWNLOADING...
               </span>
               <span className="text-zinc-400 font-mono font-bold">{downloadState.progress}%</span>
             </div>
             
             {/* Progress bar container */}
-            <div className="w-full h-2.5 bg-[#0f172a] rounded-full overflow-hidden border border-white/5">
+            <div className="w-full h-2.5 bg-[#050608] rounded-full overflow-hidden border border-white/5">
               <div 
-                className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full progress-bar-stripes transition-all duration-150" 
+                className="h-full bg-gradient-to-r from-[#AEB6C2] to-[#D9DEE5] rounded-full progress-bar-stripes transition-all duration-150" 
                 style={{ width: `${downloadState.progress}%` }}
               />
             </div>
@@ -233,7 +233,7 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
               className={`col-span-2 py-3 rounded-xl transition-all flex items-center justify-center gap-1 font-black uppercase text-[10px] tracking-wider border relative overflow-hidden group/btn
               ${isExpired 
                 ? 'bg-zinc-850 text-zinc-600 cursor-not-allowed border-white/5' 
-                : 'bg-amber-500 text-zinc-950 hover:bg-amber-400 border-transparent cursor-pointer shadow-[0_0_10px_rgba(245, 158, 11,0.2)] hover:shadow-[0_0_20px_rgba(245, 158, 11,0.45)]'}`}
+                : 'bg-[#D9DEE5] text-zinc-950 hover:bg-[#AEB6C2] border-transparent cursor-pointer shadow-[0_0_10px_rgba(174, 182, 194,0.2)] hover:shadow-[0_0_20px_rgba(174, 182, 194,0.45)]'}`}
               title="Inject / Launch Tactical Override"
             >
               <Zap size={12} className="animate-pulse" /> Launch
@@ -328,7 +328,7 @@ const LaunchConsoleModal = ({ product, onClose }) => {
         initial={{ opacity: 0, scale: 0.9, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 30 }}
-        className="relative w-full max-w-2xl bg-[#0f172a] border border-purple-500/35 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.25)] z-10 overflow-hidden rgb-border-glow"
+        className="relative w-full max-w-2xl bg-[#050608] border border-purple-500/35 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.25)] z-10 overflow-hidden rgb-border-glow"
       >
         {/* Terminal Header */}
         <div className="flex justify-between items-center px-4 py-3 bg-[#1e293b] border-b border-white/10">
@@ -351,15 +351,15 @@ const LaunchConsoleModal = ({ product, onClose }) => {
           <div className="flex-shrink-0 w-44 h-44 relative flex items-center justify-center">
             {/* Spinning scanner rings */}
             <div className="absolute inset-0 rounded-full border border-purple-500/20 animate-[spin_12s_linear_infinite]" />
-            <div className="absolute inset-2 rounded-full border border-dashed border-amber-500/30 animate-[spin_8s_linear_infinite_reverse]" />
+            <div className="absolute inset-2 rounded-full border border-dashed border-[#AEB6C2]/20 animate-[spin_8s_linear_infinite_reverse]" />
             <div className="absolute inset-6 rounded-full border border-purple-400/10 shadow-[0_0_20px_rgba(168,85,247,0.15)] animate-pulse" />
-            <div className="absolute inset-8 rounded-full border border-amber-400/5 bg-[#1e293b]/40" />
+            <div className="absolute inset-8 rounded-full border border-[#AEB6C2]/5 bg-[#1e293b]/40" />
             
             {/* Scanner central stats */}
             <div className="flex flex-col items-center justify-center text-center z-10 font-sans">
-              <Cpu className={`w-8 h-8 ${progress < 100 ? 'text-purple-400 animate-pulse' : 'text-amber-400'} mb-1`} />
+              <Cpu className={`w-8 h-8 ${progress < 100 ? 'text-purple-400 animate-pulse' : 'text-[#AEB6C2]'} mb-1`} />
               <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Status</span>
-              <span className={`text-[10px] font-black uppercase mb-0.5 tracking-wider ${progress < 100 ? 'text-purple-400' : 'text-amber-400'}`}>
+              <span className={`text-[10px] font-black uppercase mb-0.5 tracking-wider ${progress < 100 ? 'text-purple-400' : 'text-[#AEB6C2]'}`}>
                 {progress < 100 ? 'Injecting' : 'Completed'}
               </span>
               <span className="text-xl font-black text-white font-mono">{progress}%</span>
@@ -380,7 +380,7 @@ const LaunchConsoleModal = ({ product, onClose }) => {
                   key={index}
                   className={
                     log.includes('[SUCCESS]') 
-                      ? 'text-amber-400 font-bold' 
+                      ? 'text-[#AEB6C2] font-bold' 
                       : log.includes('[SYS]') 
                       ? 'text-zinc-400' 
                       : log.includes('===') 
@@ -395,9 +395,9 @@ const LaunchConsoleModal = ({ product, onClose }) => {
 
             {/* Glowing progress meter at the bottom */}
             <div className="p-3 bg-[#1e293b]/60 border-t border-white/5 flex items-center justify-between">
-              <div className="w-2/3 h-1.5 bg-[#0f172a] rounded-full overflow-hidden border border-white/5">
+              <div className="w-2/3 h-1.5 bg-[#050608] rounded-full overflow-hidden border border-white/5">
                 <div 
-                  className={`h-full rounded-full transition-all duration-150 ${status === 'success' ? 'bg-amber-500 shadow-[0_0_10px_rgba(245, 158, 11,0.5)]' : 'bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]'}`}
+                  className={`h-full rounded-full transition-all duration-150 ${status === 'success' ? 'bg-[#D9DEE5] shadow-[0_0_10px_rgba(174, 182, 194,0.5)]' : 'bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]'}`}
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -414,7 +414,7 @@ const LaunchConsoleModal = ({ product, onClose }) => {
             onClick={onClose}
             className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all
             ${status === 'success'
-              ? 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-[0_0_15px_rgba(245, 158, 11,0.25)] hover:shadow-[0_0_25px_rgba(245, 158, 11,0.5)]'
+              ? 'bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 shadow-[0_0_15px_rgba(174, 182, 194,0.25)] hover:shadow-[0_0_25px_rgba(174, 182, 194,0.5)]'
               : 'bg-zinc-800 hover:bg-zinc-750 text-zinc-300 hover:text-white border border-white/5'}`}
           >
             {status === 'success' ? 'Close & System Launch' : 'Abort Override'}
@@ -679,18 +679,18 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen font-inter relative overflow-hidden flex bg-[#0f172a]">
+    <div className="min-h-screen font-inter relative overflow-hidden flex bg-[#050608]">
       <ParticleBackground />
 
       {/* Futuristic Launcher Orbs */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
 
       {/* Backdrop overlay for mobile */}
       {isSidebarOpen && (
         <div 
           onClick={() => setIsSidebarOpen(false)} 
-          className="fixed inset-0 z-40 bg-[#0f172a]/80 backdrop-blur-sm lg:hidden transition-all duration-300"
+          className="fixed inset-0 z-40 bg-[#050608]/80 backdrop-blur-sm lg:hidden transition-all duration-300"
         />
       )}
 
@@ -702,21 +702,21 @@ const UserDashboard = () => {
       >
         <div className="px-8">
           <h1 className="text-2xl font-bold font-space-grotesk tracking-wide mb-10 text-white">
-            ELEN<span className="text-amber-500">X</span>
+            ELEN<span className="text-[#AEB6C2]">X</span>
             <span className="block text-xs font-normal text-zinc-400 mt-1 tracking-widest uppercase">Client Launcher</span>
           </h1>
 
           <nav className="space-y-4">
             <button
               onClick={() => { setActiveTab('overview'); setIsSidebarOpen(false); }}
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'overview' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'overview' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
             >
               <Cpu size={20} />
               <span className="font-medium">Product Library</span>
             </button>
             <button
               onClick={() => { setActiveTab('clients'); setIsSidebarOpen(false); }}
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'clients' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'clients' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
             >
               <Key size={20} />
               <span className="font-medium">Credential Manager</span>
@@ -751,7 +751,7 @@ const UserDashboard = () => {
           
           <div className="flex items-center space-x-4">
             <div className="px-4 py-2 bg-[#1e293b]/80 rounded-full border border-white/5 shadow-sm flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-[#AEB6C2] animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold text-zinc-300">SYSTEM SECURE</span>
             </div>
           </div>
@@ -764,7 +764,7 @@ const UserDashboard = () => {
               initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center gap-3 text-amber-400 text-sm font-semibold shadow-[0_0_20px_rgba(245, 158, 11,0.1)] w-fit"
+              className="mb-8 p-4 bg-[#D9DEE5]/10 border border-[#AEB6C2]/20 rounded-2xl flex items-center gap-3 text-[#AEB6C2] text-sm font-semibold shadow-[0_0_20px_rgba(174, 182, 194,0.1)] w-fit"
             >
               <CheckCircle size={18} className="animate-bounce" />
               {downloadSuccessToast}
@@ -819,7 +819,7 @@ const UserDashboard = () => {
                   </p>
                   <a
                     href="/#products"
-                    className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition-all transform hover:-translate-y-0.5"
+                    className="px-8 py-3 bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5"
                   >
                     Browse Main Store
                   </a>
@@ -838,7 +838,7 @@ const UserDashboard = () => {
                 className="lg:col-span-1 glass-panel p-6 rounded-3xl border border-white/10 shadow-lg h-fit"
               >
                 <h3 className="text-lg font-bold text-zinc-100 mb-6 flex items-center gap-2">
-                  <UserPlus size={20} className="text-amber-400" /> Save Operational Credentials
+                  <UserPlus size={20} className="text-[#AEB6C2]" /> Save Operational Credentials
                 </h3>
                 <form onSubmit={handleSaveCredentials} className="space-y-4">
                   {(() => {
@@ -867,12 +867,12 @@ const UserDashboard = () => {
                           <select
                             value={newCred.productId}
                             onChange={(e) => setNewCred({ ...newCred, productId: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#1e293b]/60 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 transition-all text-zinc-200 font-semibold"
+                            className="w-full px-4 py-3 bg-[#1e293b]/60 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] transition-all text-zinc-200 font-semibold"
                             required
                           >
                             <option value="" disabled>-- Choose Module --</option>
                             {activeOwnedProducts.map(prod => (
-                              <option key={prod.productId} value={prod.productId} className="bg-[#0f172a] text-white font-semibold">
+                              <option key={prod.productId} value={prod.productId} className="bg-[#050608] text-white font-semibold">
                                 {prod.name} ({prod.version})
                               </option>
                             ))}
@@ -884,7 +884,7 @@ const UserDashboard = () => {
                             placeholder="Operational Username"
                             value={newCred.username}
                             onChange={(e) => setNewCred({ ...newCred, username: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
+                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
                             required
                           />
                         </div>
@@ -894,11 +894,11 @@ const UserDashboard = () => {
                             placeholder="Assign Password Override"
                             value={newCred.password}
                             onChange={(e) => setNewCred({ ...newCred, password: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
+                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
                             required
                           />
                         </div>
-                        <button type="submit" className="w-full py-3.5 bg-amber-500 text-zinc-950 hover:bg-amber-400 font-black rounded-xl hover:shadow-[0_0_20px_rgba(245, 158, 11,0.3)] transition-all uppercase tracking-wider text-xs border border-transparent">
+                        <button type="submit" className="w-full py-3.5 bg-[#D9DEE5] text-zinc-950 hover:bg-[#AEB6C2] font-black rounded-xl hover:shadow-[0_0_20px_rgba(174, 182, 194,0.3)] transition-all uppercase tracking-wider text-xs border border-transparent">
                           [ Save Credentials ]
                         </button>
                       </>
@@ -914,7 +914,7 @@ const UserDashboard = () => {
                 className="lg:col-span-2 glass-panel p-6 rounded-3xl border border-white/10 shadow-lg"
               >
                 <h3 className="text-lg font-bold text-zinc-100 mb-6 flex items-center gap-2">
-                  <Key size={20} className="text-amber-400 animate-pulse" /> Active Credentials Registry
+                  <Key size={20} className="text-[#AEB6C2] animate-pulse" /> Active Credentials Registry
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
@@ -986,7 +986,7 @@ const UserDashboard = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-xl bg-[#0f172a] border border-white/10 rounded-3xl shadow-[0_0_55px_rgba(0,0,0,0.85)] z-10 overflow-hidden"
+              className="relative w-full max-w-xl bg-[#050608] border border-white/10 rounded-3xl shadow-[0_0_55px_rgba(0,0,0,0.85)] z-10 overflow-hidden"
             >
               <button 
                 onClick={() => setSelectedLogProduct(null)} 
@@ -997,7 +997,7 @@ const UserDashboard = () => {
 
               <div className="p-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl">
+                  <span className="p-2 bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 text-[#AEB6C2] rounded-xl">
                     <FileText size={20} />
                   </span>
                   <div>
@@ -1008,8 +1008,8 @@ const UserDashboard = () => {
 
                 <div className="h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-6 mt-6">
                   {UPDATE_LOGS[selectedLogProduct.productId]?.map((log, idx) => (
-                    <div key={idx} className="border-l-2 border-amber-500/30 pl-4 space-y-2 relative">
-                      <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                    <div key={idx} className="border-l-2 border-[#AEB6C2]/20 pl-4 space-y-2 relative">
+                      <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-[#AEB6C2] shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                       
                       <div className="flex justify-between items-baseline mb-2">
                         <span className="text-sm font-black text-white font-mono">{log.version}</span>
@@ -1018,7 +1018,7 @@ const UserDashboard = () => {
                       <ul className="space-y-1.5">
                         {log.changes.map((change, cIdx) => (
                           <li key={cIdx} className="text-xs text-zinc-400 leading-relaxed font-semibold flex items-start gap-2">
-                            <span className="text-amber-400 mt-1">-</span>
+                            <span className="text-[#AEB6C2] mt-1">-</span>
                             <span>{change}</span>
                           </li>
                         ))}

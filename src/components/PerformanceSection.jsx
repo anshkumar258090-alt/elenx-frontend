@@ -43,7 +43,7 @@ const PerformanceSection = () => {
             viewport={{ once: true, amount: 0.5 }}
             className="text-4xl md:text-5xl font-bold text-white font-space-grotesk tracking-tight"
           >
-            The <span className="text-gradient-cyan">Difference</span> is Real
+            The <span className="text-gradient-metal">Difference</span> is Real
           </motion.h2>
         </div>
 
@@ -107,16 +107,16 @@ const PerformanceSection = () => {
             {/* Elenx Side */}
             <div className="p-10 md:p-12 relative overflow-hidden group">
               {/* Subtle background glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/[0.06] via-transparent to-orange-500/[0.06] opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D9DEE5]/[0.06] via-transparent to-[#858E9A]/[0.04] opacity-80" />
 
               <div className="flex items-center gap-3 mb-8 relative z-10">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 rounded-lg bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-white font-space-grotesk tracking-wide">With Elenx</h3>
-                <span className="px-3 py-1 text-[10px] font-black bg-gradient-to-r from-amber-500 to-amber-400 text-black rounded-full uppercase tracking-wider shadow-[0_0_10px_rgba(245,158,11,0.4)]">Pro</span>
+                <span className="px-3 py-1 text-[10px] font-black bg-gradient-to-r from-[#D9DEE5] to-[#D9DEE5] text-black rounded-full uppercase tracking-wider shadow-[0_0_10px_rgba(174,182,194,0.4)]">Pro</span>
               </div>
 
               <div className="space-y-8 relative z-10">
@@ -132,7 +132,7 @@ const PerformanceSection = () => {
                       whileInView={{ width: "95%" }}
                       transition={{ duration: 1.5, ease: "easeOut" }}
                       viewport={{ once: true }}
-                      className="bg-gradient-to-r from-amber-600 via-amber-400 to-amber-300 h-full rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)] relative"
+                      className="bg-gradient-to-r from-[#AEB6C2] via-[#F5F7FA] to-[#D9DEE5] h-full rounded-full shadow-[0_0_15px_rgba(174,182,194,0.5)] relative"
                     >
                       <div className="absolute top-0 right-0 bottom-0 w-10 bg-gradient-to-r from-transparent to-white/30 skew-x-12 translate-x-full animate-shimmer" />
                     </motion.div>
@@ -143,7 +143,7 @@ const PerformanceSection = () => {
                 <div>
                   <div className="flex justify-between text-white font-bold mb-2.5 text-lg">
                     <span>Input Latency</span>
-                    <span className="text-gradient-cyan"><Counter value={2} suffix="ms" /></span>
+                    <span className="text-gradient-metal"><Counter value={2} suffix="ms" /></span>
                   </div>
                   <div className="w-full bg-white/[0.04] h-2.5 rounded-full overflow-hidden shadow-inner">
                     <motion.div
@@ -151,10 +151,10 @@ const PerformanceSection = () => {
                       whileInView={{ width: "10%" }}
                       transition={{ duration: 1.5, ease: "easeOut" }}
                       viewport={{ once: true }}
-                      className="bg-gradient-to-r from-amber-300 to-amber-500 h-full rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]"
+                      className="bg-gradient-to-r from-[#D9DEE5] to-[#D9DEE5] h-full rounded-full shadow-[0_0_15px_rgba(174,182,194,0.5)]"
                     />
                   </div>
-                  <p className="text-xs text-amber-400 mt-2 font-medium flex items-center">
+                  <p className="text-xs text-[#AEB6C2] mt-2 font-medium flex items-center">
                     <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                     86% Reduction
                   </p>

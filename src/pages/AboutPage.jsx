@@ -36,10 +36,10 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
+    <div className="min-h-screen overflow-hidden relative font-inter selection:bg-[#D9DEE5]/30 selection:text-white bg-[#050608]">
       {/* Background effects */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-orange-600/5 rounded-full blur-[150px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#858E9A]/[0.03] rounded-full blur-[150px] pointer-events-none translate-x-1/2 translate-y-1/2" />
       
       <Navbar />
 
@@ -52,7 +52,7 @@ const AboutPage = () => {
           <motion.h1 {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.1 }}
             className="text-5xl md:text-7xl font-black font-space-grotesk tracking-tight text-white mb-6"
           >
-            Building the <span className="text-gradient-hero">Future</span>
+            Building the <span className="text-gradient-metal">Future</span>
           </motion.h1>
           <motion.p {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.2 }}
             className="text-lg text-zinc-500 max-w-3xl mx-auto leading-relaxed"
@@ -69,10 +69,10 @@ const AboutPage = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div {...fadeInUp} className="glass-card rounded-2xl p-8 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-amber-500/10 rounded-full blur-[60px] pointer-events-none group-hover:bg-amber-500/15 transition-all" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-[#D9DEE5]/10 rounded-full blur-[60px] pointer-events-none group-hover:bg-[#F5F7FA]/15 transition-all" />
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6">
-                  <svg className="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-14 h-14 rounded-xl bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 flex items-center justify-center mb-6">
+                  <svg className="w-7 h-7 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
@@ -87,10 +87,10 @@ const AboutPage = () => {
             </motion.div>
 
             <motion.div {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.15 }} className="glass-card rounded-2xl p-8 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full blur-[60px] pointer-events-none group-hover:bg-emerald-500/15 transition-all" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-[#AEB6C2]/8 rounded-full blur-[60px] pointer-events-none group-hover:bg-[#AEB6C2]/12 transition-all" />
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6">
-                  <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-14 h-14 rounded-xl bg-[#AEB6C2]/8 border border-[#AEB6C2]/15 flex items-center justify-center mb-6">
+                  <svg className="w-7 h-7 text-[#AEB6C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
@@ -115,7 +115,7 @@ const AboutPage = () => {
             <motion.h2 {...fadeInUp}
               className="text-4xl md:text-5xl font-bold text-white font-space-grotesk tracking-tight mb-4"
             >
-              Our <span className="text-gradient-cyan">Services</span>
+              Our <span className="text-gradient-metal">Services</span>
             </motion.h2>
             <motion.p {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.1 }}
               className="text-zinc-500 text-lg max-w-2xl mx-auto"
@@ -135,7 +135,7 @@ const AboutPage = () => {
                 className="glass-card rounded-2xl p-6 group"
               >
                 <div className="text-3xl mb-4">{service.icon}</div>
-                <h3 className="text-lg font-bold text-white font-space-grotesk mb-2 group-hover:text-amber-300 transition-colors">
+                <h3 className="text-lg font-bold text-white font-space-grotesk mb-2 group-hover:text-[#D9DEE5] transition-colors">
                   {service.title}
                 </h3>
                 <p className="text-sm text-zinc-500 leading-relaxed">{service.desc}</p>
@@ -152,7 +152,7 @@ const AboutPage = () => {
             <motion.h2 {...fadeInUp}
               className="text-4xl md:text-5xl font-bold text-white font-space-grotesk tracking-tight mb-4"
             >
-              Our <span className="text-gradient-cyan">Values</span>
+              Our <span className="text-gradient-metal">Values</span>
             </motion.h2>
           </div>
 
@@ -184,7 +184,7 @@ const AboutPage = () => {
             <motion.h2 {...fadeInUp}
               className="text-4xl md:text-5xl font-bold text-white font-space-grotesk tracking-tight mb-4"
             >
-              Technology <span className="text-gradient-cyan">Stack</span>
+              Technology <span className="text-gradient-metal">Stack</span>
             </motion.h2>
             <motion.p {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.1 }}
               className="text-zinc-500 text-lg max-w-2xl mx-auto"
@@ -201,7 +201,7 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: idx * 0.04 }}
                 viewport={{ once: true }}
-                className="px-5 py-2.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-sm font-medium text-zinc-400 hover:text-white hover:border-amber-500/30 hover:bg-amber-500/10 transition-all duration-300 cursor-default"
+                className="px-5 py-2.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-sm font-medium text-zinc-400 hover:text-white hover:border-[#AEB6C2]/20 hover:bg-[#F5F7FA]/10 transition-all duration-300 cursor-default"
               >
                 {tech}
               </motion.span>
@@ -214,7 +214,7 @@ const AboutPage = () => {
       <section className="relative z-10 py-20 border-t border-white/[0.03]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div {...fadeInUp} className="glass-card rounded-3xl p-12 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-amber-500/5 to-orange-500/5 pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#AEB6C2]/[0.03] to-[#858E9A]/[0.02] pointer-events-none" />
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold text-white font-space-grotesk mb-4">
                 Ready to Transform Your Business?
@@ -224,7 +224,7 @@ const AboutPage = () => {
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all text-sm tracking-wider"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] hover:bg-[#F5F7FA] text-white font-bold rounded-full shadow-[0_0_20px_rgba(174,182,194,0.15)] hover:shadow-[0_0_30px_rgba(174,182,194,0.25)] transition-all text-sm tracking-wider"
               >
                 GET IN TOUCH
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
