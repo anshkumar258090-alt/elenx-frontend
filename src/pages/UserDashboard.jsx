@@ -677,24 +677,23 @@ const UserDashboard = () => {
       });
 
       if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        
-        // Show stunning success notification toast!
-        setDownloadSuccessToast(`Successfully downloaded ${fileName}! Tactical override ready.`);
-        setTimeout(() => setDownloadSuccessToast(null), 4000);
+        const data = await response.json();
+        if (data.download_url) {
+          // Open external download link in new tab
+          window.open(data.download_url, '_blank');
+          
+          // Show stunning success notification toast!
+          setDownloadSuccessToast(`Redirecting to download ${data.product_name || fileName}! Tactical override ready.`);
+          setTimeout(() => setDownloadSuccessToast(null), 4000);
+        } else {
+          alert("Download link not available yet. Please contact admin.");
+        }
       } else if (response.status === 401 || response.status === 403) {
         alert("Access Denied! Please Login again.");
         navigate('/login');
       } else {
-        alert("Download failed. The file is not available on the server currently.");
+        const errData = await response.json().catch(() => ({}));
+        alert(errData.message || "Download failed. The file is not available on the server currently.");
       }
     } catch (error) {
       console.error("Download error:", error);

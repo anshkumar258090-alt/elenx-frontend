@@ -520,7 +520,7 @@ const AdminDashboard = () => {
           {activeTab === 'builds' && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="mb-6">
-                <p className="text-gray-400">Manage and distribute client executables securely. Files uploaded here are immediately available for download.</p>
+                <p className="text-gray-400">Manage download links for all products. Paste external download URLs (Google Drive, Mega, etc.) — no file uploads needed.</p>
               </div>
               <AdminUploads />
             </div>
