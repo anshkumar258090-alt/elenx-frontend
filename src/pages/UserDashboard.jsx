@@ -19,11 +19,16 @@ import {
   Lock,
   Terminal,
   X,
-  Menu
+  Menu,
+  ShoppingCart,
+  History,
+  Trash2,
+  CreditCard
 } from 'lucide-react';
 import ParticleBackground from '../components/ParticleBackground';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 // Predefined premium changelogs for the gaming launcher interface
 const UPDATE_LOGS = {
@@ -427,6 +432,8 @@ const LaunchConsoleModal = ({ product, onClose }) => {
 
 const UserDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { cartItems, cartCount, removeFromCart, clearCart, getCartTotal } = useCart();
   const [credentials, setCredentials] = useState([]);
   const [newCred, setNewCred] = useState({ productId: '', username: '', password: '' });
   const [activeTab, setActiveTab] = useState('overview');
@@ -440,6 +447,20 @@ const UserDashboard = () => {
   const [purchasedProducts, setPurchasedProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  // Read ?tab= from URL to auto-switch tab (e.g. after login redirect)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['overview', 'clients', 'cart', 'purchases'].includes(tabParam)) {
+      setActiveTab(tabParam);
+      // Clean URL after reading
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     fetchProfile();
@@ -530,12 +551,72 @@ const UserDashboard = () => {
     }
   };
 
+  const fetchOrders = async () => {
+    try {
+      setIsLoadingOrders(true);
+      const token = localStorage.getItem('client_token');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/orders`, {
+        headers: { Authorization: token }
+      });
+      setOrders(response.data);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setIsLoadingOrders(false);
+    }
+  };
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) return;
+    setIsCheckingOut(true);
+    try {
+      const token = localStorage.getItem('client_token');
+      const items = cartItems.map(item => ({
+        product: { id: item.productId },
+        duration: { id: item.planId }
+      }));
+
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/payu/generate-hash`, 
+        { items },
+        { headers: { Authorization: token } }
+      );
+
+      const { actionUrl, params } = response.data;
+
+      // Create and submit PayU form
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = actionUrl;
+      form.style.display = 'none';
+
+      for (const [key, value] of Object.entries(params)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      clearCart(); // Clear cart before redirecting to payment
+      form.submit();
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Checkout failed. Please try again.');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'clients') {
       fetchCredentials();
     } else if (activeTab === 'overview') {
       fetchProfile();
       fetchPurchasedProducts();
+    } else if (activeTab === 'purchases') {
+      fetchOrders();
+      fetchProfile();
     }
   }, [activeTab]);
 
@@ -713,6 +794,25 @@ const UserDashboard = () => {
             >
               <Cpu size={20} />
               <span className="font-medium">Product Library</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('cart'); setIsSidebarOpen(false); }}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'cart' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+            >
+              <ShoppingCart size={20} />
+              <span className="font-medium">Cart</span>
+              {cartCount > 0 && (
+                <span className="ml-auto px-2 py-0.5 text-[10px] font-black bg-[#AEB6C2] text-[#050608] rounded-full min-w-[20px] text-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => { setActiveTab('purchases'); setIsSidebarOpen(false); }}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'purchases' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+            >
+              <History size={20} />
+              <span className="font-medium">Purchase History</span>
             </button>
             <button
               onClick={() => { setActiveTab('clients'); setIsSidebarOpen(false); }}
@@ -965,6 +1065,254 @@ const UserDashboard = () => {
                 </div>
               </motion.div>
             </div>
+          )}
+
+          {/* ===== CART TAB ===== */}
+          {activeTab === 'cart' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold font-space-grotesk text-white flex items-center gap-2">
+                    <ShoppingCart size={22} className="text-[#AEB6C2]" /> Your Cart
+                  </h3>
+                  <p className="text-xs text-zinc-400">Items you've selected for purchase.</p>
+                </div>
+                {cartItems.length > 0 && (
+                  <button
+                    onClick={clearCart}
+                    className="text-xs font-bold text-red-400 hover:text-red-300 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-full uppercase tracking-wider transition-all hover:bg-red-500/15"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
+
+              {cartItems.length > 0 ? (
+                <div className="space-y-4">
+                  {/* Cart Items */}
+                  {cartItems.map((item, index) => (
+                    <motion.div
+                      key={`${item.productId}-${item.planId}-${index}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="glass-panel-futuristic p-5 rounded-2xl border border-white/10 flex items-center justify-between group hover:border-[#AEB6C2]/20 transition-all"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#AEB6C2]/8 border border-[#AEB6C2]/10 flex items-center justify-center">
+                          <ShoppingCart size={20} className="text-[#AEB6C2]" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-bold font-space-grotesk text-sm">
+                            {item.name}
+                            {item.isPremium && (
+                              <span className="ml-2 text-[9px] px-2 py-0.5 bg-[#AEB6C2]/10 text-[#D9DEE5] border border-[#AEB6C2]/20 rounded-full uppercase tracking-wider font-bold">
+                                ★ Premium
+                              </span>
+                            )}
+                          </h4>
+                          <p className="text-zinc-500 text-xs font-semibold mt-0.5">
+                            Duration: <span className="text-zinc-300">{item.planLabel}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <span className="text-lg font-black text-white font-space-grotesk">
+                          {item.symbol}{item.currency === 'INR' ? item.priceInr : item.priceUsd}
+                        </span>
+                        <button
+                          onClick={() => removeFromCart(index)}
+                          className="p-2 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                          title="Remove from cart"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* Cart Summary & Checkout */}
+                  <div className="glass-panel-futuristic p-6 rounded-2xl border border-[#AEB6C2]/15 mt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-zinc-400 text-sm font-bold uppercase tracking-wider">Total ({cartItems.length} item{cartItems.length > 1 ? 's' : ''})</span>
+                      <span className="text-2xl font-black text-white font-space-grotesk">
+                        ₹{getCartTotal('INR')}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleCheckout}
+                      disabled={isCheckingOut}
+                      className="w-full py-3.5 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] text-[#050608] font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isCheckingOut ? (
+                        <><RefreshCw size={14} className="animate-spin" /> Processing...</>
+                      ) : (
+                        <><CreditCard size={14} /> Proceed to Checkout</>
+                      )}
+                    </button>
+                    <p className="text-center text-[10px] text-zinc-500 mt-3 font-semibold">Secure payment via PayU Gateway</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">
+                  <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-6">
+                    <ShoppingCart size={32} />
+                  </div>
+                  <h4 className="text-2xl font-black font-space-grotesk text-white mb-2">CART IS EMPTY</h4>
+                  <p className="text-zinc-400 text-sm max-w-xs mb-8">
+                    You haven't added any products to your cart yet. Browse the storefront and select your desired modules.
+                  </p>
+                  <a
+                    href="/#products"
+                    className="px-8 py-3 bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5"
+                  >
+                    Browse Store
+                  </a>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ===== PURCHASE HISTORY TAB ===== */}
+          {activeTab === 'purchases' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold font-space-grotesk text-white flex items-center gap-2">
+                    <History size={22} className="text-[#AEB6C2]" /> Purchase History
+                  </h3>
+                  <p className="text-xs text-zinc-400">Your orders and activated subscriptions.</p>
+                </div>
+                <button
+                  onClick={fetchOrders}
+                  className="text-xs font-bold text-[#AEB6C2] bg-[#AEB6C2]/10 border border-[#AEB6C2]/15 px-3 py-1.5 rounded-full uppercase tracking-wider transition-all hover:bg-[#AEB6C2]/15 flex items-center gap-1"
+                >
+                  <RefreshCw size={12} /> Refresh
+                </button>
+              </div>
+
+              {/* Orders from Order Collection */}
+              {isLoadingOrders ? (
+                <div className="py-12 text-center">
+                  <RefreshCw size={24} className="animate-spin text-[#AEB6C2] mx-auto mb-3" />
+                  <p className="text-zinc-400 text-sm">Loading purchase history...</p>
+                </div>
+              ) : orders.length > 0 ? (
+                <div className="space-y-4">
+                  {orders.map((order, idx) => (
+                    <motion.div
+                      key={order._id || order.orderId}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      className="glass-panel-futuristic p-5 rounded-2xl border border-white/10 hover:border-[#AEB6C2]/15 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Order ID</span>
+                          <span className="text-xs text-white font-mono font-bold">{order.orderId}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 ${
+                            order.payment_status === 'SUCCESS'
+                              ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/15'
+                              : order.payment_status === 'PENDING'
+                              ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                              : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                          }`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${
+                              order.payment_status === 'SUCCESS' ? 'bg-[#AEB6C2]' : order.payment_status === 'PENDING' ? 'bg-yellow-400 animate-pulse' : 'bg-red-400'
+                            }`} />
+                            {order.payment_status}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Order Items */}
+                      <div className="space-y-2 mb-3">
+                        {(order.items || []).map((item, iIdx) => (
+                          <div key={iIdx} className="flex items-center justify-between bg-[#1e293b]/40 p-3 rounded-xl border border-white/5">
+                            <div>
+                              <span className="text-sm font-bold text-white">{item.name}</span>
+                              <span className="text-[10px] text-zinc-500 font-semibold ml-2 uppercase">{item.durationLabel}</span>
+                            </div>
+                            <span className="text-sm font-bold text-zinc-300">₹{item.price}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                          {new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        <span className="text-lg font-black text-white font-space-grotesk">
+                          ₹{order.amount}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                /* Show purchasedSubscriptions from user profile as fallback */
+                (user?.purchasedSubscriptions && user.purchasedSubscriptions.length > 0) ? (
+                  <div className="space-y-4">
+                    {user.purchasedSubscriptions.map((sub, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="glass-panel-futuristic p-5 rounded-2xl border border-white/10 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-[#AEB6C2]/8 border border-[#AEB6C2]/10 flex items-center justify-center">
+                            <CheckCircle size={18} className="text-[#AEB6C2]" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-white">{sub.name}</h4>
+                            <p className="text-[10px] text-zinc-500 font-semibold">
+                              {sub.durationLabel} • Purchased {new Date(sub.purchaseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </p>
+                          </div>
+                        </div>
+                        <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${
+                          sub.status === 'ACTIVE'
+                            ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/15'
+                            : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                        }`}>
+                          {sub.status}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">
+                    <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-6">
+                      <History size={32} />
+                    </div>
+                    <h4 className="text-2xl font-black font-space-grotesk text-white mb-2">NO PURCHASE HISTORY</h4>
+                    <p className="text-zinc-400 text-sm max-w-xs mb-8">
+                      You haven't made any purchases yet. Complete a checkout from the cart to see your transaction history here.
+                    </p>
+                    <a
+                      href="/#products"
+                      className="px-8 py-3 bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5"
+                    >
+                      Browse Store
+                    </a>
+                  </div>
+                )
+              )}
+            </motion.div>
           )}
 
         </div>

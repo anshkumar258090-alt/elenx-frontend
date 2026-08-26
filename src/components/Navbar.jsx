@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/', type: 'route' },
@@ -13,6 +14,7 @@ const NAV_LINKS = [
 
 const Navbar = ({ userToken, onLogout }) => {
   const isLoggedIn = !!(userToken && userToken !== 'null' && userToken !== 'undefined' && userToken.trim() !== '');
+  const { cartCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('Home');
   const [scrolled, setScrolled] = useState(false);
@@ -106,6 +108,17 @@ const Navbar = ({ userToken, onLogout }) => {
           <div className="hidden md:flex items-center gap-3">
             {isLoggedIn ? (
               <>
+                <Link
+                  to="/user-dashboard?tab=cart"
+                  className="relative flex items-center gap-1 text-[#AEB6C2] hover:text-[#F5F7FA] px-3 py-2 rounded-full text-[13px] font-semibold transition-all duration-300 hover:bg-white/[0.04]"
+                >
+                  <ShoppingCart size={18} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#AEB6C2] text-[#050608] text-[10px] font-black rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(174,182,194,0.3)]">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
                 <Link
                   to="/user-dashboard"
                   className="flex items-center gap-2 text-[#D9DEE5] hover:text-[#F5F7FA] px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-300 bg-[#AEB6C2]/8 border border-[#AEB6C2]/12 hover:border-[#AEB6C2]/25 hover:bg-[#AEB6C2]/12"
@@ -217,6 +230,21 @@ const Navbar = ({ userToken, onLogout }) => {
                 {/* Auth Buttons */}
                 {isLoggedIn ? (
                   <div className="space-y-3">
+                    <Link
+                      to="/user-dashboard?tab=cart"
+                      onClick={() => setIsOpen(false)}
+                      className="relative block text-center text-[#AEB6C2] hover:text-[#F5F7FA] py-3.5 rounded-xl bg-white/[0.04] border border-[#AEB6C2]/[0.08] font-semibold text-[14px] hover:bg-white/[0.06] transition-all"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <ShoppingCart size={16} />
+                        Cart
+                        {cartCount > 0 && (
+                          <span className="px-2 py-0.5 text-[10px] font-black bg-[#AEB6C2] text-[#050608] rounded-full">
+                            {cartCount}
+                          </span>
+                        )}
+                      </span>
+                    </Link>
                     <Link
                       to="/user-dashboard"
                       onClick={() => setIsOpen(false)}

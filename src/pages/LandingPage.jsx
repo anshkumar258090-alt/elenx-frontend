@@ -6,6 +6,7 @@ import MagicRings from '../components/MagicRings';
 import LightRays from '../components/LightRays';
 import { Link, useNavigate } from 'react-router-dom';
 import { Monitor, Globe, Cpu, Zap, Cloud, Link2, Palette, Smartphone, Target, Shield, Eye, Wrench, Gem, Server, Radio, Film, Crosshair } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 const PRODUCTS = [
   {
@@ -155,7 +156,7 @@ const PRODUCTS = [
 ];
 
 /* ===== Product Card Component ===== */
-const ProductCard = ({ product, idx, currency, navigate }) => {
+const ProductCard = ({ product, idx, currency, navigate, addToCart, userToken }) => {
   const [selectedPlan, setSelectedPlan] = useState(2); // default 1 Month
   const plan = product.pricing[selectedPlan];
   const price = currency === 'INR' ? plan.inr : plan.usd;
@@ -244,7 +245,27 @@ const ProductCard = ({ product, idx, currency, navigate }) => {
 
             {/* Buy button */}
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => {
+                const token = userToken || localStorage.getItem('client_token');
+                const isLoggedIn = token && token !== 'null' && token !== 'undefined';
+                if (isLoggedIn) {
+                  // User is logged in — add to cart and go to dashboard
+                  addToCart(product, selectedPlan, currency);
+                  navigate('/user-dashboard?tab=cart');
+                } else {
+                  // User not logged in — save to sessionStorage and go to login
+                  sessionStorage.setItem('pending_checkout_item', JSON.stringify({
+                    productId: product.id,
+                    name: product.name,
+                    slug: product.slug,
+                    isPremium: product.isPremium,
+                    selectedPlanIndex: selectedPlan,
+                    currency,
+                    pricing: product.pricing,
+                  }));
+                  navigate('/login');
+                }
+              }}
               className={`w-full py-3 rounded-xl text-sm font-bold tracking-wider transition-all duration-300 border ${
                 product.isPremium
                   ? 'bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] text-[#050608] border-white/20 shadow-[0_0_15px_rgba(174,182,194,0.15)] hover:shadow-[0_0_25px_rgba(174,182,194,0.3)] hover:scale-[1.02]'
@@ -337,6 +358,7 @@ const PROCESS_STEPS = [
 /* ===== MAIN LANDING PAGE ===== */
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [userToken, setUserToken] = useState(() => {
     const token = localStorage.getItem('client_token');
     return token && token !== 'null' && token !== 'undefined' ? token : null;
@@ -740,7 +762,7 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {PRODUCTS.map((product, idx) => (
-              <ProductCard key={product.id} product={product} idx={idx} currency={currency} navigate={navigate} />
+              <ProductCard key={product.id} product={product} idx={idx} currency={currency} navigate={navigate} addToCart={addToCart} userToken={userToken} />
             ))}
           </div>
         </div>

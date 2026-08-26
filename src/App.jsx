@@ -20,6 +20,7 @@ import DeliveryPolicy from './pages/DeliveryPolicy';
 import CookiePolicy from './pages/CookiePolicy';
 import NotFound from './pages/NotFound';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -43,34 +44,36 @@ function App() {
  return (
  <ErrorBoundary>
    <AuthProvider>
-    <Router>
-     <ScrollToTop />
-     <Routes>
-      {/* Public Pages - No Auth Required */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/terms" element={<TermsConditions />} />
-      <Route path="/refund-policy" element={<RefundPolicy />} />
-      <Route path="/delivery-policy" element={<DeliveryPolicy />} />
-      <Route path="/cookie-policy" element={<CookiePolicy />} />
+    <CartProvider>
+     <Router>
+      <ScrollToTop />
+      <Routes>
+       {/* Public Pages - No Auth Required */}
+       <Route path="/" element={<LandingPage />} />
+       <Route path="/about" element={<AboutPage />} />
+       <Route path="/contact" element={<ContactPage />} />
+       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+       <Route path="/terms" element={<TermsConditions />} />
+       <Route path="/refund-policy" element={<RefundPolicy />} />
+       <Route path="/delivery-policy" element={<DeliveryPolicy />} />
+       <Route path="/cookie-policy" element={<CookiePolicy />} />
 
-      {/* Auth Pages */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/auth-success" element={<AuthSuccess />} />
-      <Route path="/dashboard" element={<Navigate to="/login" replace />} />
+       {/* Auth Pages */}
+       <Route path="/login" element={<Login />} />
+       <Route path="/register" element={<Register />} />
+       <Route path="/auth-success" element={<AuthSuccess />} />
+       <Route path="/dashboard" element={<Navigate to="/login" replace />} />
 
-      {/* Protected Pages */}
-      <Route path="/user-dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+       {/* Protected Pages */}
+       <Route path="/user-dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
+       <Route path="/admin/login" element={<AdminLogin />} />
+       <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
 
-      {/* 404 Catch-all */}
-      <Route path="*" element={<NotFound />} />
-     </Routes>
-    </Router>
+       {/* 404 Catch-all */}
+       <Route path="*" element={<NotFound />} />
+      </Routes>
+     </Router>
+    </CartProvider>
    </AuthProvider>
  </ErrorBoundary>
  );

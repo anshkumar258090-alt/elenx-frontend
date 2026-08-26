@@ -173,6 +173,41 @@ router.delete('/credentials/:id', auth, async (req, res) => {
   }
 });
 
+// Fetch User's Order History
+router.get('/orders', auth, async (req, res) => {
+  try {
+    const userId = req.user.id || req.user.userId || req.user._id;
+    const orders = await Order.find({ user_id: userId }).sort({ created_at: -1 }).lean();
+    res.json(orders);
+  } catch (err) {
+    console.error('Fetch Orders Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Fetch User's Purchased Subscriptions (from User model)
+router.get('/purchases', auth, async (req, res) => {
+  try {
+    const userId = req.user.id || req.user.userId || req.user._id;
+    const user = await resolveUser(userId);
+    const subs = (user.purchasedSubscriptions || []).map(s => ({
+      productId: s.productId,
+      name: s.name,
+      isPremium: s.isPremium,
+      durationLabel: s.durationLabel,
+      durationDays: s.durationDays,
+      purchaseDate: s.purchaseDate,
+      expiryDate: s.expiryDate,
+      status: s.status,
+      version: s.version,
+    }));
+    res.json(subs);
+  } catch (err) {
+    console.error('Fetch Purchases Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Checkout - DISABLED (use PayU payment gateway instead)
 router.post('/checkout', auth, async (req, res) => {
   return res.status(403).json({ 

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const AuthSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [errorMSG, setErrorMSG] = useState(null);
   const { loginAdmin, loginClient } = useAuth();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     // Adding a minor delay to ensure React Router is fully settled
@@ -31,8 +33,24 @@ const AuthSuccess = () => {
           console.log("[AuthSuccess] Saving Google OAuth client credentials...");
           loginClient(token, role);
           console.log("[AuthSuccess] Redirecting Google-authenticated client");
-          if (sessionStorage.getItem('pending_checkout_item')) {
-            navigate('/', { replace: true });
+          const pendingItem = sessionStorage.getItem('pending_checkout_item');
+          if (pendingItem) {
+            try {
+              const item = JSON.parse(pendingItem);
+              const product = {
+                id: item.productId,
+                name: item.name,
+                slug: item.slug,
+                isPremium: item.isPremium,
+                pricing: item.pricing,
+              };
+              addToCart(product, item.selectedPlanIndex, item.currency);
+              sessionStorage.removeItem('pending_checkout_item');
+            } catch (parseErr) {
+              console.error("[AuthSuccess] Error parsing pending item:", parseErr);
+              sessionStorage.removeItem('pending_checkout_item');
+            }
+            navigate('/user-dashboard?tab=cart', { replace: true });
           } else {
             navigate('/user-dashboard', { replace: true });
           }

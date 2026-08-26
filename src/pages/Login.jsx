@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Mail, Lock, Eye, EyeOff, User, ArrowRight, Loader2 } from 'lucide-react';
 import ParticleBackground from '../components/ParticleBackground';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { loginAdmin, loginClient } = useAuth();
+  const { addToCart } = useCart();
 
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google/client`;
@@ -50,8 +52,26 @@ const Login = () => {
         console.log("[Login] Saving client credentials...");
         loginClient(data.token, data.role);
         console.log("[Login] Redirect started to client dashboard");
-        if (sessionStorage.getItem('pending_checkout_item')) {
-          navigate('/', { replace: true });
+        const pendingItem = sessionStorage.getItem('pending_checkout_item');
+        if (pendingItem) {
+          try {
+            const item = JSON.parse(pendingItem);
+            // Build a product-like object for addToCart
+            const product = {
+              id: item.productId,
+              name: item.name,
+              slug: item.slug,
+              isPremium: item.isPremium,
+              pricing: item.pricing,
+            };
+            addToCart(product, item.selectedPlanIndex, item.currency);
+            sessionStorage.removeItem('pending_checkout_item');
+            console.log("[Login] Pending item added to cart, redirecting to cart tab");
+          } catch (parseErr) {
+            console.error("[Login] Error parsing pending checkout item:", parseErr);
+            sessionStorage.removeItem('pending_checkout_item');
+          }
+          navigate('/user-dashboard?tab=cart', { replace: true });
         } else {
           navigate('/user-dashboard', { replace: true });
         }
