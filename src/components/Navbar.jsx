@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, ChevronDown, ArrowUpRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/', type: 'route' },
@@ -12,8 +13,16 @@ const NAV_LINKS = [
   { label: 'Contact', href: '/contact', type: 'route' },
 ];
 
-const Navbar = ({ userToken, onLogout }) => {
-  const isLoggedIn = !!(userToken && userToken !== 'null' && userToken !== 'undefined' && userToken.trim() !== '');
+const Navbar = ({ userToken: propToken, onLogout: propLogout }) => {
+  const { clientToken, logoutClient } = useAuth();
+  // Use AuthContext token, fall back to prop token for backward compatibility
+  const effectiveToken = clientToken || propToken;
+  const isLoggedIn = !!(effectiveToken && effectiveToken !== 'null' && effectiveToken !== 'undefined' && effectiveToken.trim() !== '');
+
+  const handleLogout = () => {
+    logoutClient();
+    if (propLogout) propLogout();
+  };
   const { cartCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('Home');
@@ -126,7 +135,7 @@ const Navbar = ({ userToken, onLogout }) => {
                   Dashboard
                 </Link>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="flex items-center gap-1 text-red-400 hover:text-red-300 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-300 bg-red-500/10 border border-red-500/15 hover:border-red-500/30 hover:bg-red-500/15 cursor-pointer"
                 >
                   Logout
@@ -253,7 +262,7 @@ const Navbar = ({ userToken, onLogout }) => {
                       Dashboard
                     </Link>
                     <button
-                      onClick={() => { onLogout(); setIsOpen(false); }}
+                      onClick={() => { handleLogout(); setIsOpen(false); }}
                       className="w-full text-center text-red-400 hover:text-red-300 py-3.5 rounded-xl bg-red-950/15 border border-red-500/20 font-semibold text-[14px] cursor-pointer"
                     >
                       Logout

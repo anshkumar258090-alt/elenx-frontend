@@ -27,11 +27,20 @@ const ContactPage = () => {
     setSending(true);
     setError('');
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/contact`, {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      if (!apiUrl) {
+        throw new Error('Server configuration error. Please try again later.');
+      }
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      // Check if response is actually JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server is not responding correctly. Please try again later.');
+      }
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || 'Failed to send message');
