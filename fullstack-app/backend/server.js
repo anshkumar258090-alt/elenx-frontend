@@ -1,3 +1,4 @@
+// ElenX Backend Server - v2.1 (Contact form + admin contacts management)
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
