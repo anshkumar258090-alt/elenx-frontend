@@ -2,6 +2,7 @@ const express = require('express');
 const { adminAuth } = require('../middleware/auth');
 const User = require('../models/User');
 const Contact = require('../models/Contact');
+const Product = require('../models/Product');
 
 const router = express.Router();
 
@@ -266,6 +267,45 @@ router.delete('/contacts/:id', adminAuth, async (req, res) => {
     if (!contact) return res.status(404).json({ message: 'Message not found' });
     res.json({ message: 'Message deleted successfully' });
   } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ===== PRODUCT DOWNLOAD LINK MANAGEMENT =====
+
+// Get All Products (for Build Manager)
+router.get('/products', adminAuth, async (req, res) => {
+  try {
+    const products = await Product.find({}).sort({ productId: 1 });
+    res.json(products);
+  } catch (err) {
+    console.error('Fetch Products Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Update Download Link for a Product
+router.put('/product/:productId/download-link', adminAuth, async (req, res) => {
+  try {
+    const { download_url } = req.body;
+    const productId = parseInt(req.params.productId, 10);
+
+    if (isNaN(productId)) {
+      return res.status(400).json({ message: 'Invalid product ID' });
+    }
+
+    const product = await Product.findOne({ productId });
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    product.download_url = download_url || '';
+    await product.save();
+
+    console.log(`[Admin] Download link ${download_url ? 'updated' : 'removed'} for product: ${product.name}`);
+    res.json({ message: `Download link ${download_url ? 'saved' : 'removed'} successfully`, product });
+  } catch (err) {
+    console.error('Update Download Link Error:', err);
     res.status(500).json({ message: err.message });
   }
 });

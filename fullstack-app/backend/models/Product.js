@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema({
   image: { type: String },
   file_path: { type: String, required: true },
   file_size: { type: String, default: '14.8 MB' },
+  download_url: { type: String, default: '' },
   features: [{ type: String }],
   compatibility: { type: String, default: 'Windows 10 / 11 (All Versions)' },
   isPremium: { type: Boolean, default: false },

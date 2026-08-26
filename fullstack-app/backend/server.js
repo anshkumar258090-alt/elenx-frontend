@@ -104,19 +104,16 @@ app.get('/api/test-mongodb', (req, res) => {
   }
 });
 
-// Check File Status
-app.get('/api/files/status', (req, res) => {
+// Check File Status (based on download_url in database)
+app.get('/api/files/status', async (req, res) => {
   try {
-    const uploadDir = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadDir)) {
-      return res.json({ internal: false, external: false, bypass: false });
+    const Product = require('./models/Product');
+    const products = await Product.find({}).lean();
+    const status = {};
+    for (const product of products) {
+      const key = product.slug || product.name.toLowerCase().replace(/\s+/g, '-');
+      status[key] = !!product.download_url;
     }
-
-    const status = {
-      internal: fs.existsSync(path.join(uploadDir, 'internal.exe')),
-      external: fs.existsSync(path.join(uploadDir, 'external.exe')),
-      bypass: fs.existsSync(path.join(uploadDir, 'bypass.exe'))
-    };
     res.json(status);
   } catch (err) {
     console.error('Status Check Error:', err);
@@ -124,11 +121,10 @@ app.get('/api/files/status', (req, res) => {
   }
 });
 
-// Secure, authenticated & ownership-validated download system
+// Secure, authenticated & ownership-validated download system (Link-Based)
 const handleSecureDownload = async (req, res) => {
   try {
     const Product = require('./models/Product');
-    const UserProduct = require('./models/UserProduct');
     const param = req.params.id || req.params.productIdOrType;
     let productId = parseInt(param, 10);
     
@@ -149,40 +145,17 @@ const handleSecureDownload = async (req, res) => {
       return res.status(404).json({ message: 'Product not found in system catalog.' });
     }
 
-    const userId = req.user.id || req.user.userId || req.user._id;
+    // Check if download link is set
+    if (!dbProduct.download_url) {
+      return res.status(404).json({ message: 'Download link not available yet. Please contact admin.' });
+    }
 
-    // Verify User has an ACTIVE, non-expired license in UserProduct table
-    const ownership = await UserProduct.findOne({
-      user_id: userId,
-      product_id: dbProduct.productId,
-      ownership_status: 'ACTIVE',
-      expiry_date: { $gt: new Date() }
+    // Return the download URL for client-side redirect
+    res.json({ 
+      download_url: dbProduct.download_url,
+      product_name: dbProduct.name,
+      version: dbProduct.version
     });
-
-    if (!ownership) {
-      return res.status(403).json({ 
-        message: 'Access Denied: You do not possess an active license key for this optimization module.' 
-      });
-    }
-
-    // Deliver binary securely
-    const filename = path.basename(dbProduct.file_path);
-    const filePath = path.join(__dirname, 'uploads', filename);
-
-    // Dynamic physically created file on disk fallback for frictionless dev deployments
-    if (!fs.existsSync(filePath)) {
-      const uploadDir = path.join(__dirname, 'uploads');
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      fs.writeFileSync(
-        filePath, 
-        `ElenX Secure Executable for ${dbProduct.name}. License Hash: ${ownership._id}. System Authorized.`
-      );
-    }
-
-    // Force secure binary attachment stream
-    res.download(filePath, filename);
   } catch (err) {
     console.error('Secure Download Error:', err);
     res.status(500).json({ message: 'Internal server error during download delivery' });
