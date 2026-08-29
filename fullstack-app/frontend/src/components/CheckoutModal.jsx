@@ -164,7 +164,7 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/85 backdrop-blur-md"
+          className="absolute inset-0 bg-black/90 backdrop-blur-md"
           onClick={onClose}
         />
 
@@ -173,23 +173,23 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-lg bg-[#0f0f13] border border-white/10 rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.9)] z-10 overflow-hidden"
+          className="relative w-full max-w-lg bg-[#050608] border border-[#AEB6C2]/20 rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.95)] z-10 overflow-hidden"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-white/5 bg-white/[0.02]">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+              <div className="p-2.5 rounded-xl bg-[#AEB6C2]/10 border border-[#AEB6C2]/20 text-[#D9DEE5]">
                 <CreditCard size={20} />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white font-space-grotesk">Secure Checkout</h3>
-                <p className="text-xs text-zinc-400">Complete your tactical license activation</p>
+                <p className="text-xs text-[#858E9A]">Complete your tactical license activation</p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -199,18 +199,18 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
           <div className="p-6 space-y-5">
             
             {/* Product Summary Card */}
-            <div className="p-4 rounded-2xl bg-[#1e293b]/40 border border-white/5 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-[#0B0D11] border border-[#AEB6C2]/15 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
                   <h4 className="text-base font-bold text-white font-space-grotesk">{product.name}</h4>
                   {product.isPremium && (
-                    <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-full bg-[#AEB6C2]/15 text-[#D9DEE5] border border-[#AEB6C2]/30">
                       ★ Premium
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-zinc-400 mt-0.5">
-                  Plan: <strong className="text-zinc-200">{plan.label}</strong> • {product.compatibility || 'Windows 10/11'}
+                <p className="text-xs text-[#858E9A] mt-0.5">
+                  Plan: <strong className="text-[#D9DEE5]">{plan.label}</strong> • {product.compatibility || 'Windows 10/11'}
                 </p>
               </div>
               <span className="text-xl font-black text-white font-space-grotesk">
@@ -220,8 +220,8 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
 
             {/* Promo / Discount Code Section */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Tag size={13} className="text-amber-400" /> Have a Discount Code?
+              <label className="block text-xs font-bold text-[#D9DEE5] uppercase tracking-wider flex items-center gap-1.5">
+                <Tag size={13} className="text-[#AEB6C2]" /> Have a Discount Code?
               </label>
 
               {!appliedCoupon ? (
@@ -231,36 +231,36 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
                     placeholder="Enter code (e.g. SUMMER50)"
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                    className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-amber-500/50 font-mono font-bold uppercase transition-colors"
+                    className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#AEB6C2]/50 font-mono font-bold uppercase transition-colors"
                   />
                   <button
                     type="button"
                     onClick={handleApplyCoupon}
                     disabled={validatingCoupon || !couponInput.trim()}
-                    className="px-5 py-2.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 disabled:opacity-50"
+                    className="px-5 py-2.5 bg-[#AEB6C2]/15 hover:bg-[#AEB6C2]/25 text-[#D9DEE5] border border-[#AEB6C2]/30 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
                   >
                     {validatingCoupon ? <Loader2 className="animate-spin" size={14} /> : <Sparkles size={14} />}
                     Apply
                   </button>
                 </div>
               ) : (
-                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between animate-in fade-in duration-300">
+                <div className="p-3 rounded-xl bg-[#AEB6C2]/10 border border-[#AEB6C2]/30 flex items-center justify-between animate-in fade-in duration-300">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400">
+                    <div className="w-6 h-6 rounded-full bg-[#AEB6C2]/20 flex items-center justify-center text-[#D9DEE5]">
                       <Check size={14} />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-amber-300 font-mono">
+                      <span className="text-xs font-bold text-[#F5F7FA] font-mono">
                         {appliedCoupon.code}
                       </span>
-                      <span className="text-[11px] text-amber-400/80 ml-2 font-medium">
+                      <span className="text-[11px] text-[#AEB6C2] ml-2 font-medium">
                         ({appliedCoupon.discountPercentage}% Discount Applied)
                       </span>
                     </div>
                   </div>
                   <button
                     onClick={handleRemoveCoupon}
-                    className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all text-xs"
+                    className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all text-xs cursor-pointer"
                     title="Remove Code"
                   >
                     <X size={14} />
@@ -277,13 +277,13 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
 
             {/* Price Breakdown */}
             <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2 text-xs">
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-[#858E9A]">
                 <span>Subtotal ({plan.label})</span>
                 <span className="font-mono text-zinc-300 font-medium">₹{subtotal}</span>
               </div>
 
               {appliedCoupon && (
-                <div className="flex justify-between text-amber-400 font-semibold animate-in fade-in">
+                <div className="flex justify-between text-[#D9DEE5] font-semibold animate-in fade-in">
                   <span>Discount ({appliedCoupon.discountPercentage}%)</span>
                   <span className="font-mono">-₹{discountAmount}</span>
                 </div>
@@ -293,11 +293,11 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
                 <span className="text-sm font-bold text-white uppercase tracking-wider">Final Total</span>
                 <div className="text-right">
                   {appliedCoupon && (
-                    <span className="text-xs text-zinc-500 line-through mr-2 font-mono">
+                    <span className="text-xs text-[#858E9A] line-through mr-2 font-mono">
                       ₹{subtotal}
                     </span>
                   )}
-                  <span className="text-2xl font-black text-white font-space-grotesk">
+                  <span className="text-2xl font-black text-[#F5F7FA] font-space-grotesk">
                     ₹{finalTotal}
                   </span>
                 </div>
@@ -314,7 +314,7 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
             <button
               onClick={handleProceedToPayment}
               disabled={isPaying}
-              className="w-full py-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-zinc-950 font-black rounded-2xl uppercase tracking-wider text-xs shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-4 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] hover:brightness-110 text-[#050608] font-black rounded-2xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {isPaying ? (
                 <><Loader2 className="animate-spin" size={16} /> Redirecting to PayU...</>
@@ -323,8 +323,8 @@ const CheckoutModal = ({ isOpen, onClose, product, selectedPlanIndex = 2, curren
               )}
             </button>
 
-            <div className="flex items-center justify-center gap-2 text-[10px] text-zinc-500 font-semibold">
-              <Shield size={12} className="text-amber-400" /> 256-Bit SSL Encrypted • Instant License Delivery
+            <div className="flex items-center justify-center gap-2 text-[10px] text-[#858E9A] font-semibold">
+              <Shield size={12} className="text-[#AEB6C2]" /> 256-Bit SSL Encrypted • Instant License Delivery
             </div>
 
           </div>
