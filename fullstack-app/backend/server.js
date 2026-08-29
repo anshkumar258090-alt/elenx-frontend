@@ -1,4 +1,4 @@
-// ElenX Backend Server - v2.1 (Contact form + admin contacts management)
+// ElenX Backend Server - v2.2 (Build Manager & Purchase History downloads sync)
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
