@@ -19,7 +19,13 @@ import {
   Lock,
   Terminal,
   X,
-  Menu
+  Menu,
+  ShoppingBag,
+  Receipt,
+  ExternalLink,
+  Package,
+  CreditCard,
+  Calendar
 } from 'lucide-react';
 import ParticleBackground from '../components/ParticleBackground';
 import axios from 'axios';
@@ -441,6 +447,10 @@ const UserDashboard = () => {
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Purchase History states
+  const [orders, setOrders] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+
   useEffect(() => {
     fetchProfile();
     fetchPurchasedProducts();
@@ -530,12 +540,31 @@ const UserDashboard = () => {
     }
   };
 
+  // Fetch Order History
+  const fetchOrders = async () => {
+    setLoadingOrders(true);
+    try {
+      const token = localStorage.getItem('client_token');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/orders`, {
+        headers: { Authorization: token }
+      });
+      console.log('[UserDashboard] Fetched orders:', response.data);
+      setOrders(response.data);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'clients') {
       fetchCredentials();
     } else if (activeTab === 'overview') {
       fetchProfile();
       fetchPurchasedProducts();
+    } else if (activeTab === 'history') {
+      fetchOrders();
     }
   }, [activeTab]);
 
@@ -714,6 +743,13 @@ const UserDashboard = () => {
               <span className="font-medium">Product Library</span>
             </button>
             <button
+              onClick={() => { setActiveTab('history'); setIsSidebarOpen(false); }}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'history' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+            >
+              <Receipt size={20} />
+              <span className="font-medium">Purchase History</span>
+            </button>
+            <button
               onClick={() => { setActiveTab('clients'); setIsSidebarOpen(false); }}
               className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'clients' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
             >
@@ -822,6 +858,166 @@ const UserDashboard = () => {
                   >
                     Browse Main Store
                   </a>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* --- TAB: PURCHASE HISTORY --- */}
+          {activeTab === 'history' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold font-space-grotesk text-white flex items-center gap-2">
+                    <Receipt size={22} className="text-amber-400" /> Purchase History
+                  </h3>
+                  <p className="text-xs text-zinc-400 mt-1">All your past orders and product downloads.</p>
+                </div>
+                <button
+                  onClick={fetchOrders}
+                  className="text-xs font-bold text-zinc-500 bg-[#1e293b] border border-white/5 px-3 py-1.5 rounded-full uppercase hover:text-white hover:border-white/10 transition-all flex items-center gap-1.5"
+                >
+                  <RefreshCw size={12} /> Refresh
+                </button>
+              </div>
+
+              {loadingOrders ? (
+                <div className="flex items-center justify-center py-20">
+                  <RefreshCw className="animate-spin text-amber-400" size={28} />
+                  <span className="ml-3 text-zinc-400 font-medium">Loading orders...</span>
+                </div>
+              ) : orders.length === 0 ? (
+                <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">
+                  <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-6">
+                    <ShoppingBag size={32} />
+                  </div>
+                  <h4 className="text-2xl font-black font-space-grotesk text-white mb-2">NO PURCHASES YET</h4>
+                  <p className="text-zinc-400 text-sm max-w-xs mb-8">
+                    You haven't made any purchases. Browse our store to get started with premium tactical modules.
+                  </p>
+                  <a
+                    href="/#products"
+                    className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition-all transform hover:-translate-y-0.5"
+                  >
+                    Browse Store
+                  </a>
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  {orders.map((order) => {
+                    const isSuccess = order.payment_status === 'SUCCESS';
+                    const isFailed = order.payment_status === 'FAILED';
+                    const isPending = order.payment_status === 'PENDING';
+                    const orderDate = new Date(order.created_at).toLocaleDateString('en-US', {
+                      year: 'numeric', month: 'short', day: 'numeric'
+                    });
+                    const orderTime = new Date(order.created_at).toLocaleTimeString('en-US', {
+                      hour: '2-digit', minute: '2-digit'
+                    });
+
+                    return (
+                      <motion.div
+                        key={order._id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`glass-panel-futuristic rounded-2xl border overflow-hidden transition-all duration-300 hover:shadow-xl ${
+                          isSuccess
+                            ? 'border-amber-500/20 hover:border-amber-500/40'
+                            : isFailed
+                              ? 'border-red-500/20 hover:border-red-500/30'
+                              : 'border-yellow-500/20 hover:border-yellow-500/30'
+                        }`}
+                      >
+                        {/* Order Header */}
+                        <div className={`px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                          isSuccess ? 'bg-amber-500/5' : isFailed ? 'bg-red-500/5' : 'bg-yellow-500/5'
+                        }`}>
+                          <div className="flex items-center gap-4">
+                            <div className={`p-2.5 rounded-xl ${
+                              isSuccess ? 'bg-amber-500/15' : isFailed ? 'bg-red-500/15' : 'bg-yellow-500/15'
+                            }`}>
+                              <CreditCard size={20} className={isSuccess ? 'text-amber-400' : isFailed ? 'text-red-400' : 'text-yellow-400'} />
+                            </div>
+                            <div>
+                              <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                <Calendar size={10} /> {orderDate} • {orderTime}
+                              </p>
+                              <p className="text-xs font-mono text-zinc-400 mt-0.5">TXN: {order.orderId}</p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg font-black text-white font-space-grotesk">
+                              ₹{order.amount}
+                              <span className="text-[10px] text-zinc-500 font-medium ml-1">{order.currency || 'INR'}</span>
+                            </span>
+                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1 border ${
+                              isSuccess
+                                ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                                : isFailed
+                                  ? 'bg-red-500/15 text-red-400 border-red-500/30'
+                                  : 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30'
+                            }`}>
+                              <div className={`w-1.5 h-1.5 rounded-full ${
+                                isSuccess ? 'bg-amber-400' : isFailed ? 'bg-red-400' : 'bg-yellow-400 animate-pulse'
+                              }`} />
+                              {order.payment_status}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Order Items */}
+                        <div className="px-6 py-4 space-y-3">
+                          {(order.items || []).map((item, idx) => {
+                            const itemName = item.name || `Product #${item.productId}`;
+                            return (
+                              <div
+                                key={idx}
+                                className="flex items-center justify-between p-3 rounded-xl bg-[#1e293b]/40 border border-white/5 hover:border-white/10 transition-all group"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 bg-[#0f172a]/60 rounded-lg border border-white/5">
+                                    <Package size={16} className="text-amber-400" />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-sm font-bold text-white">{itemName}</h4>
+                                    <p className="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider">
+                                      {item.durationLabel || item.durationId} • ₹{item.price}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {isSuccess && (
+                                  <button
+                                    onClick={() => {
+                                      const sanitizedName = itemName.toLowerCase().replace(/\s+/g, '_');
+                                      handleDownload(item.productId, `${sanitizedName}.exe`);
+                                    }}
+                                    className="flex items-center gap-1.5 px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-amber-300 border border-amber-500/20 hover:border-amber-500/40 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all shadow-sm hover:shadow-[0_0_15px_rgba(245,158,11,0.15)] opacity-80 group-hover:opacity-100"
+                                  >
+                                    <Download size={13} />
+                                    Download
+                                  </button>
+                                )}
+                                {isFailed && (
+                                  <span className="text-[10px] font-bold text-red-400/60 uppercase tracking-wider">Payment Failed</span>
+                                )}
+                                {isPending && (
+                                  <span className="text-[10px] font-bold text-yellow-400/60 uppercase tracking-wider flex items-center gap-1">
+                                    <RefreshCw size={10} className="animate-spin" /> Processing
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               )}
             </motion.div>
