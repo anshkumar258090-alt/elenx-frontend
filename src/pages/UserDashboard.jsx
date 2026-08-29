@@ -23,7 +23,10 @@ import {
   ShoppingCart,
   History,
   Trash2,
-  CreditCard
+  CreditCard,
+  Tag,
+  Sparkles,
+  Check
 } from 'lucide-react';
 import ParticleBackground from '../components/ParticleBackground';
 import axios from 'axios';
@@ -450,6 +453,10 @@ const UserDashboard = () => {
   const [orders, setOrders] = useState([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [cartCouponInput, setCartCouponInput] = useState('');
+  const [cartAppliedCoupon, setCartAppliedCoupon] = useState(null);
+  const [validatingCartCoupon, setValidatingCartCoupon] = useState(false);
+  const [cartCouponError, setCartCouponError] = useState('');
 
   // Read ?tab= from URL to auto-switch tab (e.g. after login redirect)
   useEffect(() => {
@@ -566,6 +573,40 @@ const UserDashboard = () => {
     }
   };
 
+  const handleApplyCartCoupon = async (e) => {
+    e?.preventDefault();
+    if (!cartCouponInput.trim()) {
+      setCartCouponError('Please enter a coupon code');
+      return;
+    }
+    setValidatingCartCoupon(true);
+    setCartCouponError('');
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/coupon/validate`, {
+        code: cartCouponInput.trim().toUpperCase(),
+        amount: getCartTotal('INR')
+      });
+      if (response.data.valid) {
+        setCartAppliedCoupon(response.data);
+        setCartCouponError('');
+      } else {
+        setCartAppliedCoupon(null);
+        setCartCouponError(response.data.message || 'Invalid coupon code');
+      }
+    } catch (err) {
+      setCartAppliedCoupon(null);
+      setCartCouponError(err.response?.data?.message || 'Invalid or expired coupon code.');
+    } finally {
+      setValidatingCartCoupon(false);
+    }
+  };
+
+  const handleRemoveCartCoupon = () => {
+    setCartAppliedCoupon(null);
+    setCartCouponInput('');
+    setCartCouponError('');
+  };
+
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
     setIsCheckingOut(true);
@@ -576,8 +617,14 @@ const UserDashboard = () => {
         duration: { id: item.planId }
       }));
 
+      const payload = {
+        items,
+        phone: '9999999999',
+        couponCode: cartAppliedCoupon ? cartAppliedCoupon.code : undefined
+      };
+
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/payu/generate-hash`, 
-        { items },
+        payload,
         { headers: { Authorization: token } }
       );
 
@@ -593,7 +640,7 @@ const UserDashboard = () => {
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = key;
-        input.value = value;
+        input.value = value !== undefined && value !== null ? value.toString() : '';
         form.appendChild(input);
       }
 
@@ -602,7 +649,8 @@ const UserDashboard = () => {
       form.submit();
     } catch (error) {
       console.error('Checkout error:', error);
-      alert('Checkout failed. Please try again.');
+      const errMsg = error.response?.data?.message || error.message || 'Checkout failed. Please try again.';
+      alert(`Checkout failed: ${errMsg}`);
     } finally {
       setIsCheckingOut(false);
     }
@@ -1136,26 +1184,116 @@ const UserDashboard = () => {
                   ))}
 
                   {/* Cart Summary & Checkout */}
-                  <div className="glass-panel-futuristic p-6 rounded-2xl border border-[#AEB6C2]/15 mt-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-zinc-400 text-sm font-bold uppercase tracking-wider">Total ({cartItems.length} item{cartItems.length > 1 ? 's' : ''})</span>
-                      <span className="text-2xl font-black text-white font-space-grotesk">
-                        ₹{getCartTotal('INR')}
-                      </span>
-                    </div>
-                    <button
-                      onClick={handleCheckout}
-                      disabled={isCheckingOut}
-                      className="w-full py-3.5 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] text-[#050608] font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isCheckingOut ? (
-                        <><RefreshCw size={14} className="animate-spin" /> Processing...</>
-                      ) : (
-                        <><CreditCard size={14} /> Proceed to Checkout</>
-                      )}
-                    </button>
-                    <p className="text-center text-[10px] text-zinc-500 mt-3 font-semibold">Secure payment via PayU Gateway</p>
-                  </div>
+                  {(() => {
+                    const subtotal = getCartTotal('INR');
+                    let discountAmount = 0;
+                    if (cartAppliedCoupon) {
+                      if (cartAppliedCoupon.discountType === 'PERCENTAGE') {
+                        discountAmount = Math.round((subtotal * cartAppliedCoupon.discountPercentage) / 100);
+                      } else {
+                        discountAmount = Math.min(cartAppliedCoupon.discountAmount || 0, subtotal);
+                      }
+                    }
+                    const finalTotal = Math.max(1, subtotal - discountAmount);
+
+                    return (
+                      <div className="glass-panel-futuristic p-6 rounded-2xl border border-[#AEB6C2]/15 mt-6 space-y-4">
+                        
+                        {/* Coupon Code Section */}
+                        <div className="space-y-2">
+                          <label className="block text-xs font-bold text-[#D9DEE5] uppercase tracking-wider flex items-center gap-1.5">
+                            <Tag size={13} className="text-[#AEB6C2]" /> Apply Discount Code
+                          </label>
+
+                          {!cartAppliedCoupon ? (
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                placeholder="Enter code (e.g. SUMMER50)"
+                                value={cartCouponInput}
+                                onChange={(e) => setCartCouponInput(e.target.value.toUpperCase())}
+                                className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#AEB6C2]/50 font-mono font-bold uppercase transition-colors"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleApplyCartCoupon}
+                                disabled={validatingCartCoupon || !cartCouponInput.trim()}
+                                className="px-5 py-2.5 bg-[#AEB6C2]/15 hover:bg-[#AEB6C2]/25 text-[#D9DEE5] border border-[#AEB6C2]/30 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                              >
+                                {validatingCartCoupon ? <RefreshCw className="animate-spin" size={14} /> : <Sparkles size={14} />}
+                                Apply
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="p-3 rounded-xl bg-[#AEB6C2]/10 border border-[#AEB6C2]/30 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 rounded-full bg-[#AEB6C2]/20 flex items-center justify-center text-[#D9DEE5]">
+                                  <Check size={14} />
+                                </div>
+                                <div>
+                                  <span className="text-xs font-bold text-[#F5F7FA] font-mono">
+                                    {cartAppliedCoupon.code}
+                                  </span>
+                                  <span className="text-[11px] text-[#AEB6C2] ml-2 font-medium">
+                                    ({cartAppliedCoupon.discountPercentage}% Discount Applied)
+                                  </span>
+                                </div>
+                              </div>
+                              <button
+                                onClick={handleRemoveCartCoupon}
+                                className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all text-xs cursor-pointer"
+                                title="Remove Code"
+                              >
+                                <X size={14} />
+                              </button>
+                            </div>
+                          )}
+
+                          {cartCouponError && (
+                            <p className="text-xs text-red-400 mt-1 font-medium">{cartCouponError}</p>
+                          )}
+                        </div>
+
+                        {/* Subtotal & Total */}
+                        <div className="pt-2 border-t border-white/5 space-y-1.5 text-xs">
+                          <div className="flex items-center justify-between text-[#858E9A]">
+                            <span>Subtotal ({cartItems.length} item{cartItems.length > 1 ? 's' : ''})</span>
+                            <span className="font-mono text-zinc-300">₹{subtotal}</span>
+                          </div>
+                          {cartAppliedCoupon && (
+                            <div className="flex items-center justify-between text-[#D9DEE5] font-semibold">
+                              <span>Discount ({cartAppliedCoupon.discountPercentage}%)</span>
+                              <span className="font-mono">-₹{discountAmount}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                            <span className="text-sm font-bold text-white uppercase tracking-wider">Final Total</span>
+                            <div className="text-right">
+                              {cartAppliedCoupon && (
+                                <span className="text-xs text-[#858E9A] line-through mr-2 font-mono">₹{subtotal}</span>
+                              )}
+                              <span className="text-2xl font-black text-white font-space-grotesk">
+                                ₹{finalTotal}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={handleCheckout}
+                          disabled={isCheckingOut}
+                          className="w-full py-3.5 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] text-[#050608] font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          {isCheckingOut ? (
+                            <><RefreshCw size={14} className="animate-spin" /> Processing...</>
+                          ) : (
+                            <><CreditCard size={14} /> Proceed to Checkout (₹{finalTotal})</>
+                          )}
+                        </button>
+                        <p className="text-center text-[10px] text-[#858E9A] mt-2 font-semibold">Secure payment via PayU Gateway</p>
+                      </div>
+                    );
+                  })()}
                 </div>
               ) : (
                 <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">

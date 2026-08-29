@@ -20,16 +20,18 @@ import {
   Terminal,
   X,
   Menu,
-  ShoppingBag,
-  Receipt,
-  ExternalLink,
-  Package,
+  ShoppingCart,
+  History,
+  Trash2,
   CreditCard,
-  Calendar
+  Tag,
+  Sparkles,
+  Check
 } from 'lucide-react';
 import ParticleBackground from '../components/ParticleBackground';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 // Predefined premium changelogs for the gaming launcher interface
 const UPDATE_LOGS = {
@@ -136,10 +138,10 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
   const getProductIcon = () => {
     const name = product.name.toLowerCase();
     if (name.includes('internal')) return <Cpu className="text-purple-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
-    if (name.includes('external')) return <Shield className="text-amber-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
+    if (name.includes('external')) return <Shield className="text-[#AEB6C2] w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
     if (name.includes('streamer') || name.includes('stremer')) return <Zap className="text-yellow-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
     if (name.includes('bypass')) return <Key className="text-red-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
-    return <FileCode className="text-amber-400 w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
+    return <FileCode className="text-[#AEB6C2] w-10 h-10 group-hover:scale-110 transition-transform duration-300" />;
   };
 
   const isDownloading = downloadState && downloadState.active;
@@ -157,8 +159,8 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
           </div>
           
           <div className="flex flex-col items-end gap-1.5">
-            <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 ${isExpired ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_10px_rgba(245, 158, 11,0.1)]'}`}>
-              <div className={`w-1.5 h-1.5 rounded-full ${isExpired ? 'bg-red-400' : 'bg-amber-400 animate-pulse'}`} />
+            <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 ${isExpired ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/15 shadow-[0_0_10px_rgba(174, 182, 194,0.1)]'}`}>
+              <div className={`w-1.5 h-1.5 rounded-full ${isExpired ? 'bg-red-400' : 'bg-[#AEB6C2] animate-pulse'}`} />
               {isExpired ? 'Expired' : 'Active'}
             </span>
             <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
@@ -168,7 +170,7 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
         </div>
 
         {/* Product Title */}
-        <h3 className="text-2xl font-black font-space-grotesk tracking-tight text-white mb-1 group-hover:text-amber-400 transition-colors">
+        <h3 className="text-2xl font-black font-space-grotesk tracking-tight text-white mb-1 group-hover:text-[#AEB6C2] transition-colors">
           {product.name}
         </h3>
         <p className="text-zinc-500 text-xs font-semibold tracking-wide uppercase mb-4">
@@ -201,16 +203,16 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
         {isDownloading ? (
           <div className="space-y-1.5">
             <div className="flex justify-between items-center text-xs px-1">
-              <span className="text-amber-400 font-black animate-pulse flex items-center gap-1">
+              <span className="text-[#AEB6C2] font-black animate-pulse flex items-center gap-1">
                 <RefreshCw size={12} className="animate-spin" /> DOWNLOADING...
               </span>
               <span className="text-zinc-400 font-mono font-bold">{downloadState.progress}%</span>
             </div>
             
             {/* Progress bar container */}
-            <div className="w-full h-2.5 bg-[#0f172a] rounded-full overflow-hidden border border-white/5">
+            <div className="w-full h-2.5 bg-[#050608] rounded-full overflow-hidden border border-white/5">
               <div 
-                className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full progress-bar-stripes transition-all duration-150" 
+                className="h-full bg-gradient-to-r from-[#AEB6C2] to-[#D9DEE5] rounded-full progress-bar-stripes transition-all duration-150" 
                 style={{ width: `${downloadState.progress}%` }}
               />
             </div>
@@ -239,7 +241,7 @@ const ProductCard = ({ product, downloadState, onDownload, onLaunch, onOpenChang
               className={`col-span-2 py-3 rounded-xl transition-all flex items-center justify-center gap-1 font-black uppercase text-[10px] tracking-wider border relative overflow-hidden group/btn
               ${isExpired 
                 ? 'bg-zinc-850 text-zinc-600 cursor-not-allowed border-white/5' 
-                : 'bg-amber-500 text-zinc-950 hover:bg-amber-400 border-transparent cursor-pointer shadow-[0_0_10px_rgba(245, 158, 11,0.2)] hover:shadow-[0_0_20px_rgba(245, 158, 11,0.45)]'}`}
+                : 'bg-[#D9DEE5] text-zinc-950 hover:bg-[#AEB6C2] border-transparent cursor-pointer shadow-[0_0_10px_rgba(174, 182, 194,0.2)] hover:shadow-[0_0_20px_rgba(174, 182, 194,0.45)]'}`}
               title="Inject / Launch Tactical Override"
             >
               <Zap size={12} className="animate-pulse" /> Launch
@@ -334,7 +336,7 @@ const LaunchConsoleModal = ({ product, onClose }) => {
         initial={{ opacity: 0, scale: 0.9, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 30 }}
-        className="relative w-full max-w-2xl bg-[#0f172a] border border-purple-500/35 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.25)] z-10 overflow-hidden rgb-border-glow"
+        className="relative w-full max-w-2xl bg-[#050608] border border-purple-500/35 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.25)] z-10 overflow-hidden rgb-border-glow"
       >
         {/* Terminal Header */}
         <div className="flex justify-between items-center px-4 py-3 bg-[#1e293b] border-b border-white/10">
@@ -357,15 +359,15 @@ const LaunchConsoleModal = ({ product, onClose }) => {
           <div className="flex-shrink-0 w-44 h-44 relative flex items-center justify-center">
             {/* Spinning scanner rings */}
             <div className="absolute inset-0 rounded-full border border-purple-500/20 animate-[spin_12s_linear_infinite]" />
-            <div className="absolute inset-2 rounded-full border border-dashed border-amber-500/30 animate-[spin_8s_linear_infinite_reverse]" />
+            <div className="absolute inset-2 rounded-full border border-dashed border-[#AEB6C2]/20 animate-[spin_8s_linear_infinite_reverse]" />
             <div className="absolute inset-6 rounded-full border border-purple-400/10 shadow-[0_0_20px_rgba(168,85,247,0.15)] animate-pulse" />
-            <div className="absolute inset-8 rounded-full border border-amber-400/5 bg-[#1e293b]/40" />
+            <div className="absolute inset-8 rounded-full border border-[#AEB6C2]/5 bg-[#1e293b]/40" />
             
             {/* Scanner central stats */}
             <div className="flex flex-col items-center justify-center text-center z-10 font-sans">
-              <Cpu className={`w-8 h-8 ${progress < 100 ? 'text-purple-400 animate-pulse' : 'text-amber-400'} mb-1`} />
+              <Cpu className={`w-8 h-8 ${progress < 100 ? 'text-purple-400 animate-pulse' : 'text-[#AEB6C2]'} mb-1`} />
               <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Status</span>
-              <span className={`text-[10px] font-black uppercase mb-0.5 tracking-wider ${progress < 100 ? 'text-purple-400' : 'text-amber-400'}`}>
+              <span className={`text-[10px] font-black uppercase mb-0.5 tracking-wider ${progress < 100 ? 'text-purple-400' : 'text-[#AEB6C2]'}`}>
                 {progress < 100 ? 'Injecting' : 'Completed'}
               </span>
               <span className="text-xl font-black text-white font-mono">{progress}%</span>
@@ -386,7 +388,7 @@ const LaunchConsoleModal = ({ product, onClose }) => {
                   key={index}
                   className={
                     log.includes('[SUCCESS]') 
-                      ? 'text-amber-400 font-bold' 
+                      ? 'text-[#AEB6C2] font-bold' 
                       : log.includes('[SYS]') 
                       ? 'text-zinc-400' 
                       : log.includes('===') 
@@ -401,9 +403,9 @@ const LaunchConsoleModal = ({ product, onClose }) => {
 
             {/* Glowing progress meter at the bottom */}
             <div className="p-3 bg-[#1e293b]/60 border-t border-white/5 flex items-center justify-between">
-              <div className="w-2/3 h-1.5 bg-[#0f172a] rounded-full overflow-hidden border border-white/5">
+              <div className="w-2/3 h-1.5 bg-[#050608] rounded-full overflow-hidden border border-white/5">
                 <div 
-                  className={`h-full rounded-full transition-all duration-150 ${status === 'success' ? 'bg-amber-500 shadow-[0_0_10px_rgba(245, 158, 11,0.5)]' : 'bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]'}`}
+                  className={`h-full rounded-full transition-all duration-150 ${status === 'success' ? 'bg-[#D9DEE5] shadow-[0_0_10px_rgba(174, 182, 194,0.5)]' : 'bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]'}`}
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -420,7 +422,7 @@ const LaunchConsoleModal = ({ product, onClose }) => {
             onClick={onClose}
             className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all
             ${status === 'success'
-              ? 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-[0_0_15px_rgba(245, 158, 11,0.25)] hover:shadow-[0_0_25px_rgba(245, 158, 11,0.5)]'
+              ? 'bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 shadow-[0_0_15px_rgba(174, 182, 194,0.25)] hover:shadow-[0_0_25px_rgba(174, 182, 194,0.5)]'
               : 'bg-zinc-800 hover:bg-zinc-750 text-zinc-300 hover:text-white border border-white/5'}`}
           >
             {status === 'success' ? 'Close & System Launch' : 'Abort Override'}
@@ -433,6 +435,8 @@ const LaunchConsoleModal = ({ product, onClose }) => {
 
 const UserDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { cartItems, cartCount, removeFromCart, clearCart, getCartTotal } = useCart();
   const [credentials, setCredentials] = useState([]);
   const [newCred, setNewCred] = useState({ productId: '', username: '', password: '' });
   const [activeTab, setActiveTab] = useState('overview');
@@ -446,10 +450,24 @@ const UserDashboard = () => {
   const [purchasedProducts, setPurchasedProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // Purchase History states
   const [orders, setOrders] = useState([]);
-  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [cartCouponInput, setCartCouponInput] = useState('');
+  const [cartAppliedCoupon, setCartAppliedCoupon] = useState(null);
+  const [validatingCartCoupon, setValidatingCartCoupon] = useState(false);
+  const [cartCouponError, setCartCouponError] = useState('');
+
+  // Read ?tab= from URL to auto-switch tab (e.g. after login redirect)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['overview', 'clients', 'cart', 'purchases'].includes(tabParam)) {
+      setActiveTab(tabParam);
+      // Clean URL after reading
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     fetchProfile();
@@ -540,20 +558,101 @@ const UserDashboard = () => {
     }
   };
 
-  // Fetch Order History
   const fetchOrders = async () => {
-    setLoadingOrders(true);
     try {
+      setIsLoadingOrders(true);
       const token = localStorage.getItem('client_token');
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/orders`, {
         headers: { Authorization: token }
       });
-      console.log('[UserDashboard] Fetched orders:', response.data);
       setOrders(response.data);
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
-      setLoadingOrders(false);
+      setIsLoadingOrders(false);
+    }
+  };
+
+  const handleApplyCartCoupon = async (e) => {
+    e?.preventDefault();
+    if (!cartCouponInput.trim()) {
+      setCartCouponError('Please enter a coupon code');
+      return;
+    }
+    setValidatingCartCoupon(true);
+    setCartCouponError('');
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/coupon/validate`, {
+        code: cartCouponInput.trim().toUpperCase(),
+        amount: getCartTotal('INR')
+      });
+      if (response.data.valid) {
+        setCartAppliedCoupon(response.data);
+        setCartCouponError('');
+      } else {
+        setCartAppliedCoupon(null);
+        setCartCouponError(response.data.message || 'Invalid coupon code');
+      }
+    } catch (err) {
+      setCartAppliedCoupon(null);
+      setCartCouponError(err.response?.data?.message || 'Invalid or expired coupon code.');
+    } finally {
+      setValidatingCartCoupon(false);
+    }
+  };
+
+  const handleRemoveCartCoupon = () => {
+    setCartAppliedCoupon(null);
+    setCartCouponInput('');
+    setCartCouponError('');
+  };
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) return;
+    setIsCheckingOut(true);
+    try {
+      const token = localStorage.getItem('client_token');
+      const items = cartItems.map(item => ({
+        product: { id: item.productId },
+        duration: { id: item.planId }
+      }));
+
+      const payload = {
+        items,
+        phone: '9999999999',
+        couponCode: cartAppliedCoupon ? cartAppliedCoupon.code : undefined
+      };
+
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/payu/generate-hash`, 
+        payload,
+        { headers: { Authorization: token } }
+      );
+
+      const { actionUrl, params } = response.data;
+
+      // Create and submit PayU form
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = actionUrl;
+      form.style.display = 'none';
+
+      for (const [key, value] of Object.entries(params)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value !== undefined && value !== null ? value.toString() : '';
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      clearCart(); // Clear cart before redirecting to payment
+      form.submit();
+    } catch (error) {
+      console.error('Checkout error:', error);
+      const errMsg = error.response?.data?.message || error.message || 'Checkout failed. Please try again.';
+      alert(`Checkout failed: ${errMsg}`);
+    } finally {
+      setIsCheckingOut(false);
     }
   };
 
@@ -563,8 +662,9 @@ const UserDashboard = () => {
     } else if (activeTab === 'overview') {
       fetchProfile();
       fetchPurchasedProducts();
-    } else if (activeTab === 'history') {
+    } else if (activeTab === 'purchases') {
       fetchOrders();
+      fetchProfile();
     }
   }, [activeTab]);
 
@@ -707,18 +807,18 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen font-inter relative overflow-hidden flex bg-[#0f172a]">
+    <div className="min-h-screen font-inter relative overflow-hidden flex bg-[#050608]">
       <ParticleBackground />
 
       {/* Futuristic Launcher Orbs */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5]/5 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
 
       {/* Backdrop overlay for mobile */}
       {isSidebarOpen && (
         <div 
           onClick={() => setIsSidebarOpen(false)} 
-          className="fixed inset-0 z-40 bg-[#0f172a]/80 backdrop-blur-sm lg:hidden transition-all duration-300"
+          className="fixed inset-0 z-40 bg-[#050608]/80 backdrop-blur-sm lg:hidden transition-all duration-300"
         />
       )}
 
@@ -730,28 +830,40 @@ const UserDashboard = () => {
       >
         <div className="px-8">
           <h1 className="text-2xl font-bold font-space-grotesk tracking-wide mb-10 text-white">
-            ELEN<span className="text-amber-500">X</span>
+            ELEN<span className="text-[#AEB6C2]">X</span>
             <span className="block text-xs font-normal text-zinc-400 mt-1 tracking-widest uppercase">Client Launcher</span>
           </h1>
 
           <nav className="space-y-4">
             <button
               onClick={() => { setActiveTab('overview'); setIsSidebarOpen(false); }}
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'overview' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'overview' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
             >
               <Cpu size={20} />
               <span className="font-medium">Product Library</span>
             </button>
             <button
-              onClick={() => { setActiveTab('history'); setIsSidebarOpen(false); }}
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'history' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+              onClick={() => { setActiveTab('cart'); setIsSidebarOpen(false); }}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'cart' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
             >
-              <Receipt size={20} />
+              <ShoppingCart size={20} />
+              <span className="font-medium">Cart</span>
+              {cartCount > 0 && (
+                <span className="ml-auto px-2 py-0.5 text-[10px] font-black bg-[#AEB6C2] text-[#050608] rounded-full min-w-[20px] text-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => { setActiveTab('purchases'); setIsSidebarOpen(false); }}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'purchases' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+            >
+              <History size={20} />
               <span className="font-medium">Purchase History</span>
             </button>
             <button
               onClick={() => { setActiveTab('clients'); setIsSidebarOpen(false); }}
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'clients' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${activeTab === 'clients' ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/20 gold-glow font-bold' : 'text-zinc-400 hover:bg-[#1e293b]/50'}`}
             >
               <Key size={20} />
               <span className="font-medium">Credential Manager</span>
@@ -786,7 +898,7 @@ const UserDashboard = () => {
           
           <div className="flex items-center space-x-4">
             <div className="px-4 py-2 bg-[#1e293b]/80 rounded-full border border-white/5 shadow-sm flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-[#AEB6C2] animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold text-zinc-300">SYSTEM SECURE</span>
             </div>
           </div>
@@ -799,7 +911,7 @@ const UserDashboard = () => {
               initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center gap-3 text-amber-400 text-sm font-semibold shadow-[0_0_20px_rgba(245, 158, 11,0.1)] w-fit"
+              className="mb-8 p-4 bg-[#D9DEE5]/10 border border-[#AEB6C2]/20 rounded-2xl flex items-center gap-3 text-[#AEB6C2] text-sm font-semibold shadow-[0_0_20px_rgba(174, 182, 194,0.1)] w-fit"
             >
               <CheckCircle size={18} className="animate-bounce" />
               {downloadSuccessToast}
@@ -854,170 +966,10 @@ const UserDashboard = () => {
                   </p>
                   <a
                     href="/#products"
-                    className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition-all transform hover:-translate-y-0.5"
+                    className="px-8 py-3 bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5"
                   >
                     Browse Main Store
                   </a>
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {/* --- TAB: PURCHASE HISTORY --- */}
-          {activeTab === 'history' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-bold font-space-grotesk text-white flex items-center gap-2">
-                    <Receipt size={22} className="text-amber-400" /> Purchase History
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-1">All your past orders and product downloads.</p>
-                </div>
-                <button
-                  onClick={fetchOrders}
-                  className="text-xs font-bold text-zinc-500 bg-[#1e293b] border border-white/5 px-3 py-1.5 rounded-full uppercase hover:text-white hover:border-white/10 transition-all flex items-center gap-1.5"
-                >
-                  <RefreshCw size={12} /> Refresh
-                </button>
-              </div>
-
-              {loadingOrders ? (
-                <div className="flex items-center justify-center py-20">
-                  <RefreshCw className="animate-spin text-amber-400" size={28} />
-                  <span className="ml-3 text-zinc-400 font-medium">Loading orders...</span>
-                </div>
-              ) : orders.length === 0 ? (
-                <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">
-                  <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-6">
-                    <ShoppingBag size={32} />
-                  </div>
-                  <h4 className="text-2xl font-black font-space-grotesk text-white mb-2">NO PURCHASES YET</h4>
-                  <p className="text-zinc-400 text-sm max-w-xs mb-8">
-                    You haven't made any purchases. Browse our store to get started with premium tactical modules.
-                  </p>
-                  <a
-                    href="/#products"
-                    className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition-all transform hover:-translate-y-0.5"
-                  >
-                    Browse Store
-                  </a>
-                </div>
-              ) : (
-                <div className="space-y-5">
-                  {orders.map((order) => {
-                    const isSuccess = order.payment_status === 'SUCCESS';
-                    const isFailed = order.payment_status === 'FAILED';
-                    const isPending = order.payment_status === 'PENDING';
-                    const orderDate = new Date(order.created_at).toLocaleDateString('en-US', {
-                      year: 'numeric', month: 'short', day: 'numeric'
-                    });
-                    const orderTime = new Date(order.created_at).toLocaleTimeString('en-US', {
-                      hour: '2-digit', minute: '2-digit'
-                    });
-
-                    return (
-                      <motion.div
-                        key={order._id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className={`glass-panel-futuristic rounded-2xl border overflow-hidden transition-all duration-300 hover:shadow-xl ${
-                          isSuccess
-                            ? 'border-amber-500/20 hover:border-amber-500/40'
-                            : isFailed
-                              ? 'border-red-500/20 hover:border-red-500/30'
-                              : 'border-yellow-500/20 hover:border-yellow-500/30'
-                        }`}
-                      >
-                        {/* Order Header */}
-                        <div className={`px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                          isSuccess ? 'bg-amber-500/5' : isFailed ? 'bg-red-500/5' : 'bg-yellow-500/5'
-                        }`}>
-                          <div className="flex items-center gap-4">
-                            <div className={`p-2.5 rounded-xl ${
-                              isSuccess ? 'bg-amber-500/15' : isFailed ? 'bg-red-500/15' : 'bg-yellow-500/15'
-                            }`}>
-                              <CreditCard size={20} className={isSuccess ? 'text-amber-400' : isFailed ? 'text-red-400' : 'text-yellow-400'} />
-                            </div>
-                            <div>
-                              <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                                <Calendar size={10} /> {orderDate} • {orderTime}
-                              </p>
-                              <p className="text-xs font-mono text-zinc-400 mt-0.5">TXN: {order.orderId}</p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-3">
-                            <span className="text-lg font-black text-white font-space-grotesk">
-                              ₹{order.amount}
-                              <span className="text-[10px] text-zinc-500 font-medium ml-1">{order.currency || 'INR'}</span>
-                            </span>
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1 border ${
-                              isSuccess
-                                ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                                : isFailed
-                                  ? 'bg-red-500/15 text-red-400 border-red-500/30'
-                                  : 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30'
-                            }`}>
-                              <div className={`w-1.5 h-1.5 rounded-full ${
-                                isSuccess ? 'bg-amber-400' : isFailed ? 'bg-red-400' : 'bg-yellow-400 animate-pulse'
-                              }`} />
-                              {order.payment_status}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Order Items */}
-                        <div className="px-6 py-4 space-y-3">
-                          {(order.items || []).map((item, idx) => {
-                            const itemName = item.name || `Product #${item.productId}`;
-                            return (
-                              <div
-                                key={idx}
-                                className="flex items-center justify-between p-3 rounded-xl bg-[#1e293b]/40 border border-white/5 hover:border-white/10 transition-all group"
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div className="p-2 bg-[#0f172a]/60 rounded-lg border border-white/5">
-                                    <Package size={16} className="text-amber-400" />
-                                  </div>
-                                  <div>
-                                    <h4 className="text-sm font-bold text-white">{itemName}</h4>
-                                    <p className="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider">
-                                      {item.durationLabel || item.durationId} • ₹{item.price}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                {isSuccess && (
-                                  <button
-                                    onClick={() => {
-                                      const sanitizedName = itemName.toLowerCase().replace(/\s+/g, '_');
-                                      handleDownload(item.productId, `${sanitizedName}.exe`);
-                                    }}
-                                    className="flex items-center gap-1.5 px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-amber-300 border border-amber-500/20 hover:border-amber-500/40 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all shadow-sm hover:shadow-[0_0_15px_rgba(245,158,11,0.15)] opacity-80 group-hover:opacity-100"
-                                  >
-                                    <Download size={13} />
-                                    Download
-                                  </button>
-                                )}
-                                {isFailed && (
-                                  <span className="text-[10px] font-bold text-red-400/60 uppercase tracking-wider">Payment Failed</span>
-                                )}
-                                {isPending && (
-                                  <span className="text-[10px] font-bold text-yellow-400/60 uppercase tracking-wider flex items-center gap-1">
-                                    <RefreshCw size={10} className="animate-spin" /> Processing
-                                  </span>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
                 </div>
               )}
             </motion.div>
@@ -1033,7 +985,7 @@ const UserDashboard = () => {
                 className="lg:col-span-1 glass-panel p-6 rounded-3xl border border-white/10 shadow-lg h-fit"
               >
                 <h3 className="text-lg font-bold text-zinc-100 mb-6 flex items-center gap-2">
-                  <UserPlus size={20} className="text-amber-400" /> Save Operational Credentials
+                  <UserPlus size={20} className="text-[#AEB6C2]" /> Save Operational Credentials
                 </h3>
                 <form onSubmit={handleSaveCredentials} className="space-y-4">
                   {(() => {
@@ -1062,12 +1014,12 @@ const UserDashboard = () => {
                           <select
                             value={newCred.productId}
                             onChange={(e) => setNewCred({ ...newCred, productId: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#1e293b]/60 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 transition-all text-zinc-200 font-semibold"
+                            className="w-full px-4 py-3 bg-[#1e293b]/60 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] transition-all text-zinc-200 font-semibold"
                             required
                           >
                             <option value="" disabled>-- Choose Module --</option>
                             {activeOwnedProducts.map(prod => (
-                              <option key={prod.productId} value={prod.productId} className="bg-[#0f172a] text-white font-semibold">
+                              <option key={prod.productId} value={prod.productId} className="bg-[#050608] text-white font-semibold">
                                 {prod.name} ({prod.version})
                               </option>
                             ))}
@@ -1079,7 +1031,7 @@ const UserDashboard = () => {
                             placeholder="Operational Username"
                             value={newCred.username}
                             onChange={(e) => setNewCred({ ...newCred, username: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
+                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
                             required
                           />
                         </div>
@@ -1089,11 +1041,11 @@ const UserDashboard = () => {
                             placeholder="Assign Password Override"
                             value={newCred.password}
                             onChange={(e) => setNewCred({ ...newCred, password: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
+                            className="w-full px-4 py-3 bg-[#1e293b]/50 border border-white/10 rounded-xl focus:outline-none focus:border-[#AEB6C2] focus:bg-[#1e293b] transition-all text-zinc-200 placeholder-zinc-500 font-semibold font-mono"
                             required
                           />
                         </div>
-                        <button type="submit" className="w-full py-3.5 bg-amber-500 text-zinc-950 hover:bg-amber-400 font-black rounded-xl hover:shadow-[0_0_20px_rgba(245, 158, 11,0.3)] transition-all uppercase tracking-wider text-xs border border-transparent">
+                        <button type="submit" className="w-full py-3.5 bg-[#D9DEE5] text-zinc-950 hover:bg-[#AEB6C2] font-black rounded-xl hover:shadow-[0_0_20px_rgba(174, 182, 194,0.3)] transition-all uppercase tracking-wider text-xs border border-transparent">
                           [ Save Credentials ]
                         </button>
                       </>
@@ -1109,7 +1061,7 @@ const UserDashboard = () => {
                 className="lg:col-span-2 glass-panel p-6 rounded-3xl border border-white/10 shadow-lg"
               >
                 <h3 className="text-lg font-bold text-zinc-100 mb-6 flex items-center gap-2">
-                  <Key size={20} className="text-amber-400 animate-pulse" /> Active Credentials Registry
+                  <Key size={20} className="text-[#AEB6C2] animate-pulse" /> Active Credentials Registry
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
@@ -1162,6 +1114,344 @@ const UserDashboard = () => {
             </div>
           )}
 
+          {/* ===== CART TAB ===== */}
+          {activeTab === 'cart' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold font-space-grotesk text-white flex items-center gap-2">
+                    <ShoppingCart size={22} className="text-[#AEB6C2]" /> Your Cart
+                  </h3>
+                  <p className="text-xs text-zinc-400">Items you've selected for purchase.</p>
+                </div>
+                {cartItems.length > 0 && (
+                  <button
+                    onClick={clearCart}
+                    className="text-xs font-bold text-red-400 hover:text-red-300 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-full uppercase tracking-wider transition-all hover:bg-red-500/15"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
+
+              {cartItems.length > 0 ? (
+                <div className="space-y-4">
+                  {/* Cart Items */}
+                  {cartItems.map((item, index) => (
+                    <motion.div
+                      key={`${item.productId}-${item.planId}-${index}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="glass-panel-futuristic p-5 rounded-2xl border border-white/10 flex items-center justify-between group hover:border-[#AEB6C2]/20 transition-all"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#AEB6C2]/8 border border-[#AEB6C2]/10 flex items-center justify-center">
+                          <ShoppingCart size={20} className="text-[#AEB6C2]" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-bold font-space-grotesk text-sm">
+                            {item.name}
+                            {item.isPremium && (
+                              <span className="ml-2 text-[9px] px-2 py-0.5 bg-[#AEB6C2]/10 text-[#D9DEE5] border border-[#AEB6C2]/20 rounded-full uppercase tracking-wider font-bold">
+                                ★ Premium
+                              </span>
+                            )}
+                          </h4>
+                          <p className="text-zinc-500 text-xs font-semibold mt-0.5">
+                            Duration: <span className="text-zinc-300">{item.planLabel}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <span className="text-lg font-black text-white font-space-grotesk">
+                          {item.symbol}{item.currency === 'INR' ? item.priceInr : item.priceUsd}
+                        </span>
+                        <button
+                          onClick={() => removeFromCart(index)}
+                          className="p-2 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                          title="Remove from cart"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* Cart Summary & Checkout */}
+                  {(() => {
+                    const subtotal = getCartTotal('INR');
+                    let discountAmount = 0;
+                    if (cartAppliedCoupon) {
+                      if (cartAppliedCoupon.discountType === 'PERCENTAGE') {
+                        discountAmount = Math.round((subtotal * cartAppliedCoupon.discountPercentage) / 100);
+                      } else {
+                        discountAmount = Math.min(cartAppliedCoupon.discountAmount || 0, subtotal);
+                      }
+                    }
+                    const finalTotal = Math.max(1, subtotal - discountAmount);
+
+                    return (
+                      <div className="glass-panel-futuristic p-6 rounded-2xl border border-[#AEB6C2]/15 mt-6 space-y-4">
+                        
+                        {/* Coupon Code Section */}
+                        <div className="space-y-2">
+                          <label className="block text-xs font-bold text-[#D9DEE5] uppercase tracking-wider flex items-center gap-1.5">
+                            <Tag size={13} className="text-[#AEB6C2]" /> Apply Discount Code
+                          </label>
+
+                          {!cartAppliedCoupon ? (
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                placeholder="Enter code (e.g. SUMMER50)"
+                                value={cartCouponInput}
+                                onChange={(e) => setCartCouponInput(e.target.value.toUpperCase())}
+                                className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#AEB6C2]/50 font-mono font-bold uppercase transition-colors"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleApplyCartCoupon}
+                                disabled={validatingCartCoupon || !cartCouponInput.trim()}
+                                className="px-5 py-2.5 bg-[#AEB6C2]/15 hover:bg-[#AEB6C2]/25 text-[#D9DEE5] border border-[#AEB6C2]/30 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                              >
+                                {validatingCartCoupon ? <RefreshCw className="animate-spin" size={14} /> : <Sparkles size={14} />}
+                                Apply
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="p-3 rounded-xl bg-[#AEB6C2]/10 border border-[#AEB6C2]/30 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 rounded-full bg-[#AEB6C2]/20 flex items-center justify-center text-[#D9DEE5]">
+                                  <Check size={14} />
+                                </div>
+                                <div>
+                                  <span className="text-xs font-bold text-[#F5F7FA] font-mono">
+                                    {cartAppliedCoupon.code}
+                                  </span>
+                                  <span className="text-[11px] text-[#AEB6C2] ml-2 font-medium">
+                                    ({cartAppliedCoupon.discountPercentage}% Discount Applied)
+                                  </span>
+                                </div>
+                              </div>
+                              <button
+                                onClick={handleRemoveCartCoupon}
+                                className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all text-xs cursor-pointer"
+                                title="Remove Code"
+                              >
+                                <X size={14} />
+                              </button>
+                            </div>
+                          )}
+
+                          {cartCouponError && (
+                            <p className="text-xs text-red-400 mt-1 font-medium">{cartCouponError}</p>
+                          )}
+                        </div>
+
+                        {/* Subtotal & Total */}
+                        <div className="pt-2 border-t border-white/5 space-y-1.5 text-xs">
+                          <div className="flex items-center justify-between text-[#858E9A]">
+                            <span>Subtotal ({cartItems.length} item{cartItems.length > 1 ? 's' : ''})</span>
+                            <span className="font-mono text-zinc-300">₹{subtotal}</span>
+                          </div>
+                          {cartAppliedCoupon && (
+                            <div className="flex items-center justify-between text-[#D9DEE5] font-semibold">
+                              <span>Discount ({cartAppliedCoupon.discountPercentage}%)</span>
+                              <span className="font-mono">-₹{discountAmount}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                            <span className="text-sm font-bold text-white uppercase tracking-wider">Final Total</span>
+                            <div className="text-right">
+                              {cartAppliedCoupon && (
+                                <span className="text-xs text-[#858E9A] line-through mr-2 font-mono">₹{subtotal}</span>
+                              )}
+                              <span className="text-2xl font-black text-white font-space-grotesk">
+                                ₹{finalTotal}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={handleCheckout}
+                          disabled={isCheckingOut}
+                          className="w-full py-3.5 bg-gradient-to-r from-[#D9DEE5] via-[#F5F7FA] to-[#D9DEE5] text-[#050608] font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          {isCheckingOut ? (
+                            <><RefreshCw size={14} className="animate-spin" /> Processing...</>
+                          ) : (
+                            <><CreditCard size={14} /> Proceed to Checkout (₹{finalTotal})</>
+                          )}
+                        </button>
+                        <p className="text-center text-[10px] text-[#858E9A] mt-2 font-semibold">Secure payment via PayU Gateway</p>
+                      </div>
+                    );
+                  })()}
+                </div>
+              ) : (
+                <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">
+                  <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-6">
+                    <ShoppingCart size={32} />
+                  </div>
+                  <h4 className="text-2xl font-black font-space-grotesk text-white mb-2">CART IS EMPTY</h4>
+                  <p className="text-zinc-400 text-sm max-w-xs mb-8">
+                    You haven't added any products to your cart yet. Browse the storefront and select your desired modules.
+                  </p>
+                  <a
+                    href="/#products"
+                    className="px-8 py-3 bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5"
+                  >
+                    Browse Store
+                  </a>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ===== PURCHASE HISTORY TAB ===== */}
+          {activeTab === 'purchases' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold font-space-grotesk text-white flex items-center gap-2">
+                    <History size={22} className="text-[#AEB6C2]" /> Purchase History
+                  </h3>
+                  <p className="text-xs text-zinc-400">Your orders and activated subscriptions.</p>
+                </div>
+                <button
+                  onClick={fetchOrders}
+                  className="text-xs font-bold text-[#AEB6C2] bg-[#AEB6C2]/10 border border-[#AEB6C2]/15 px-3 py-1.5 rounded-full uppercase tracking-wider transition-all hover:bg-[#AEB6C2]/15 flex items-center gap-1"
+                >
+                  <RefreshCw size={12} /> Refresh
+                </button>
+              </div>
+
+              {/* Orders from Order Collection */}
+              {isLoadingOrders ? (
+                <div className="py-12 text-center">
+                  <RefreshCw size={24} className="animate-spin text-[#AEB6C2] mx-auto mb-3" />
+                  <p className="text-zinc-400 text-sm">Loading purchase history...</p>
+                </div>
+              ) : orders.length > 0 ? (
+                <div className="space-y-4">
+                  {orders.map((order, idx) => (
+                    <motion.div
+                      key={order._id || order.orderId}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      className="glass-panel-futuristic p-5 rounded-2xl border border-white/10 hover:border-[#AEB6C2]/15 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Order ID</span>
+                          <span className="text-xs text-white font-mono font-bold">{order.orderId}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 ${
+                            order.payment_status === 'SUCCESS'
+                              ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/15'
+                              : order.payment_status === 'PENDING'
+                              ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                              : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                          }`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${
+                              order.payment_status === 'SUCCESS' ? 'bg-[#AEB6C2]' : order.payment_status === 'PENDING' ? 'bg-yellow-400 animate-pulse' : 'bg-red-400'
+                            }`} />
+                            {order.payment_status}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Order Items */}
+                      <div className="space-y-2 mb-3">
+                        {(order.items || []).map((item, iIdx) => (
+                          <div key={iIdx} className="flex items-center justify-between bg-[#1e293b]/40 p-3 rounded-xl border border-white/5">
+                            <div>
+                              <span className="text-sm font-bold text-white">{item.name}</span>
+                              <span className="text-[10px] text-zinc-500 font-semibold ml-2 uppercase">{item.durationLabel}</span>
+                            </div>
+                            <span className="text-sm font-bold text-zinc-300">₹{item.price}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                          {new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        <span className="text-lg font-black text-white font-space-grotesk">
+                          ₹{order.amount}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                /* Show purchasedSubscriptions from user profile as fallback */
+                (user?.purchasedSubscriptions && user.purchasedSubscriptions.length > 0) ? (
+                  <div className="space-y-4">
+                    {user.purchasedSubscriptions.map((sub, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="glass-panel-futuristic p-5 rounded-2xl border border-white/10 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-[#AEB6C2]/8 border border-[#AEB6C2]/10 flex items-center justify-center">
+                            <CheckCircle size={18} className="text-[#AEB6C2]" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-white">{sub.name}</h4>
+                            <p className="text-[10px] text-zinc-500 font-semibold">
+                              {sub.durationLabel} • Purchased {new Date(sub.purchaseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </p>
+                          </div>
+                        </div>
+                        <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${
+                          sub.status === 'ACTIVE'
+                            ? 'bg-[#D9DEE5]/10 text-[#AEB6C2] border border-[#AEB6C2]/15'
+                            : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                        }`}>
+                          {sub.status}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-20 text-center glass-panel-futuristic rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center p-8 max-w-xl mx-auto shadow-2xl">
+                    <div className="p-4 bg-[#1e293b]/60 rounded-full border border-white/5 text-zinc-500 mb-6">
+                      <History size={32} />
+                    </div>
+                    <h4 className="text-2xl font-black font-space-grotesk text-white mb-2">NO PURCHASE HISTORY</h4>
+                    <p className="text-zinc-400 text-sm max-w-xs mb-8">
+                      You haven't made any purchases yet. Complete a checkout from the cart to see your transaction history here.
+                    </p>
+                    <a
+                      href="/#products"
+                      className="px-8 py-3 bg-[#D9DEE5] hover:bg-[#AEB6C2] text-zinc-950 font-black rounded-xl uppercase tracking-wider text-xs shadow-lg shadow-[#AEB6C2]/20 hover:shadow-[#AEB6C2]/40 transition-all transform hover:-translate-y-0.5"
+                    >
+                      Browse Store
+                    </a>
+                  </div>
+                )
+              )}
+            </motion.div>
+          )}
+
         </div>
       </main>
 
@@ -1181,7 +1471,7 @@ const UserDashboard = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-xl bg-[#0f172a] border border-white/10 rounded-3xl shadow-[0_0_55px_rgba(0,0,0,0.85)] z-10 overflow-hidden"
+              className="relative w-full max-w-xl bg-[#050608] border border-white/10 rounded-3xl shadow-[0_0_55px_rgba(0,0,0,0.85)] z-10 overflow-hidden"
             >
               <button 
                 onClick={() => setSelectedLogProduct(null)} 
@@ -1192,7 +1482,7 @@ const UserDashboard = () => {
 
               <div className="p-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl">
+                  <span className="p-2 bg-[#D9DEE5]/10 border border-[#AEB6C2]/15 text-[#AEB6C2] rounded-xl">
                     <FileText size={20} />
                   </span>
                   <div>
@@ -1203,8 +1493,8 @@ const UserDashboard = () => {
 
                 <div className="h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-6 mt-6">
                   {UPDATE_LOGS[selectedLogProduct.productId]?.map((log, idx) => (
-                    <div key={idx} className="border-l-2 border-amber-500/30 pl-4 space-y-2 relative">
-                      <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                    <div key={idx} className="border-l-2 border-[#AEB6C2]/20 pl-4 space-y-2 relative">
+                      <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-[#AEB6C2] shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                       
                       <div className="flex justify-between items-baseline mb-2">
                         <span className="text-sm font-black text-white font-mono">{log.version}</span>
@@ -1213,7 +1503,7 @@ const UserDashboard = () => {
                       <ul className="space-y-1.5">
                         {log.changes.map((change, cIdx) => (
                           <li key={cIdx} className="text-xs text-zinc-400 leading-relaxed font-semibold flex items-start gap-2">
-                            <span className="text-amber-400 mt-1">-</span>
+                            <span className="text-[#AEB6C2] mt-1">-</span>
                             <span>{change}</span>
                           </li>
                         ))}

@@ -33,6 +33,9 @@ const connectDB = async () => {
                 console.log(`   Host: ${conn.connection.host}`);
                 console.log(`   Database: ${conn.connection.name}`);
 
+                // Auto-seed initial data if database is empty
+                await autoSeedDatabase();
+
                 mongoose.connection.on('error', err => {
                     console.error('❌ MongoDB runtime error:', err);
                 });

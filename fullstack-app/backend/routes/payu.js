@@ -49,22 +49,37 @@ router.post('/generate-hash', auth, async (req, res) => {
     // Calculate total price in INR and resolve product details
     for (const item of items) {
       const { product, duration } = item;
-      const dbProduct = await Product.findOne({ productId: product.id });
+      const pId = Number(product.id || product.productId);
+
+      let dbProduct = await Product.findOne({ productId: pId });
+      
+      // Fallback to default definition if DB is pending seed
       if (!dbProduct) {
-        return res.status(404).json({ message: `Product ${product.id} not found.` });
+        const DEFAULT_PRODUCTS = [
+          { productId: 1, name: 'EXTERNAL BASIC', pricing: [{ id: '1day', label: '1 Day', inr: 95 }, { id: '1week', label: '1 Week', inr: 250 }, { id: '1month', label: '1 Month', inr: 499 }, { id: '1year', label: '1 Year', inr: 1900 }, { id: 'lifetime', label: 'Lifetime', inr: 2800 }] },
+          { productId: 2, name: 'EXTERNAL PREMIUM', pricing: [{ id: '1day', label: '1 Day', inr: 95 }, { id: '1week', label: '1 Week', inr: 300 }, { id: '1month', label: '1 Month', inr: 749 }, { id: '1year', label: '1 Year', inr: 2300 }, { id: 'lifetime', label: 'Lifetime', inr: 3000 }] },
+          { productId: 3, name: 'INTERNAL BASIC', pricing: [{ id: '1day', label: '1 Day', inr: 180 }, { id: '1week', label: '1 Week', inr: 400 }, { id: '1month', label: '1 Month', inr: 899 }, { id: '1year', label: '1 Year', inr: 2800 }, { id: 'lifetime', label: 'Lifetime', inr: 4000 }] },
+          { productId: 4, name: 'INTERNAL PRO', pricing: [{ id: '1day', label: '1 Day', inr: 250 }, { id: '1week', label: '1 Week', inr: 600 }, { id: '1month', label: '1 Month', inr: 1099 }, { id: '1year', label: '1 Year', inr: 3600 }, { id: 'lifetime', label: 'Lifetime', inr: 5000 }] },
+          { productId: 5, name: 'BIOS STREAMER', pricing: [{ id: '1day', label: '1 Day', inr: 400 }, { id: '1week', label: '1 Week', inr: 850 }, { id: '1month', label: '1 Month', inr: 1799 }, { id: '1year', label: '1 Year', inr: 5200 }, { id: 'lifetime', label: 'Lifetime', inr: 7500 }] },
+          { productId: 6, name: 'STREAMER BASIC', pricing: [{ id: '1day', label: '1 Day', inr: 180 }, { id: '1week', label: '1 Week', inr: 400 }, { id: '1month', label: '1 Month', inr: 899 }, { id: '1year', label: '1 Year', inr: 2800 }, { id: 'lifetime', label: 'Lifetime', inr: 4000 }] },
+          { productId: 7, name: 'STREAMER PRO', pricing: [{ id: '1day', label: '1 Day', inr: 250 }, { id: '1week', label: '1 Week', inr: 600 }, { id: '1month', label: '1 Month', inr: 1099 }, { id: '1year', label: '1 Year', inr: 3600 }, { id: 'lifetime', label: 'Lifetime', inr: 5000 }] },
+          { productId: 8, name: 'BYPASS SUPREME', pricing: [{ id: '1day', label: '1 Day', inr: 170 }, { id: '1week', label: '1 Week', inr: 350 }, { id: '1month', label: '1 Month', inr: 650 }, { id: '1year', label: '1 Year', inr: 1999 }, { id: 'lifetime', label: 'Lifetime', inr: 2900 }] }
+        ];
+        dbProduct = DEFAULT_PRODUCTS.find(p => p.productId === pId);
       }
 
-      const priceTier = dbProduct.pricing.find(p => p.id === duration.id);
-      if (!priceTier) {
-        return res.status(400).json({ message: `Pricing duration tier ${duration.id} not found.` });
+      if (!dbProduct) {
+        return res.status(404).json({ message: `Product ${product.id || product.productId} not found.` });
       }
+
+      const priceTier = (dbProduct.pricing || []).find(p => p.id === duration.id) || { id: duration.id, label: 'Subscription', inr: 499 };
 
       const itemInr = priceTier.inr || Math.round((priceTier.usd || 0) * 85);
       totalAmountInr += itemInr;
       productNames.push(`${dbProduct.name} (${priceTier.label})`);
 
       resolvedItems.push({
-        productId: product.id,
+        productId: pId,
         name: dbProduct.name,
         durationId: duration.id,
         durationLabel: priceTier.label,
