@@ -3,6 +3,7 @@ const { adminAuth } = require('../middleware/auth');
 const User = require('../models/User');
 const Contact = require('../models/Contact');
 const Product = require('../models/Product');
+const Coupon = require('../models/Coupon');
 
 const router = express.Router();
 
@@ -306,6 +307,94 @@ router.put('/product/:productId/download-link', adminAuth, async (req, res) => {
     res.json({ message: `Download link ${download_url ? 'saved' : 'removed'} successfully`, product });
   } catch (err) {
     console.error('Update Download Link Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ===== DISCOUNT CODE / COUPON MANAGEMENT =====
+
+// Get All Coupons
+router.get('/coupons', adminAuth, async (req, res) => {
+  try {
+    const coupons = await Coupon.find({}).sort({ createdAt: -1 });
+    res.json(coupons);
+  } catch (err) {
+    console.error('Fetch Coupons Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Create New Coupon
+router.post('/coupons', adminAuth, async (req, res) => {
+  try {
+    const { code, discountPercentage, discountType, discountAmount, maxUses, expiresAt, description } = req.body;
+
+    if (!code || !code.trim()) {
+      return res.status(400).json({ message: 'Coupon code is required.' });
+    }
+
+    const cleanCode = code.trim().toUpperCase();
+    const existing = await Coupon.findOne({ code: cleanCode });
+    if (existing) {
+      return res.status(400).json({ message: `Coupon code '${cleanCode}' already exists.` });
+    }
+
+    const pct = Number(discountPercentage);
+    if (isNaN(pct) || pct < 1 || pct > 100) {
+      return res.status(400).json({ message: 'Discount percentage must be between 1 and 100.' });
+    }
+
+    const newCoupon = new Coupon({
+      code: cleanCode,
+      discountPercentage: pct,
+      discountType: discountType || 'PERCENTAGE',
+      discountAmount: Number(discountAmount) || 0,
+      maxUses: maxUses ? Number(maxUses) : null,
+      expiresAt: expiresAt ? new Date(expiresAt) : null,
+      description: description || `Universal ${pct}% discount code`,
+      isActive: true
+    });
+
+    await newCoupon.save();
+    console.log(`[Admin] Created new discount code: ${cleanCode} (${pct}% off)`);
+    res.status(201).json({ message: 'Discount code created successfully!', coupon: newCoupon });
+  } catch (err) {
+    console.error('Create Coupon Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Toggle Coupon Active / Inactive
+router.put('/coupons/:id/toggle', adminAuth, async (req, res) => {
+  try {
+    const coupon = await Coupon.findById(req.params.id);
+    if (!coupon) {
+      return res.status(404).json({ message: 'Coupon not found.' });
+    }
+
+    coupon.isActive = !coupon.isActive;
+    await coupon.save();
+
+    console.log(`[Admin] Toggled coupon ${coupon.code} to ${coupon.isActive ? 'ACTIVE' : 'INACTIVE'}`);
+    res.json({ message: `Coupon ${coupon.code} is now ${coupon.isActive ? 'active' : 'inactive'}.`, coupon });
+  } catch (err) {
+    console.error('Toggle Coupon Error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Delete Coupon
+router.delete('/coupons/:id', adminAuth, async (req, res) => {
+  try {
+    const coupon = await Coupon.findByIdAndDelete(req.params.id);
+    if (!coupon) {
+      return res.status(404).json({ message: 'Coupon not found.' });
+    }
+
+    console.log(`[Admin] Deleted coupon: ${coupon.code}`);
+    res.json({ message: `Coupon '${coupon.code}' deleted successfully.` });
+  } catch (err) {
+    console.error('Delete Coupon Error:', err);
     res.status(500).json({ message: err.message });
   }
 });

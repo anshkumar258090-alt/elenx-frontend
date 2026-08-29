@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MagicRings from '../components/MagicRings';
 import LightRays from '../components/LightRays';
+import CheckoutModal from '../components/CheckoutModal';
 import { Link, useNavigate } from 'react-router-dom';
 
 const PRODUCTS = [
@@ -170,7 +171,7 @@ const PRODUCTS = [
 ];
 
 /* ===== Product Card Component ===== */
-const ProductCard = ({ product, idx, currency, navigate }) => {
+const ProductCard = ({ product, idx, currency, onBuy }) => {
   const [selectedPlan, setSelectedPlan] = useState(2); // default 1 Month
   const plan = product.pricing[selectedPlan];
   const price = currency === 'INR' ? plan.inr : plan.usd;
@@ -270,8 +271,8 @@ const ProductCard = ({ product, idx, currency, navigate }) => {
 
             {/* Buy button */}
             <button
-              onClick={() => navigate('/login')}
-              className={`w-full py-3 rounded-xl text-sm font-bold tracking-wider transition-all duration-300 border ${
+              onClick={() => onBuy ? onBuy(product, selectedPlan) : null}
+              className={`w-full py-3 rounded-xl text-sm font-bold tracking-wider transition-all duration-300 border cursor-pointer ${
                 product.isPremium
                   ? `bg-gradient-to-r from-amber-600 to-orange-600 text-white border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.25)] hover:shadow-[0_0_25px_rgba(245,158,11,0.45)] hover:scale-[1.02]`
                   : `bg-white/[0.04] text-white border-white/[0.08] hover:bg-white/[0.08] hover:border-amber-500/20 hover:shadow-[0_0_15px_rgba(245,158,11,0.1)]`
@@ -375,6 +376,15 @@ const LandingPage = () => {
   };
 
   const [currency, setCurrency] = useState('INR');
+  const [checkoutProduct, setCheckoutProduct] = useState(null);
+  const [checkoutPlanIndex, setCheckoutPlanIndex] = useState(2);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+
+  const handleOpenCheckout = (product, planIndex) => {
+    setCheckoutProduct(product);
+    setCheckoutPlanIndex(planIndex);
+    setIsCheckoutOpen(true);
+  };
 
   return (
     <div className="min-h-screen overflow-hidden relative font-inter selection:bg-amber-500/30 selection:text-white bg-[#06060a]">
@@ -762,7 +772,7 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {PRODUCTS.map((product, idx) => (
-              <ProductCard key={product.id} product={product} idx={idx} currency={currency} navigate={navigate} />
+              <ProductCard key={product.id} product={product} idx={idx} currency={currency} onBuy={handleOpenCheckout} />
             ))}
           </div>
         </div>
@@ -925,6 +935,14 @@ const LandingPage = () => {
           </motion.div>
         </div>
       </section>
+
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        product={checkoutProduct}
+        selectedPlanIndex={checkoutPlanIndex}
+        currency={currency}
+      />
 
       <Footer />
     </div>

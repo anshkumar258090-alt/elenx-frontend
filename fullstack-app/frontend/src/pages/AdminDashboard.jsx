@@ -22,9 +22,11 @@ import {
   MessageSquare,
   Mail,
   Eye,
-  Clock
+  Clock,
+  Tag
 } from 'lucide-react';
 import AdminUploads from '../components/AdminUploads';
+import AdminCoupons from '../components/AdminCoupons';
 import ParticleBackground from '../components/ParticleBackground';
 import { useAuth } from '../context/AuthContext';
 
@@ -421,6 +423,7 @@ const AdminDashboard = () => {
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">Main Menu</p>
           <NavItem id="overview" icon={LayoutDashboard} label="Overview" />
           <NavItem id="builds" icon={Rocket} label="Build Manager" />
+          <NavItem id="coupons" icon={Tag} label="Discount Codes" />
           <NavItem id="users" icon={Users} label="User Manager" />
           <NavItem id="messages" icon={MessageSquare} label="Messages" badge={unreadCount} />
 
@@ -457,6 +460,7 @@ const AdminDashboard = () => {
             <h2 className="text-lg sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
               {activeTab === 'overview' && 'System Overview'}
               {activeTab === 'builds' && 'Build Distribution'}
+              {activeTab === 'coupons' && 'Discount Code Generator'}
               {activeTab === 'users' && 'User Management'}
               {activeTab === 'messages' && 'Contact Messages'}
               {activeTab === 'settings' && 'System Settings'}
@@ -523,6 +527,13 @@ const AdminDashboard = () => {
                 <p className="text-gray-400">Manage download links for all products. Paste external download URLs (Google Drive, Mega, etc.) — no file uploads needed.</p>
               </div>
               <AdminUploads />
+            </div>
+          )}
+
+          {/* --- TAB: DISCOUNT CODES / COUPONS --- */}
+          {activeTab === 'coupons' && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <AdminCoupons />
             </div>
           )}
 

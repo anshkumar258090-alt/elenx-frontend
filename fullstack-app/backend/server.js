@@ -70,6 +70,7 @@ const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
 const settingsRoutes = require('./routes/settings');
 const payuRoutes = require('./routes/payu');
+const couponRoutes = require('./routes/coupon');
 const Contact = require('./models/Contact');
 
 // Public Contact Form Submission (no auth required)
@@ -94,6 +95,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/payu', payuRoutes);
+app.use('/api/coupon', couponRoutes);
 
 // Route to check MongoDB connection
 app.get('/api/test-mongodb', (req, res) => {

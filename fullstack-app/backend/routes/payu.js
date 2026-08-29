@@ -6,6 +6,7 @@ const User = require('../models/User');
 const Product = require('../models/Product');
 const UserProduct = require('../models/UserProduct');
 const Order = require('../models/Order');
+const Coupon = require('../models/Coupon');
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ const resolveUser = async (userId) => {
 // 1. Generate PayU Payment Request Hash & Parameters
 router.post('/generate-hash', auth, async (req, res) => {
   try {
-    const { items, phone } = req.body;
+    const { items, phone, couponCode } = req.body;
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: 'Invalid or empty cart items' });
     }
@@ -72,6 +73,29 @@ router.post('/generate-hash', auth, async (req, res) => {
       });
     }
 
+    // Apply Coupon Discount if provided
+    let discountAmount = 0;
+    let appliedCoupon = '';
+    if (couponCode && typeof couponCode === 'string') {
+      const cleanCode = couponCode.trim().toUpperCase();
+      const dbCoupon = await Coupon.findOne({ code: cleanCode, isActive: true });
+      if (dbCoupon) {
+        const isNotExpired = !dbCoupon.expiresAt || new Date(dbCoupon.expiresAt) > new Date();
+        const hasUsesLeft = dbCoupon.maxUses === null || dbCoupon.usedCount < dbCoupon.maxUses;
+        if (isNotExpired && hasUsesLeft) {
+          if (dbCoupon.discountType === 'PERCENTAGE') {
+            discountAmount = Math.round((totalAmountInr * dbCoupon.discountPercentage) / 100);
+          } else {
+            discountAmount = Math.min(dbCoupon.discountAmount || 0, totalAmountInr);
+          }
+          appliedCoupon = dbCoupon.code;
+          console.log(`[PayU HashGen] Coupon ${cleanCode} applied: -₹${discountAmount}`);
+        }
+      }
+    }
+
+    const finalAmountInr = Math.max(1, totalAmountInr - discountAmount);
+
     // PayU Merchant Credentials from env
     const key = process.env.PAYU_MERCHANT_KEY || 'gtKFFx';
     const salt = process.env.PAYU_MERCHANT_SALT || '4R38IvwiV57FwVpsgOvTXBdLE4tHUXFW';
@@ -81,7 +105,7 @@ router.post('/generate-hash', auth, async (req, res) => {
       : 'https://test.payu.in/_payment';
 
     const txnid = 'ELNX_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7).toUpperCase();
-    const amount = totalAmountInr.toFixed(2);
+    const amount = finalAmountInr.toFixed(2);
     const productinfo = productNames.join(', ').replace(/[^a-zA-Z0-9\s,._-]/g, '').substring(0, 100);
     const firstname = (user.username || user.email || 'Customer').split(' ')[0].replace(/[^a-zA-Z0-9]/g, '') || 'Customer';
     const email = user.email || 'customer@elenx.in';
@@ -89,8 +113,8 @@ router.post('/generate-hash', auth, async (req, res) => {
 
     // Store custom metadata in UDFs
     const udf1 = userId.toString();
-    const udf2 = '';
-    const udf3 = '';
+    const udf2 = appliedCoupon; // Store coupon code in udf2
+    const udf3 = discountAmount.toString();
     const udf4 = '';
     const udf5 = '';
 
@@ -108,7 +132,7 @@ router.post('/generate-hash', auth, async (req, res) => {
       orderId: txnid,
       user_id: userId,
       payment_status: 'PENDING',
-      amount: totalAmountInr,
+      amount: finalAmountInr,
       currency: 'INR',
       items: resolvedItems.map(i => ({
         productId: i.productId,
@@ -120,12 +144,15 @@ router.post('/generate-hash', auth, async (req, res) => {
     });
     await pendingOrder.save();
 
-    console.log(`[PayU HashGen] Generated hash for TxnID: ${txnid}, Amount: ₹${amount}, User: ${user.username} (${userId})`);
+    console.log(`[PayU HashGen] Generated hash for TxnID: ${txnid}, Subtotal: ₹${totalAmountInr}, Discount: ₹${discountAmount}, Final: ₹${amount}, User: ${user.username} (${userId})`);
     console.log(`[PayU HashGen] Hash String: ${hashString}`);
     console.log(`[PayU HashGen] Hash Output: ${hash}`);
 
     res.json({
       actionUrl,
+      discountAmount,
+      finalAmount: finalAmountInr,
+      couponApplied: appliedCoupon || null,
       params: {
         key,
         txnid,
@@ -271,6 +298,16 @@ router.post('/response', async (req, res) => {
           }
 
           await user.save();
+        }
+      }
+
+      // Increment coupon usage if applied
+      if (udf2) {
+        try {
+          await Coupon.updateOne({ code: udf2 }, { $inc: { usedCount: 1 } });
+          console.log(`[PayU] Incremented usedCount for coupon: ${udf2}`);
+        } catch (couponErr) {
+          console.error('[PayU] Error incrementing coupon count:', couponErr);
         }
       }
 
